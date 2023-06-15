@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @SpringBootApplication
 public class FantasyApiApplication {
 
@@ -12,6 +14,12 @@ public class FantasyApiApplication {
 	public WebClient.Builder getRestTemplate()
 	{
 		return WebClient.builder();
+	}
+
+	@Bean
+	public ObjectMapper getDefaultObjectMapper()
+	{
+		return new ObjectMapper();
 	}
 
 	public static void main(String[] args) 
