@@ -9,6 +9,7 @@ package com.fantasy.fantasyapi;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.fantasy.fantasyapi.model.Player;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 @RestController
 @RequestMapping("/roster")
@@ -49,6 +51,9 @@ public class GetAllPlayers
 			.header("X-RapidAPI-Host", "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com")
 			.retrieve()
 			.bodyToMono(String.class).block();
+
+        System.out.println("-----------------------------------------------");
+        System.out.println("NFL TEAM: " + teamAbv);
     }
 
     // method to process string JSON payload and parse down to name and id pairs that are stored in Player objects
@@ -57,13 +62,15 @@ public class GetAllPlayers
         // ArrayLists to store substrings that contain name and id
         List<String> nameList = new ArrayList<String>();
         List<String> idList = new ArrayList<String>();
-
+        List<String> posList = new ArrayList<String>();
+        List<String> jerseyList = new ArrayList<String>();
+        List<String> heightList = new ArrayList<String>();
          // String array to parse JSON payload into separate lines
          String substrings[] = roster.split(", ");
-
-            // iterate through lines and check if contains name or id
+            // iterate through lines and check if contains wanted attribute, add to list
             for(int i = 0; i < substrings.length; i++)
             {
+                // System.out.println(substrings[i].toString());
                 if(substrings[i].contains("espnName"))
                 {
                     String nameLine = "{" + substrings[i] + "}";
@@ -74,7 +81,38 @@ public class GetAllPlayers
                     String nameLine = "{" + substrings[i];
                     idList.add(nameLine);
                 }
+                if(substrings[i].contains("pos"))
+                {
+                    String nameLine = "{" + substrings[i] + "}";
+                    posList.add(nameLine);
+                }
+                if(substrings[i].contains("jerseyNum"))
+                {
+                    if(substrings[i].contains("roster"))
+                    {
+                        String substr = "{" + substrings[i].substring(12) + "}";
+                        jerseyList.add(substr);
+                    }
+                    if(substrings[i].equals("{\"jerseyNum\": \"\""))
+                    {
+                        String jerseyDefault = "{\"jerseyNum\": \"N/A\"}";
+                        jerseyList.add(jerseyDefault);
+                    }
+                    else
+                    {
+                        String nameLine = substrings[i] + "}";
+                        jerseyList.add(nameLine);
+                    }
+                }
+                if(substrings[i].contains("height"))
+                {
+                    String nameLine = "{" + substrings[i] + "}";
+                    heightList.add(nameLine);
+                }
             }
+
+            // remove error line due to format of JSON payload (DO NOT DELETE)
+            jerseyList.remove(1);
 
             //----------------------------------------------------
             // PRINT LISTS AFTER SPLITTING INTO SUBSTRING (TEST)   
@@ -86,11 +124,21 @@ public class GetAllPlayers
             // {
             //      System.out.println(nameList.get(i).toString());
             // }
+            // int counter = 0;
+            // for(int i = 0; i < ageList.size(); i++)
+            // {
+            //     counter++;
+            //      System.out.println(ageList.get(i).toString());
+            // }
+            // System.out.println(counter);
             //----------------------------------------------------
 
             // ArrayLists to store JsonNodes (actual values) for id and name
             List<JsonNode> nodeListOfNames = new ArrayList<JsonNode>();
             List<JsonNode> nodeListOfId = new ArrayList<JsonNode>();
+            List<JsonNode> nodeListOfPos = new ArrayList<JsonNode>();
+            List<JsonNode> nodeListOfJersey = new ArrayList<JsonNode>();
+            List<JsonNode> nodeListOfHeight = new ArrayList<JsonNode>();
 
             // iterate through each line and parse out value and store in list
             for(int i = 0; i < nameList.size(); i++)
@@ -98,27 +146,26 @@ public class GetAllPlayers
                 Mapper mapper = new Mapper();
                 try
                 {
-                    JsonNode node = mapper.parse(nameList.get(i));
-                    nodeListOfNames.add(node);
+                    JsonNode nameNode = mapper.parse(nameList.get(i));
+                    nodeListOfNames.add(nameNode);
+
+                    JsonNode idNode = mapper.parse(idList.get(i));
+                    nodeListOfId.add(idNode);
+
+                    JsonNode posNode = mapper.parse(posList.get(i));
+                    nodeListOfPos.add(posNode);
+
+                    JsonNode jerseyNode = mapper.parse(jerseyList.get(i));
+                    nodeListOfJersey.add(jerseyNode);
+
+                    JsonNode heightNode = mapper.parse(heightList.get(i));
+                    nodeListOfHeight.add(heightNode);
                 }
                 catch (JsonProcessingException e) 
                 {
                     e.printStackTrace();
                 }
             }
-            for(int i = 0; i < idList.size(); i++)
-            {
-                Mapper mapper = new Mapper();
-                try
-                {
-                    JsonNode node = mapper.parse(idList.get(i));
-                    nodeListOfId.add(node);
-                }
-                catch (JsonProcessingException e) 
-                {
-                    e.printStackTrace();
-                }
-            }       
 
             //------------------------------------------------------------------------
             // PRINT LISTS AFTER FILTERING TO NAME AND ID VALUES (TEST)
@@ -126,10 +173,13 @@ public class GetAllPlayers
             // {
             //     System.out.println(nodeListOfNames.get(i).get("espnName").asText());
             // }
-            // for(int i = 0; i < nodeListOfId.size(); i++)
+            // int counter = 0;
+            // for(int i = 0; i < nodeListOfJersey.size(); i++)
             // {
-            //     System.out.println(nodeListOfId.get(i).get("playerID").asText());
+            //     System.out.println(nodeListOfJersey.get(i).get("jerseyNum").asText());
+            //     counter++;
             // }
+            // System.out.println(counter);
             //------------------------------------------------------------------------
 
             // iterate through node lists and create player objects mapping name and id together and store in FINAL list
@@ -137,16 +187,27 @@ public class GetAllPlayers
             for(int i = 0; i < nodeListOfNames.size(); i++)
             {
                 // create object and add live data fields
-                Player player = new Player(nodeListOfNames.get(i).get("espnName").asText(), nodeListOfId.get(i).get("playerID").asText());
+                Player player = new Player(nodeListOfNames.get(i).get("espnName").asText(),
+                nodeListOfId.get(i).get("playerID").asText(), 
+                nodeListOfPos.get(i).get("pos").asText(),
+                nodeListOfJersey.get(i).get("jerseyNum").asText(), 
+                nodeListOfHeight.get(i).get("height").asText());
                 // add player object to list
                 players.add(player);
             }
             // PRINT FINAL LIST OBJECTS NAME AND ID (TEST)
             for(int i = 0; i < players.size(); i++)
             {
-                System.out.println("-----------------------------------------------");
-                System.out.println(players.get(i).getplayerName() + ", " + players.get(i).getplayerID());
+                System.out.println("---------------------------------------------------------------");
+                System.out.println(players.get(i).getplayerName() + ", ID: "
+                 + players.get(i).getplayerID()+ ", POS: " 
+                 + players.get(i).getPos()+ ", NO: "
+                 + players.get(i).getJerseyNum()+ ", HEIGHT: " 
+                 + players.get(i).getHeight());
             }
+            System.out.println("-----------------------------------------------");
+            System.out.println("ROSTER END");
+            System.out.println("-----------------------------------------------");
     }
 
     @RequestMapping("/chiefs")
