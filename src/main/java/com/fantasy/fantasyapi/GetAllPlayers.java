@@ -1,565 +1,303 @@
-/*
- * Carter Campbell
- * Software Developer
- * 6/16/23
- * GET NFL Team Rosters/Players
- */
 package com.fantasy.fantasyapi;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fantasy.fantasyapi.model.Player;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RestController
-@RequestMapping("/roster")
+import reactor.netty.http.client.HttpClient;
+
 public class GetAllPlayers 
 {
-    //------------------------------------------------------------------------
-    // PENDING BUGS/WHATS NEXT: ??
-    // N/A
-    //------------------------------------------------------------------------
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    // WebClient used to formulate and send HTTPS requests to external API
-    @Autowired
-    WebClient.Builder builder;
-
-
-    // Global roster variable to store JSON payload from API
-    private String roster;
-
-    // method to send HTTP "GET" request to API and store response in global variable
-    public void sendRequest(String teamAbv)
+    public static void main(String[] args)
     {
-        // dynamic url to send request with specified team abv
-        String url = "https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLTeamRoster?teamAbv=" + teamAbv;
-
-            // Populate global roster string with JSON payload using WebClient builder
-		    roster = builder.build()
-			.get()
-			.uri(url)
-			.header("X-RapidAPI-Key", "e65f398570mshf333bbc306e2bd0p160558jsn1dfe348a5886")
-			.header("X-RapidAPI-Host", "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com")
-			.retrieve()
-			.bodyToMono(String.class).block();
-
-        System.out.println("-----------------------------------------------");
-        System.out.println("NFL TEAM: " + teamAbv);
-    }
-
-    // method to process string JSON payload and parse down to name and id pairs that are stored in Player objects
-    public void processRoster()
-    {
-        // ArrayLists to store substrings that contain name and id
-        List<String> nameList = new ArrayList<String>();
-        List<String> idList = new ArrayList<String>();
-        List<String> posList = new ArrayList<String>();
-        List<String> jerseyList = new ArrayList<String>();
-        List<String> heightList = new ArrayList<String>();
-         // String array to parse JSON payload into separate lines
-         String substrings[] = roster.split(", ");
-            // iterate through lines and check if contains wanted attribute, add to list
-            for(int i = 0; i < substrings.length; i++)
+        GetAllPlayers map = new GetAllPlayers();
+        String jsonString = map.sendRequest();
+        try {
+            Player[] players = mapJsonToObject(jsonString);
+            for(int i = 0; i < players.length; i++)
             {
-                // System.out.println(substrings[i].toString());
-                if(substrings[i].contains("espnName"))
+                if(players[i].getPos().equals("WR") || players[i].getPos().equals("RB") || players[i].getPos().equals("TE") || players[i].getPos().equals("QB"))
                 {
-                    String nameLine = "{" + substrings[i] + "}";
-                    nameList.add(nameLine);
-                }
-                if(substrings[i].contains("playerID"))
-                {
-                    String nameLine = "{" + substrings[i];
-                    idList.add(nameLine);
-                }
-                if(substrings[i].contains("pos"))
-                {
-                    String nameLine = "{" + substrings[i] + "}";
-                    posList.add(nameLine);
-                }
-                if(substrings[i].contains("jerseyNum"))
-                {
-                    if(substrings[i].contains("roster"))
-                    {
-                        String substr = "{" + substrings[i].substring(12) + "}";
-                        jerseyList.add(substr);
-                    }
-                    if(substrings[i].equals("{\"jerseyNum\": \"\""))
-                    {
-                        String jerseyDefault = "{\"jerseyNum\": \"N/A\"}";
-                        jerseyList.add(jerseyDefault);
-                    }
-                    else
-                    {
-                        String nameLine = substrings[i] + "}";
-                        jerseyList.add(nameLine);
-                    }
-                }
-                if(substrings[i].contains("height"))
-                {
-                    String nameLine = "{" + substrings[i] + "}";
-                    heightList.add(nameLine);
+                    System.out.println(players[i].getEspnName() + " " + players[i].getPos() + " " + players[i].getTeam());
                 }
             }
-
-            // remove error line due to format of JSON payload (DO NOT DELETE)
-            jerseyList.remove(1);
-
-            //----------------------------------------------------
-            // PRINT LISTS AFTER SPLITTING INTO SUBSTRING (TEST)   
-            // for(int i = 0; i < idList.size(); i++)
-            // {
-            //     System.out.println(idList.get(i).toString());
-            // }
-            // for(int i = 0; i < nameList.size(); i++)
-            // {
-            //      System.out.println(nameList.get(i).toString());
-            // }
-            // int counter = 0;
-            // for(int i = 0; i < ageList.size(); i++)
-            // {
-            //     counter++;
-            //      System.out.println(ageList.get(i).toString());
-            // }
-            // System.out.println(counter);
-            //----------------------------------------------------
-
-            // ArrayLists to store JsonNodes (actual values) for id and name
-            List<JsonNode> nodeListOfNames = new ArrayList<JsonNode>();
-            List<JsonNode> nodeListOfId = new ArrayList<JsonNode>();
-            List<JsonNode> nodeListOfPos = new ArrayList<JsonNode>();
-            List<JsonNode> nodeListOfJersey = new ArrayList<JsonNode>();
-            List<JsonNode> nodeListOfHeight = new ArrayList<JsonNode>();
-
-            // iterate through each line and parse out value and store in list
-            for(int i = 0; i < nameList.size(); i++)
-            {
-                Mapper mapper = new Mapper();
-                try
-                {
-                    JsonNode nameNode = mapper.parse(nameList.get(i));
-                    nodeListOfNames.add(nameNode);
-
-                    JsonNode idNode = mapper.parse(idList.get(i));
-                    nodeListOfId.add(idNode);
-
-                    JsonNode posNode = mapper.parse(posList.get(i));
-                    nodeListOfPos.add(posNode);
-
-                    JsonNode jerseyNode = mapper.parse(jerseyList.get(i));
-                    nodeListOfJersey.add(jerseyNode);
-
-                    JsonNode heightNode = mapper.parse(heightList.get(i));
-                    nodeListOfHeight.add(heightNode);
-                }
-                catch (JsonProcessingException e) 
-                {
-                    e.printStackTrace();
-                }
-            }
-
-            //------------------------------------------------------------------------
-            // PRINT LISTS AFTER FILTERING TO NAME AND ID VALUES (TEST)
-            // for(int i = 0; i < nodeListOfNames.size(); i++)
-            // {
-            //     System.out.println(nodeListOfNames.get(i).get("espnName").asText());
-            // }
-            // int counter = 0;
-            // for(int i = 0; i < nodeListOfJersey.size(); i++)
-            // {
-            //     System.out.println(nodeListOfJersey.get(i).get("jerseyNum").asText());
-            //     counter++;
-            // }
-            // System.out.println(counter);
-            //------------------------------------------------------------------------
-
-            // iterate through node lists and create player objects mapping name and id together and store in FINAL list
-            List<Player> players = new ArrayList<Player>();
-            for(int i = 0; i < nodeListOfNames.size(); i++)
-            {
-                // create object and add live data fields
-                Player player = new Player(nodeListOfNames.get(i).get("espnName").asText(),
-                nodeListOfId.get(i).get("playerID").asText(), 
-                nodeListOfPos.get(i).get("pos").asText(),
-                nodeListOfJersey.get(i).get("jerseyNum").asText(), 
-                nodeListOfHeight.get(i).get("height").asText());
-                // add player object to list
-                players.add(player);
-            }
-            // PRINT FINAL LIST OBJECTS NAME AND ID (TEST)
-            for(int i = 0; i < players.size(); i++)
-            {
-                System.out.println("---------------------------------------------------------------");
-                System.out.println(players.get(i).getplayerName() + ", ID: "
-                 + players.get(i).getplayerID()+ ", POS: " 
-                 + players.get(i).getPos()+ ", NO: "
-                 + players.get(i).getJerseyNum()+ ", HEIGHT: " 
-                 + players.get(i).getHeight());
-            }
-            System.out.println("-----------------------------------------------");
-            System.out.println("ROSTER END");
-            System.out.println("-----------------------------------------------");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
-    @RequestMapping("/chiefs")
-    public void getChiefsRoster()
+    public static Player[] mapJsonToObject(String jsonString) throws IOException 
     {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "KC";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
+        JsonNode jsonNode = objectMapper.readTree(jsonString);
+
+        JsonNode bodyNode = jsonNode.get("body");
+        if (bodyNode == null || !bodyNode.isArray()) {
+            throw new IllegalArgumentException("Invalid JSON format. 'body' array not found.");
+        }
+
+        return objectMapper.readValue(bodyNode.toString(), Player[].class);
     }
 
-    @RequestMapping("/chargers")
-    public void getChargersRoster()
+    public String sendRequest()
     {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "LAC";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
+          String url = "https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLPlayerList";
+        String roster = "";
+
+        // Create a custom ExchangeStrategies object with an increased buffer limit
+        ExchangeStrategies strategies = ExchangeStrategies.builder()
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(3 * 1024 * 1024)) // 5 MB buffer limit
+                .build();
+
+        // Create a WebClient using the custom ExchangeStrategies
+        WebClient mainBuilder = WebClient.builder()
+                .exchangeStrategies(strategies)
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().compress(true)))
+                .build();
+
+        // Retrieve the JSON payload and store it in the roster string
+        roster = mainBuilder
+                .get()
+                .uri(url)
+                .header("X-RapidAPI-Key", "e65f398570mshf333bbc306e2bd0p160558jsn1dfe348a5886")
+                .header("X-RapidAPI-Host", "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        return roster;
     }
 
-    @RequestMapping("/raiders")
-    public void getRaidersRoster()
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Player 
     {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "LV";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        private String espnID;
+        private String espnName;
+        private String espnIDFull;
+        private String weight;
+        private String jerseyNum;
+        private String cbsShortName;
+        private String team;
+        private String yahooPlayerID;
+        private String age;
+        private String espnLink;
+        private String yahooLink;
+        private String bDay;
+        private String espnHeadshot;
+        private String cbsLongName;
+        private String teamID;
+        private String pos;
+        private String school;
+        private String cbsPlayerID;
+        private String longName;
+        private String height;
+        private String cbsPlayerIDFull;
+        private String lastGamePlayed;
+        private String playerID;
+        private String exp;
+        
+        public String getbDay() {
+            return bDay;
+        }
 
-    @RequestMapping("/broncos")
-    public void getBroncosRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "DEN";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setbDay(String bDay) {
+            this.bDay = bDay;
+        }
 
-    @RequestMapping("/patriots")
-    public void getPatriotsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "NE";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getEspnHeadshot() {
+            return espnHeadshot;
+        }
 
-    @RequestMapping("/dolphins")
-    public void getDolphinsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "MIA";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setEspnHeadshot(String espnHeadshot) {
+            this.espnHeadshot = espnHeadshot;
+        }
 
-    @RequestMapping("/bills")
-    public void getBillsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "BUF";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getCbsLongName() {
+            return cbsLongName;
+        }
 
-    @RequestMapping("/jets")
-    public void getJetsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "NYJ";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setCbsLongName(String cbsLongName) {
+            this.cbsLongName = cbsLongName;
+        }
 
-    @RequestMapping("/ravens")
-    public void getRavensRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "BAL";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getTeamID() {
+            return teamID;
+        }
 
-    @RequestMapping("/bengals")
-    public void getBengalsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "CIN";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setTeamID(String teamID) {
+            this.teamID = teamID;
+        }
 
-    @RequestMapping("/browns")
-    public void getBrownsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "CLE";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getPos() {
+            return pos;
+        }
 
-    @RequestMapping("/steelers")
-    public void getSteelersRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "PIT";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setPos(String pos) {
+            this.pos = pos;
+        }
 
-    @RequestMapping("/texans")
-    public void getTexansRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "HOU";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getSchool() {
+            return school;
+        }
 
-    @RequestMapping("/colts")
-    public void getColtsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "IND";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setSchool(String school) {
+            this.school = school;
+        }
 
-    @RequestMapping("/titans")
-    public void getTitansRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "TEN";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getCbsPlayerID() {
+            return cbsPlayerID;
+        }
 
-    @RequestMapping("/jaguars")
-    public void getJaguarsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "JAX";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setCbsPlayerID(String cbsPlayerID) {
+            this.cbsPlayerID = cbsPlayerID;
+        }
 
-    @RequestMapping("/bears")
-    public void getBearsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "CHI";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getLongName() {
+            return longName;
+        }
 
-    @RequestMapping("/lions")
-    public void getLionsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "DET";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setLongName(String longName) {
+            this.longName = longName;
+        }
 
-    @RequestMapping("/packers")
-    public void getPackersRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "GB";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getHeight() {
+            return height;
+        }
 
-    @RequestMapping("/vikings")
-    public void getVikingsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "MIN";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setHeight(String height) {
+            this.height = height;
+        }
 
-    @RequestMapping("/cowboys")
-    public void getCowboysRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "DAL";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getCbsPlayerIDFull() {
+            return cbsPlayerIDFull;
+        }
 
-    @RequestMapping("/giants")
-    public void getGiantsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "NYG";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setCbsPlayerIDFull(String cbsPlayerIDFull) {
+            this.cbsPlayerIDFull = cbsPlayerIDFull;
+        }
 
-    @RequestMapping("/eagles")
-    public void getEaglesRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "PHI";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getLastGamePlayed() {
+            return lastGamePlayed;
+        }
 
-    @RequestMapping("/commanders")
-    public void getCommandersRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "WSH";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setLastGamePlayed(String lastGamePlayed) {
+            this.lastGamePlayed = lastGamePlayed;
+        }
 
-    @RequestMapping("/falcons")
-    public void getFalconsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "ATL";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getPlayerID() {
+            return playerID;
+        }
 
-    @RequestMapping("/panthers")
-    public void getPanthersRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "CAR";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setPlayerID(String playerID) {
+            this.playerID = playerID;
+        }
 
-    @RequestMapping("/saints")
-    public void getSaintsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "NO";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getExp() {
+            return exp;
+        }
 
-    @RequestMapping("/buccaneers")
-    public void getBuccaneersRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "TB";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setExp(String exp) {
+            this.exp = exp;
+        }
 
-    @RequestMapping("/cardinals")
-    public void getCardinalsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "ARI";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getEspnID() {
+            return espnID;
+        }
 
-    @RequestMapping("/rams")
-    public void getRamsRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "LAR";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setEspnID(String espnID) {
+            this.espnID = espnID;
+        }
 
-    @RequestMapping("/49ers")
-    public void get49ersRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "SF";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public String getEspnName() {
+            return espnName;
+        }
 
-    @RequestMapping("/seahawks")
-    public void getSeahawksRoster()
-    {
-            // Params for abbreviation to be set in URL
-            String teamAbv = "SEA";
-            // Send get request with correct team abv
-            sendRequest(teamAbv);
-            // Method to sort JSON payload and store name/id pairs as player
-            processRoster();
-    }
+        public void setEspnName(String espnName) {
+            this.espnName = espnName;
+        }
 
+        public String getEspnIDFull() {
+            return espnIDFull;
+        }
+
+        public void setEspnIDFull(String espnIDFull) {
+            this.espnIDFull = espnIDFull;
+        }
+
+        public String getWeight() {
+            return weight;
+        }
+
+        public void setWeight(String weight) {
+            this.weight = weight;
+        }
+
+        public String getJerseyNum() {
+            return jerseyNum;
+        }
+
+        public void setJerseyNum(String jerseyNum) {
+            this.jerseyNum = jerseyNum;
+        }
+
+        public String getCbsShortName() {
+            return cbsShortName;
+        }
+
+        public void setCbsShortName(String cbsShortName) {
+            this.cbsShortName = cbsShortName;
+        }
+
+        public String getTeam() {
+            return team;
+        }
+
+        public void setTeam(String team) {
+            this.team = team;
+        }
+
+        public String getYahooPlayerID() {
+            return yahooPlayerID;
+        }
+
+        public void setYahooPlayerID(String yahooPlayerID) {
+            this.yahooPlayerID = yahooPlayerID;
+        }
+
+        public String getAge() {
+            return age;
+        }
+
+        public void setAge(String age) {
+            this.age = age;
+        }
+
+        public String getEspnLink() {
+            return espnLink;
+        }
+
+        public void setEspnLink(String espnLink) {
+            this.espnLink = espnLink;
+        }
+
+        public String getYahooLink() {
+            return yahooLink;
+        }
+
+        public void setYahooLink(String yahooLink) {
+            this.yahooLink = yahooLink;
+        }
+
+        public String getBDay() {
+            return bDay;
+        }
+}
 }

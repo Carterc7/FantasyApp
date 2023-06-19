@@ -19,20 +19,5 @@ public class Mapper
     {
         return objectMapper.readTree(json);
     }
-
-    public void hold()
-    {
-        String jsonSource = "{ \"title\": \"Coder from Scratch\" }";
-                Mapper mapper = new Mapper();
-                try
-                {
-                    JsonNode node = mapper.parse(jsonSource);
-                    System.out.println(node.get("title").asText());
-                }
-                catch (JsonProcessingException e) 
-                {
-                    e.printStackTrace();
-                }
-    }
         
 }
