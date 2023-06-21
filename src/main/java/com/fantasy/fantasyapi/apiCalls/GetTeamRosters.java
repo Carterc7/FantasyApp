@@ -4,11 +4,14 @@
  * 6/16/23
  * GET NFL Team Rosters/Players
  */
-package com.fantasy.fantasyapi;
+package com.fantasy.fantasyapi.apiCalls;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.fantasy.fantasyapi.model.BasePlayer;
+import com.fantasy.fantasyapi.utility.Mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -40,7 +43,7 @@ public class GetTeamRosters
     }
 
     // method to process string JSON payload and parse down to name and id pairs that are stored in Player objects
-    public List<Player> processRoster(String roster)
+    public List<BasePlayer> processRoster(String roster)
     {
         // ArrayLists to store substrings that contain name and id
         List<String> nameList = new ArrayList<String>();
@@ -190,11 +193,11 @@ public class GetTeamRosters
             //------------------------------------------------------------------------
 
             // iterate through node lists and create player objects mapping name and id together and store in FINAL list
-            List<Player> players = new ArrayList<Player>();
+            List<BasePlayer> players = new ArrayList<BasePlayer>();
             for(int i = 0; i < nodeListOfNames.size(); i++)
             {
                 // create object and add live data fields
-                Player player = new Player(nodeListOfNames.get(i).get("espnName").asText(),
+                BasePlayer player = new BasePlayer(nodeListOfNames.get(i).get("espnName").asText(),
                 nodeListOfId.get(i).get("playerID").asText(), 
                 nodeListOfPos.get(i).get("pos").asText(),
                 nodeListOfJersey.get(i).get("jerseyNum").asText(), 
@@ -220,7 +223,7 @@ public class GetTeamRosters
         return players;
     }
 
-    public List<Player> getChiefsRoster(List<Player> masterList)
+    public List<BasePlayer> getChiefsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "KC";
@@ -231,7 +234,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getChargersRoster(List<Player> masterList)
+    public List<BasePlayer> getChargersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "LAC";
@@ -242,7 +245,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getRaidersRoster(List<Player> masterList)
+    public List<BasePlayer> getRaidersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "LV";
@@ -253,7 +256,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getBroncosRoster(List<Player> masterList)
+    public List<BasePlayer> getBroncosRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "DEN";
@@ -264,7 +267,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getPatriotsRoster(List<Player> masterList)
+    public List<BasePlayer> getPatriotsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "NE";
@@ -275,7 +278,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getDolphinsRoster(List<Player> masterList)
+    public List<BasePlayer> getDolphinsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "MIA";
@@ -286,7 +289,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getBillsRoster(List<Player> masterList)
+    public List<BasePlayer> getBillsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "BUF";
@@ -297,7 +300,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getJetsRoster(List<Player> masterList)
+    public List<BasePlayer> getJetsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "NYJ";
@@ -308,7 +311,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getRavensRoster(List<Player> masterList)
+    public List<BasePlayer> getRavensRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "BAL";
@@ -319,7 +322,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getBengalsRoster(List<Player> masterList)
+    public List<BasePlayer> getBengalsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "CIN";
@@ -330,7 +333,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getBrownsRoster(List<Player> masterList)
+    public List<BasePlayer> getBrownsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "CLE";
@@ -341,7 +344,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getSteelersRoster(List<Player> masterList)
+    public List<BasePlayer> getSteelersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "PIT";
@@ -352,7 +355,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getTexansRoster(List<Player> masterList)
+    public List<BasePlayer> getTexansRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "HOU";
@@ -363,7 +366,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getColtsRoster(List<Player> masterList)
+    public List<BasePlayer> getColtsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "IND";
@@ -374,7 +377,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getTitansRoster(List<Player> masterList)
+    public List<BasePlayer> getTitansRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "TEN";
@@ -385,7 +388,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getJaguarsRoster(List<Player> masterList)
+    public List<BasePlayer> getJaguarsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "JAX";
@@ -396,7 +399,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getBearsRoster(List<Player> masterList)
+    public List<BasePlayer> getBearsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "CHI";
@@ -407,7 +410,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getLionsRoster(List<Player> masterList)
+    public List<BasePlayer> getLionsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "DET";
@@ -418,7 +421,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getPackersRoster(List<Player> masterList)
+    public List<BasePlayer> getPackersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "GB";
@@ -429,7 +432,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getVikingsRoster(List<Player> masterList)
+    public List<BasePlayer> getVikingsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "MIN";
@@ -440,7 +443,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getCowboysRoster(List<Player> masterList)
+    public List<BasePlayer> getCowboysRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "DAL";
@@ -451,7 +454,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getGiantsRoster(List<Player> masterList)
+    public List<BasePlayer> getGiantsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "NYG";
@@ -462,7 +465,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getEaglesRoster(List<Player> masterList)
+    public List<BasePlayer> getEaglesRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "PHI";
@@ -473,7 +476,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getCommandersRoster(List<Player> masterList)
+    public List<BasePlayer> getCommandersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "WSH";
@@ -484,7 +487,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getFalconsRoster(List<Player> masterList)
+    public List<BasePlayer> getFalconsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "ATL";
@@ -495,7 +498,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getPanthersRoster(List<Player> masterList)
+    public List<BasePlayer> getPanthersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "CAR";
@@ -506,7 +509,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getSaintsRoster(List<Player> masterList)
+    public List<BasePlayer> getSaintsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "NO";
@@ -517,7 +520,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getBuccaneersRoster(List<Player> masterList)
+    public List<BasePlayer> getBuccaneersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "TB";
@@ -528,7 +531,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getCardinalsRoster(List<Player> masterList)
+    public List<BasePlayer> getCardinalsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "ARI";
@@ -539,7 +542,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getRamsRoster(List<Player> masterList)
+    public List<BasePlayer> getRamsRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "LAR";
@@ -550,7 +553,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> get49ersRoster(List<Player> masterList)
+    public List<BasePlayer> get49ersRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "SF";
@@ -561,7 +564,7 @@ public class GetTeamRosters
             return masterList;
     }
 
-    public List<Player> getSeahawksRoster(List<Player> masterList)
+    public List<BasePlayer> getSeahawksRoster(List<BasePlayer> masterList)
     {
             // Params for abbreviation to be set in URL
             String teamAbv = "SEA";

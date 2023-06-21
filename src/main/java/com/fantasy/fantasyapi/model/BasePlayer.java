@@ -1,6 +1,6 @@
-package com.fantasy.fantasyapi;
+package com.fantasy.fantasyapi.model;
 
-public class Player 
+public class BasePlayer 
 {
     public String playerName;
     public String playerID;
@@ -9,9 +9,9 @@ public class Player
     public String height;
     public String team;
 
-    public Player() {
+    public BasePlayer() {
     }
-    public Player(String playerName, String playerID, String pos, String jerseyNum, String height, String team) {
+    public BasePlayer(String playerName, String playerID, String pos, String jerseyNum, String height, String team) {
         this.playerName = playerName;
         this.playerID = playerID;
         this.pos = pos;

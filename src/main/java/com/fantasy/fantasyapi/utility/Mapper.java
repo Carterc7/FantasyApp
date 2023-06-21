@@ -1,4 +1,4 @@
-package com.fantasy.fantasyapi;
+package com.fantasy.fantasyapi.utility;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;

@@ -1,83 +1,10 @@
-package com.fantasy.fantasyapi;
-
-import java.io.IOException;
-
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
-import org.springframework.web.reactive.function.client.WebClient;
+package com.fantasy.fantasyapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import reactor.netty.http.client.HttpClient;
-
-public class GetAllPlayers 
-{
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    public static void main(String[] args)
-    {
-        GetAllPlayers map = new GetAllPlayers();
-        String jsonString = map.sendRequest();
-        try {
-            Player[] players = mapJsonToObject(jsonString);
-            for(int i = 0; i < players.length; i++)
-            {
-                if(players[i].getPos().equals("WR") || players[i].getPos().equals("RB") || players[i].getPos().equals("TE") || players[i].getPos().equals("QB"))
-                {
-                    System.out.println(players[i].getEspnName() + " " + players[i].getPos() + " " + players[i].getTeam());
-                }
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    public static Player[] mapJsonToObject(String jsonString) throws IOException 
-    {
-        JsonNode jsonNode = objectMapper.readTree(jsonString);
-
-        JsonNode bodyNode = jsonNode.get("body");
-        if (bodyNode == null || !bodyNode.isArray()) {
-            throw new IllegalArgumentException("Invalid JSON format. 'body' array not found.");
-        }
-
-        return objectMapper.readValue(bodyNode.toString(), Player[].class);
-    }
-
-    public String sendRequest()
-    {
-          String url = "https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLPlayerList";
-        String roster = "";
-
-        // Create a custom ExchangeStrategies object with an increased buffer limit
-        ExchangeStrategies strategies = ExchangeStrategies.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(3 * 1024 * 1024)) // 5 MB buffer limit
-                .build();
-
-        // Create a WebClient using the custom ExchangeStrategies
-        WebClient mainBuilder = WebClient.builder()
-                .exchangeStrategies(strategies)
-                .clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().compress(true)))
-                .build();
-
-        // Retrieve the JSON payload and store it in the roster string
-        roster = mainBuilder
-                .get()
-                .uri(url)
-                .header("X-RapidAPI-Key", "e65f398570mshf333bbc306e2bd0p160558jsn1dfe348a5886")
-                .header("X-RapidAPI-Host", "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-
-        return roster;
-    }
-
+// Object model for EspnPlayer found in JSON payload
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Player 
+    public class EspnPlayer 
     {
         private String espnID;
         private String espnName;
@@ -299,5 +226,4 @@ public class GetAllPlayers
         public String getBDay() {
             return bDay;
         }
-}
 }
