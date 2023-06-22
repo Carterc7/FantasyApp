@@ -3,7 +3,7 @@ package com.fantasy.fantasyapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-// Model class for data received by adp API
+    // Model class for data received by adp API
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class AdpPlayer
     {

@@ -2,7 +2,7 @@ package com.fantasy.fantasyapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-// Object model for EspnPlayer found in JSON payload
+    // Model class for data received by NFLPlayers API
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class EspnPlayer 
     {

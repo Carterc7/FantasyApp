@@ -1,16 +1,14 @@
 package com.fantasy.fantasyapi;
+
 import org.bson.Document;
 
 import com.fantasy.fantasyapi.mongo.MongoOperations;
 
-
-public class Test 
-{
-    public static void main(String[] args)
-    {
+public class Test {
+    public static void main(String[] args) {
         MongoOperations mongo = new MongoOperations();
-        // mongo.performFantasyEspnUpdate();
-        // Document player = mongo.searchPlayer("fantasyPlayersEspn", "exp", "R");
-        // System.out.println(player.get("espnName") + " " + player.get("exp"));
+        // mongo.performFantasyEspnUpdateAllPlayers();
+        Document player = mongo.searchPlayer("fantasyPlayersEspn", "espnName", "Travis Kelce");
+        System.out.println(player.get("espnName") + " " + player.get("pos"));
     }
 }

@@ -19,27 +19,42 @@ import reactor.netty.http.client.HttpClient;
 public class GetAllPlayers 
 {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
+    
+    /** 
+     * Method to get a filtered "EspnPlayer" list based off current "AdpPlayer" adp
+     * Range is amount of players returned in the list
+     * @param maxRange
+     * @return List<EspnPlayer>
+     */
     public List<EspnPlayer> getFilteredPlayerList(int maxRange)
     {
+        // initialize empty lists and class objects needed later
         GetAllPlayers getAllPlayers = new GetAllPlayers();
         GetDraftAdp getDraftAdp = new GetDraftAdp();
         List<AdpPlayer> adpList = new ArrayList<AdpPlayer>();
         List<EspnPlayer> filteredPlayerList = new ArrayList<EspnPlayer>();
+        // get jsonString to send to parse method
         String jsonString = getAllPlayers.sendRequestGetAllPlayers();
         try 
         {
+            // parse jsonString and store in List
             List<EspnPlayer> allPlayersList = getAllPlayers.mapJsonToPlayerObject(jsonString);
+            // retrieve up-to-date adp list and implement range parameter
             adpList = getDraftAdp.getFilteredAdpList(maxRange);
+            // iterate through the adpList of players
             for(AdpPlayer adpPlayer : adpList)
             {
+                // Store the name of the player to be checked with allPlayersList
                 String nameCheck = adpPlayer.getName().toLowerCase();
                 for(EspnPlayer espnPlayer : allPlayersList)
                 {
+                    // check if name of player equals a player in the adp list
                     if(espnPlayer.getEspnName().toLowerCase().contains(nameCheck))
                     {
+                        // check that the position of the player is a fantasy position (names could be duplicated without this check)
                         if(espnPlayer.getPos().toLowerCase().equals("wr") || espnPlayer.getPos().toLowerCase().equals("rb") || espnPlayer.getPos().toLowerCase().equals("te") || espnPlayer.getPos().toLowerCase().equals("qb"))
                         {
+                            // add each player to list to be returned
                             filteredPlayerList.add(espnPlayer);
                         }
                     }
@@ -53,7 +68,14 @@ public class GetAllPlayers
         return filteredPlayerList;
     }
 
-    // Method to read a jsonString and map to a EspnPlayer object model
+    /** 
+     * Method to parse jsonString returned from sendRequestGetAllPlayers() 
+     * and map to "EspnPlayer" objects
+     * Returns a list of unfiltered players (~3500 total)
+     * @param jsonString
+     * @return List<EspnPlayer>
+     * @throws IOException
+     */
     public List<EspnPlayer> mapJsonToPlayerObject(String jsonString) throws IOException 
     {
         // Read JSON payload using object mapper and store in a jsonNode
@@ -72,7 +94,13 @@ public class GetAllPlayers
         // return objectMapper.readValue(bodyNode.toString(), EspnPlayer[].class);
     }
 
-    // Method to send an HTTP request and retrieve a JSON payload string for all NFL players
+ 
+    
+    /** 
+     * Method to send HTTP request to "GetAllPlayers" endpoint and returns the payload as a String
+     * String can be parsed using the mapJsonToPlayerObject() method
+     * @return String
+     */
     public String sendRequestGetAllPlayers()
     {
         // define request URL

@@ -2,7 +2,6 @@ package com.fantasy.fantasyapi.mongo;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.bson.Document;
 
@@ -13,7 +12,6 @@ import com.fantasy.fantasyapi.model.EspnPlayer;
 import com.fantasy.fantasyapi.utility.MongoDbHelper;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
@@ -53,7 +51,7 @@ public class MongoOperations
         MongoOperations mongo = new MongoOperations();
         GetAllPlayers getAllPlayers = new GetAllPlayers();
         List<EspnPlayer> insert = new ArrayList<EspnPlayer>();
-        insert = getAllPlayers.getFilteredPlayerList(300);
+        insert = getAllPlayers.getFilteredPlayerList(100);
         // for(EspnPlayer player : insert)
         // {
         //     player.setEspnName("test");

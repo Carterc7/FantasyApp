@@ -29,7 +29,6 @@ public class GetDraftAdp
        return filteredList;
     }
 
-    // Method to send an HTTP request and retrieve a JSON payload string for player ADP
     public String sendRequestGetAdp()
     {
         String adp = "";
