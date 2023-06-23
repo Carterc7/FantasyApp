@@ -30,6 +30,7 @@ public class FantasyLeague
         this.maxTeams = maxTeams;
         this.maxRosterSize = maxRosterSize;
     }
+    
     public String getLeagueID() {
         return leagueID;
     }

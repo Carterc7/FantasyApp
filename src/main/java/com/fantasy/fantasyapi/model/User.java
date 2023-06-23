@@ -25,6 +25,7 @@ public class User
         this.dateOfBirth = dateOfBirth;
         this.teamName = teamName;
     }
+    
     public String getUsername() {
         return username;
     }
@@ -72,7 +73,5 @@ public class User
     }
     public void setTeamName(String teamName) {
         this.teamName = teamName;
-    }
-    
-    
+    }  
 }

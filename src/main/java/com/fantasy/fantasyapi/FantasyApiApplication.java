@@ -13,8 +13,7 @@ public class FantasyApiApplication {
 	{
 		return WebClient.builder();
 	}
-
-
+	
 	public static void main(String[] args) 
 	{
 		SpringApplication.run(FantasyApiApplication.class, args);

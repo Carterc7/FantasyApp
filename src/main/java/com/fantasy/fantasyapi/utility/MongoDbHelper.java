@@ -1,6 +1,7 @@
 package com.fantasy.fantasyapi.utility;
 
-public class MongoDbHelper {
+public class MongoDbHelper 
+{
     private final String connectionString;
     private final String databaseName;
     private final String collectionName;
@@ -10,16 +11,13 @@ public class MongoDbHelper {
         this.databaseName = databaseName;
         this.collectionName = collectionName;
     }
+    
     public String getConnectionString() {
         return connectionString;
     }
-
-
     public String getDatabaseName() {
         return databaseName;
     }
-
-
     public String getCollectionName() {
         return collectionName;
     }

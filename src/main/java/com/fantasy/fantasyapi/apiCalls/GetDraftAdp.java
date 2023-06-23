@@ -19,7 +19,14 @@ import reactor.netty.http.client.HttpClient;
 public class GetDraftAdp 
 {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-
+    
+    /** 
+     * Method returns a list of "AdpPlayers" sorted by adp
+     * maxRange is number of "AdpPlayers" in the list
+     * List is up-to-date pulled directly from API and returned
+     * @param maxRange
+     * @return List<AdpPlayer>
+     */
     public List<AdpPlayer> getFilteredAdpList(int maxRange)
     {
        GetDraftAdp getAdp = new GetDraftAdp();
@@ -28,7 +35,12 @@ public class GetDraftAdp
        List<AdpPlayer> filteredList = getAdp.adpFilter(adpList, maxRange);
        return filteredList;
     }
-
+    
+    /** 
+     * Method sends HTTP request and returns "String" payload from API
+     * payload is unprocessed, raw JSON
+     * @return String
+     */
     public String sendRequestGetAdp()
     {
         String adp = "";
@@ -55,8 +67,13 @@ public class GetDraftAdp
                 .block();
         return adp;
     }
-
-    // Method to parse and map jsonString to AdpPlayer objects
+    
+    /** 
+     * Method to parse JSON from sendRequestGetAdp() and form "AdpPlayer" objects
+     * objects are stored in a list and returned
+     * @param jsonString
+     * @return List<AdpPlayer>
+     */
     public List<AdpPlayer> mapJsonToAdpPlayer(String jsonString)
     { 
         // initialize list to be returned
@@ -74,8 +91,14 @@ public class GetDraftAdp
             }
         return adpList;
     }
-
-    // Method to filter an list by adp in ascending with a max range of players
+    
+    /** 
+     * Method to filter given list by adp values
+     * maxRange is number of "AdpPlayers" in the list
+     * @param listToFilter
+     * @param maxRange
+     * @return List<AdpPlayer>
+     */
     public List<AdpPlayer> adpFilter(List<AdpPlayer> listToFilter, int maxRange)
     {
         // initializing list to be returned
@@ -83,15 +106,15 @@ public class GetDraftAdp
         // iterate through the list
         for(AdpPlayer player : listToFilter)
         {
-            // check if adp is between 0 and max range
-            if(player.getAverageDraftPositionPPR() > 0 && player.getAverageDraftPositionPPR() < (maxRange+0.1))
-            {
-                 // add to list to be returned
-                 filteredAdp.add(player);
-            }
+                // check if adp is between 0 and max range
+                if(player.getAverageDraftPositionPPR() > 0 && player.getAverageDraftPositionPPR() < (maxRange+0.1))
+                {
+                    // add to list to be returned
+                    filteredAdp.add(player);
+                }
         }
         // sorts the list by ppr adp in ascending order
-        Collections.sort(filteredAdp, Comparator.comparingDouble(AdpPlayer::getAverageDraftPositionPPR));
+        Collections.sort(filteredAdp, Comparator.comparingInt(AdpPlayer::getAverageDraftPositionPPR));
         return filteredAdp;
     }
 }

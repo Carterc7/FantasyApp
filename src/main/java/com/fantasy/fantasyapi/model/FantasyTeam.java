@@ -30,6 +30,7 @@ public class FantasyTeam
         this.draftOrder = draftOrder;
         this.createdDate = createdDate;
     }
+    
     public String getTeamID() {
         return teamID;
     }

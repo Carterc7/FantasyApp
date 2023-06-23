@@ -14,13 +14,21 @@ import reactor.netty.http.client.HttpClient;
 
 public class GetPlayerStats 
 {
+    /**
+     * Method to get all stats for players at a specific gameID
+     * @param gameID
+     * @return List<StatsPlayer>
+     */
     public List<StatsPlayer> getPlayerStatsByGameID(String gameID)
     {
+        // initialize objects and lists
         GetPlayerStats getPlayerStats = new GetPlayerStats();
-        String json = getPlayerStats.sendRequestGetGameStats(gameID);
         List<StatsPlayer> playerStats = new ArrayList<StatsPlayer>();
+        // get and store json payload for player stats at specified gameID
+        String json = getPlayerStats.sendRequestGetGameStats(gameID);
         try 
         {
+            // map json to objects and store in list of objects
             playerStats = getPlayerStats.mapJsonToPlayerObject(json);
         } 
         catch (IOException e) 
@@ -30,7 +38,42 @@ public class GetPlayerStats
         return playerStats;
     }
 
-    // Method to send an HTTP request and retrieve a JSON payload string for player stats on a specific gameID
+    /** 
+     * Method to get stats for a single player at a specific gameID
+     * @param gameID
+     * @param playerName
+     * @return StatsPlayer
+     */
+    public StatsPlayer getSinglePlayerStatsByGameID(String gameID, String playerName)
+    {
+        // Initialize objects and lists
+        GetPlayerStats getStats = new GetPlayerStats();
+        StatsPlayer result = new StatsPlayer();
+        List<StatsPlayer> players = new ArrayList<StatsPlayer>();
+        // get list of players that play in specific game by ID
+        players = getStats.getPlayerStatsByGameID(gameID);
+        // iterate through each player and check if it matches player name
+        for(StatsPlayer player : players)
+        {
+            if(player.getLongName().toLowerCase().trim().equals(playerName.toLowerCase().trim()))
+            {
+                // if match, set that player to result
+                result = player;
+            }
+        }
+        if(result.getPlayerID() == null)
+        {
+            System.out.println(playerName + " stats not found for game " + gameID);
+        }
+        return result;
+    }
+
+    /**
+     * Method to send HTTP request and return JSON payload for specified gameID
+     * payload is unprocessed, raw JSON
+     * @param gameID
+     * @return String
+     */
     public String sendRequestGetGameStats(String gameID)
     {
         String jsonString = "";
@@ -60,7 +103,13 @@ public class GetPlayerStats
         return jsonString;
     }
 
-    // Method to read a jsonString and map to a EspnPlayer object model
+    /** 
+     * Method to parse JSON from sendRequestGetGameStats() and form "StatsPlayer" objects
+     * objects are stored in a list and returned
+     * @param jsonString
+     * @return List<StatsPlayer>
+     * @throws IOException
+     */
     public List<StatsPlayer> mapJsonToPlayerObject(String jsonString) throws IOException 
     {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -69,8 +118,8 @@ public class GetPlayerStats
         JsonNode jsonNode = objectMapper.readTree(jsonString);
         JsonNode bodyNode = jsonNode.get("body");
         // Get the values of the "body" of the payload and store in another jsonNode
+        try{
         JsonNode playerStatsNode = bodyNode.get("playerStats");
-        
         playerStatsNode.fields().forEachRemaining(entry -> {
             JsonNode playerDataNode = entry.getValue();
             String receptions = "";
@@ -135,36 +184,12 @@ public class GetPlayerStats
             StatsPlayer playerStats = new StatsPlayer(playerID, gameID, team, longName, receptions, recTD, recYds, targets, rushYds, carries, rushTd, passAttempts, passCompletions, passYds, passTd, receptions);
             players.add(playerStats);
         });
+      }
+        catch(NullPointerException e)
+        {
+            System.out.println("Player stats could not be found. Please try a different gameID or player");
+        }
         return players;
-    }
-
-    public static void main(String[] args)
-    {
-        // GetPlayerStats getStats = new GetPlayerStats();
-        // String json = getStats.sendRequestGetGameStats("20221016_BUF@KC");
-        // List<StatsPlayer> players = new ArrayList<StatsPlayer>();
-        // List<EspnPlayer> players2 = new ArrayList<EspnPlayer>();
-        // GetAllPlayers getAllPlayers = new GetAllPlayers();
-        // players2 = getAllPlayers.getFilteredPlayerList(100);
-        // try 
-        // {
-        //     players = getStats.mapJsonToPlayerObject(json);
-        // } 
-        // catch (IOException e) 
-        // {
-        //     e.printStackTrace();
-        // }
-        // for(StatsPlayer player : players)
-        // {
-        //     String check = player.getPlayerID();
-        //     for(EspnPlayer player2 : players2)
-        //     {
-        //         if(check.equals(player2.getPlayerID()))
-        //         {
-        //             System.out.println(player.getLongName() + " " + player.getRecYds() + " " + player.getRushYds());
-        //         }
-        //     }
-        // }
     }
 
 }

@@ -22,7 +22,7 @@ public class GetAllPlayers
     
     /** 
      * Method to get a filtered "EspnPlayer" list based off current "AdpPlayer" adp
-     * Range is amount of players returned in the list
+     * Range is amount of "EspnPlayers" returned in the list
      * @param maxRange
      * @return List<EspnPlayer>
      */
@@ -69,8 +69,7 @@ public class GetAllPlayers
     }
 
     /** 
-     * Method to parse jsonString returned from sendRequestGetAllPlayers() 
-     * and map to "EspnPlayer" objects
+     * Method to parse jsonString returned from sendRequestGetAllPlayers() and form "EspnPlayer" objects
      * Returns a list of unfiltered players (~3500 total)
      * @param jsonString
      * @return List<EspnPlayer>

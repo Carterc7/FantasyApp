@@ -48,6 +48,7 @@ public class StatsPlayer
         this.passTD = passTD;
         this.interceptions = interceptions;
     }
+    
     public String getPlayerID() {
         return playerID;
     }
@@ -143,7 +144,5 @@ public class StatsPlayer
     }
     public void setInterceptions(String interceptions) {
         this.interceptions = interceptions;
-    }
-
-    
+    } 
 }

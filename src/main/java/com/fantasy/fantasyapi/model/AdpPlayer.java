@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     public class AdpPlayer
     {
         @JsonProperty("PlayerID")
-        private int playerID;
+        private String playerID;
         @JsonProperty("Name")
         private String name;
         @JsonProperty("Team")
@@ -16,27 +16,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         @JsonProperty("Position")
         private String position;
         @JsonProperty("AverageDraftPosition")
-        private double averageDraftPosition;
+        private int averageDraftPosition;
         @JsonProperty("AverageDraftPositionPPR")
-        private double averageDraftPositionPPR;
+        private int averageDraftPositionPPR;
         @JsonProperty("ByeWeek")
-        private int byeWeek;
+        private String byeWeek;
         @JsonProperty("AuctionValue")
-        private int auctionValue;
+        private String auctionValue;
         @JsonProperty("AuctionValuePPR")
-        private int auctionValuePPR;
+        private String auctionValuePPR;
         @JsonProperty("AverageDraftPositionIDP")
-        private Double averageDraftPositionIDP;
+        private String averageDraftPositionIDP;
         @JsonProperty("AverageDraftPositionRookie")
-        private Double averageDraftPositionRookie;
+        private String averageDraftPositionRookie;
         @JsonProperty("AverageDraftPositionDynasty")
-        private Double averageDraftPositionDynasty;
+        private int averageDraftPositionDynasty;
         @JsonProperty("AverageDraftPosition2QB")
-        private Double averageDraftPosition2QB;
-        public int getPlayerID() {
+        private int averageDraftPosition2QB;
+        
+        public String getPlayerID() {
             return playerID;
         }
-        public void setPlayerID(int playerID) {
+        public void setPlayerID(String playerID) {
             this.playerID = playerID;
         }
         public String getName() {
@@ -57,58 +58,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         public void setPosition(String position) {
             this.position = position;
         }
-        public double getAverageDraftPosition() {
+        public int getAverageDraftPosition() {
             return averageDraftPosition;
         }
-        public void setAverageDraftPosition(double averageDraftPosition) {
+        public void setAverageDraftPosition(int averageDraftPosition) {
             this.averageDraftPosition = averageDraftPosition;
         }
-        public double getAverageDraftPositionPPR() {
+        public int getAverageDraftPositionPPR() {
             return averageDraftPositionPPR;
         }
-        public void setAverageDraftPositionPPR(double averageDraftPositionPPR) {
+        public void setAverageDraftPositionPPR(int averageDraftPositionPPR) {
             this.averageDraftPositionPPR = averageDraftPositionPPR;
         }
-        public int getByeWeek() {
+        public String getByeWeek() {
             return byeWeek;
         }
-        public void setByeWeek(int byeWeek) {
+        public void setByeWeek(String byeWeek) {
             this.byeWeek = byeWeek;
         }
-        public int getAuctionValue() {
+        public String getAuctionValue() {
             return auctionValue;
         }
-        public void setAuctionValue(int auctionValue) {
+        public void setAuctionValue(String auctionValue) {
             this.auctionValue = auctionValue;
         }
-        public int getAuctionValuePPR() {
+        public String getAuctionValuePPR() {
             return auctionValuePPR;
         }
-        public void setAuctionValuePPR(int auctionValuePPR) {
+        public void setAuctionValuePPR(String auctionValuePPR) {
             this.auctionValuePPR = auctionValuePPR;
         }
-        public Double getAverageDraftPositionIDP() {
+        public String getAverageDraftPositionIDP() {
             return averageDraftPositionIDP;
         }
-        public void setAverageDraftPositionIDP(Double averageDraftPositionIDP) {
+        public void setAverageDraftPositionIDP(String averageDraftPositionIDP) {
             this.averageDraftPositionIDP = averageDraftPositionIDP;
         }
-        public Double getAverageDraftPositionRookie() {
+        public String getAverageDraftPositionRookie() {
             return averageDraftPositionRookie;
         }
-        public void setAverageDraftPositionRookie(Double averageDraftPositionRookie) {
+        public void setAverageDraftPositionRookie(String averageDraftPositionRookie) {
             this.averageDraftPositionRookie = averageDraftPositionRookie;
         }
-        public Double getAverageDraftPositionDynasty() {
+        public int getAverageDraftPositionDynasty() {
             return averageDraftPositionDynasty;
         }
-        public void setAverageDraftPositionDynasty(Double averageDraftPositionDynasty) {
+        public void setAverageDraftPositionDynasty(int averageDraftPositionDynasty) {
             this.averageDraftPositionDynasty = averageDraftPositionDynasty;
         }
-        public Double getAverageDraftPosition2QB() {
+        public int getAverageDraftPosition2QB() {
             return averageDraftPosition2QB;
         }
-        public void setAverageDraftPosition2QB(Double averageDraftPosition2QB) {
+        public void setAverageDraftPosition2QB(int averageDraftPosition2QB) {
             this.averageDraftPosition2QB = averageDraftPosition2QB;
-        } 
+        }
+        
     }
