@@ -1,7 +1,10 @@
 package com.fantasy.fantasyapi.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Document(collection = "teamSchedules")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TeamSchedule 
 {

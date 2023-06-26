@@ -1,8 +1,11 @@
 package com.fantasy.fantasyapi.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
     // Model class for data received by NFLPlayers API
+    @Document(collection = "fantasyPlayersEspn")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class EspnPlayer 
     {

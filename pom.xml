@@ -60,11 +60,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-    		<groupId>org.mongodb</groupId>
-    		<artifactId>mongo-java-driver</artifactId>
-    		<version>3.12.12</version> 
-		</dependency>
-		<dependency>
        		<groupId>org.mongodb</groupId>
         	<artifactId>mongodb-driver-sync</artifactId>
     	</dependency>
@@ -73,6 +68,21 @@
    			<artifactId>dotenv-java</artifactId>
    			<version>2.2.0</version>
 		</dependency>
+		<dependency>
+    		<groupId>me.paulschwarz</groupId>
+   			<artifactId>spring-dotenv</artifactId>
+   			<version>2.5.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>io.micrometer</groupId>
+					<artifactId>micrometer-registry-mongodb</artifactId>
+				</exclusion>
+			</exclusions>
+        </dependency>
 </dependencies>
 
 	<build>

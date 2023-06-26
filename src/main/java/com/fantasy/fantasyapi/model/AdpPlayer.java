@@ -1,9 +1,12 @@
 package com.fantasy.fantasyapi.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
     // Model class for data received by adp API
+    @Document(collection = "fantasyPlayersAdp")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class AdpPlayer
     {
