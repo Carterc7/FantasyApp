@@ -1,8 +1,7 @@
 package com.fantasy.fantasyapi.controllers;
 
-
+import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,9 +18,27 @@ public class ScheduleController
     @Autowired
     TeamScheduleRepository teamScheduleRepository;
 
-    @GetMapping("/{gameID}")
-    public Optional<TeamSchedule>[] findGameByID(@PathVariable String gameID)
+    @GetMapping("/gameID/{gameID}")
+    public Optional<List<TeamSchedule>> findGameByID(@PathVariable String gameID)
     {
         return teamScheduleRepository.findGameByGameID(gameID);
+    }
+
+    @GetMapping("/team/{team}")
+    public Optional<List<TeamSchedule>> findScheduleByTeam(@PathVariable String team)
+    {
+        return teamScheduleRepository.findScheduleByTeam(team);
+    }
+
+    @GetMapping("/week/{gameWeek}")
+    public Optional<List<TeamSchedule>> findScheduleByGameWeek(@PathVariable String gameWeek)
+    {
+        return teamScheduleRepository.findScheduleByGameWeek(gameWeek);
+    }
+
+    @GetMapping("/team/{team}/{gameWeek}")
+    public Optional<List<TeamSchedule>> findScheduleByTeamAndGameWeek(@PathVariable String team, @PathVariable String gameWeek)
+    {
+        return teamScheduleRepository.findScheduleByTeamAndGameWeek(team, gameWeek);
     }
 }

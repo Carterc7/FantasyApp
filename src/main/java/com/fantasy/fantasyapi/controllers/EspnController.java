@@ -22,7 +22,7 @@ public class EspnController
     private EspnPlayerRepository espnPlayerRepository;
 
     @GetMapping("/{playerID}")
-    public Optional<EspnPlayer> findAdpPlayerByPlayerID(@PathVariable String playerID)
+    public Optional<EspnPlayer> findPlayerByPlayerID(@PathVariable String playerID)
     {
         return espnPlayerRepository.findPlayerByPlayerID(playerID);
     }
@@ -34,5 +34,11 @@ public class EspnController
         GetAllPlayers getAllPlayers = new GetAllPlayers();
         players = getAllPlayers.getFilteredPlayerList(range);
         return players;
+    }
+
+    @GetMapping("/list/all")
+    public List<EspnPlayer> getAllFilteredEspnList()
+    {
+        return espnPlayerRepository.findAll();
     }
 }

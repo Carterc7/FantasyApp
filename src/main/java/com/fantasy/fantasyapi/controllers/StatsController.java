@@ -24,4 +24,11 @@ public class StatsController
         playerStats = getPlayerStats.getPlayerStatsByGameID(gameID);
         return playerStats;
     }
+
+    @GetMapping("/player/{gameID}/{playerName}")
+    public StatsPlayer getSinglePlayerStatsByGameID(@PathVariable String gameID, @PathVariable String playerName)
+    {
+        GetPlayerStats getStats = new GetPlayerStats();
+        return getStats.getSinglePlayerStatsByGameID(gameID, playerName);
+    }
 }

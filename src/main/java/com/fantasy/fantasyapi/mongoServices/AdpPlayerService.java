@@ -21,4 +21,9 @@ public class AdpPlayerService
     {
         return adpRepository.findPlayerByPlayerID(playerID);
     }
+
+    public Optional<AdpPlayer> findPlayerByAverageDraftPositionPPR(int averageDraftPositionPPR)
+    {
+        return adpRepository.findPlayerByAverageDraftPositionPPR(averageDraftPositionPPR);
+    }
 }

@@ -21,10 +21,16 @@ public class AdpController
     @Autowired
     AdpPlayerRepository adpPlayerRepository;
 
-    @GetMapping("/{playerID}")
+    @GetMapping("player/{playerID}")
     public Optional<AdpPlayer> findAdpPlayerByPlayerID(@PathVariable String playerID)
     {
         return adpPlayerRepository.findPlayerByPlayerID(playerID);
+    }
+
+    @GetMapping("/ppr/{averageDraftPositionPPR}")
+    public Optional<AdpPlayer> findPlayerByAverageDraftPositionPPR(@PathVariable int averageDraftPositionPPR)
+    {
+        return adpPlayerRepository.findPlayerByAverageDraftPositionPPR(averageDraftPositionPPR);
     }
 
     @GetMapping("/list/{range}")
@@ -34,5 +40,11 @@ public class AdpController
         GetDraftAdp getDraftAdp = new GetDraftAdp();
         players = getDraftAdp.getFilteredAdpList(range);
         return players;
+    }
+
+    @GetMapping("/list/all")
+    public List<AdpPlayer> getAllFilteredAdpList()
+    {
+        return adpPlayerRepository.findAll();
     }
 }
