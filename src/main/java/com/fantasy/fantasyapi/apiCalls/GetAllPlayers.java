@@ -9,8 +9,8 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fantasy.fantasyapi.model.AdpPlayer;
-import com.fantasy.fantasyapi.model.EspnPlayer;
+import com.fantasy.fantasyapi.objectModels.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

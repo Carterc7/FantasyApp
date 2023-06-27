@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.fantasy.fantasyapi.model.TeamSchedule;
+import com.fantasy.fantasyapi.objectModels.TeamSchedule;
 
 /**
  * Repository to open connection to TeamSchedule object collection in MongoDB

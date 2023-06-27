@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetPlayerStats;
-import com.fantasy.fantasyapi.model.StatsPlayer;
+import com.fantasy.fantasyapi.objectModels.StatsPlayer;
 
 @RestController
 @RequestMapping("/stats")

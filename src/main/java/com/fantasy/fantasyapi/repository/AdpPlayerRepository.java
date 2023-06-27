@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.fantasy.fantasyapi.model.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 
 /**
  * Repository to open connection to AdpPlayer object collection in MongoDB

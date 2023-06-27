@@ -7,7 +7,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fantasy.fantasyapi.model.TeamSchedule;
+import com.fantasy.fantasyapi.objectModels.TeamSchedule;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

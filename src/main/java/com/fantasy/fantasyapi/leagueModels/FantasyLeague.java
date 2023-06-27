@@ -1,4 +1,4 @@
-package com.fantasy.fantasyapi.model;
+package com.fantasy.fantasyapi.leagueModels;
 
 import java.util.Date;
 import java.util.List;

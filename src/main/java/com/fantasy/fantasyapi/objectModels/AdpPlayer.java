@@ -1,4 +1,4 @@
-package com.fantasy.fantasyapi.model;
+package com.fantasy.fantasyapi.objectModels;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

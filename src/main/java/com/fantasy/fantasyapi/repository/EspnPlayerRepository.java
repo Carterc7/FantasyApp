@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.fantasy.fantasyapi.model.EspnPlayer;
+import com.fantasy.fantasyapi.objectModels.EspnPlayer;
  
 /**
  * Repository to open connection to EspnPlayer object collection in MongoDB

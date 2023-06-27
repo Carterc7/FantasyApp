@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.fantasy.fantasyapi.model.EspnPlayer;
+import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 import com.fantasy.fantasyapi.repository.EspnPlayerRepository;
 
 @Service

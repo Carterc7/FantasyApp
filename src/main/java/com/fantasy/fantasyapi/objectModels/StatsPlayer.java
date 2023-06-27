@@ -1,4 +1,4 @@
-package com.fantasy.fantasyapi.model;
+package com.fantasy.fantasyapi.objectModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

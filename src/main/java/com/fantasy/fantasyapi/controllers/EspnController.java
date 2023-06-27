@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetAllPlayers;
-import com.fantasy.fantasyapi.model.EspnPlayer;
+import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 import com.fantasy.fantasyapi.repository.EspnPlayerRepository;
 
 @RestController

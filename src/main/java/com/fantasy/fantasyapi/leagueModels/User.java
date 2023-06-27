@@ -1,4 +1,4 @@
-package com.fantasy.fantasyapi.model;
+package com.fantasy.fantasyapi.leagueModels;
 
 // Model for an app user
 public class User 

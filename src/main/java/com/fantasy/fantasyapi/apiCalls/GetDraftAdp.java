@@ -10,7 +10,7 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fantasy.fantasyapi.model.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

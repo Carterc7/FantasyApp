@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetDraftAdp;
-import com.fantasy.fantasyapi.model.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 import com.fantasy.fantasyapi.repository.AdpPlayerRepository;
 
 @RestController

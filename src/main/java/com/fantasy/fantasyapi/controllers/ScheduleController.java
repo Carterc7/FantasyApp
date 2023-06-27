@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fantasy.fantasyapi.model.TeamSchedule;
+import com.fantasy.fantasyapi.objectModels.TeamSchedule;
 import com.fantasy.fantasyapi.repository.TeamScheduleRepository;
 
 @RestController
