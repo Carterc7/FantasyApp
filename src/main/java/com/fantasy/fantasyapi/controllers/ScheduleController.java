@@ -18,24 +18,41 @@ public class ScheduleController
     @Autowired
     TeamScheduleRepository teamScheduleRepository;
 
+    /** 
+     * @param gameID
+     * @return Optional<List<TeamSchedule>>
+     */
     @GetMapping("/gameID/{gameID}")
     public Optional<List<TeamSchedule>> findGameByID(@PathVariable String gameID)
     {
         return teamScheduleRepository.findGameByGameID(gameID);
     }
 
+    /** 
+     * @param team
+     * @return Optional<List<TeamSchedule>>
+     */
     @GetMapping("/team/{team}")
     public Optional<List<TeamSchedule>> findScheduleByTeam(@PathVariable String team)
     {
         return teamScheduleRepository.findScheduleByTeam(team);
     }
 
+    /** 
+     * @param gameWeek
+     * @return Optional<List<TeamSchedule>>
+     */
     @GetMapping("/week/{gameWeek}")
     public Optional<List<TeamSchedule>> findScheduleByGameWeek(@PathVariable String gameWeek)
     {
         return teamScheduleRepository.findScheduleByGameWeek(gameWeek);
     }
 
+    /** 
+     * @param team
+     * @param gameWeek
+     * @return Optional<List<TeamSchedule>>
+     */
     @GetMapping("/team/{team}/{gameWeek}")
     public Optional<List<TeamSchedule>> findScheduleByTeamAndGameWeek(@PathVariable String team, @PathVariable String gameWeek)
     {

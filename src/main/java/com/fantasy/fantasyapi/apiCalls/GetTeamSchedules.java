@@ -11,6 +11,7 @@ import com.fantasy.fantasyapi.model.TeamSchedule;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import reactor.netty.http.client.HttpClient;
 
 public class GetTeamSchedules 
@@ -42,8 +43,11 @@ public class GetTeamSchedules
      */
     public String sendRequestGetTeamSchedule(String teamAbv, String season)
     {
+        Dotenv dotenv = Dotenv.load();
+        String key = dotenv.get("API_KEY");
+        String baseUrl = dotenv.get("API_URL");
         String jsonString = "";
-        String url = "https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLTeamSchedule?teamAbv=" + teamAbv + "&season=" + season;
+        String url = baseUrl + "/getNFLTeamSchedule?teamAbv=" + teamAbv + "&season=" + season;
         
         // JSON payload at this request URL is larger than default capacity
         // Create a custom ExchangeStrategies object with an increased buffer limit
@@ -61,7 +65,7 @@ public class GetTeamSchedules
         jsonString = mainBuilder
                 .get()
                 .uri(url)
-                .header("X-RapidAPI-Key", "e65f398570mshf333bbc306e2bd0p160558jsn1dfe348a5886")
+                .header("X-RapidAPI-Key", key)
                 .header("X-RapidAPI-Host", "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com")
                 .retrieve()
                 .bodyToMono(String.class)

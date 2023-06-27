@@ -10,6 +10,7 @@ import com.fantasy.fantasyapi.model.StatsPlayer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import reactor.netty.http.client.HttpClient;
 
 public class GetPlayerStats 
@@ -76,8 +77,11 @@ public class GetPlayerStats
      */
     public String sendRequestGetGameStats(String gameID)
     {
+        Dotenv dotenv = Dotenv.load();
+        String key = dotenv.get("API_KEY");
+        String baseUrl = dotenv.get("API_URL");
         String jsonString = "";
-        String url = "https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLBoxScore?gameID=" + gameID;
+        String url = baseUrl + "/getNFLBoxScore?gameID=" + gameID;
         
         // JSON payload at this request URL is larger than default capacity
         // Create a custom ExchangeStrategies object with an increased buffer limit
@@ -95,7 +99,7 @@ public class GetPlayerStats
         jsonString = mainBuilder
                 .get()
                 .uri(url)
-                .header("X-RapidAPI-Key", "e65f398570mshf333bbc306e2bd0p160558jsn1dfe348a5886")
+                .header("X-RapidAPI-Key", key)
                 .header("X-RapidAPI-Host", "tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com")
                 .retrieve()
                 .bodyToMono(String.class)

@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.fantasy.fantasyapi.model.EspnPlayer;
  
+/**
+ * Repository to open connection to EspnPlayer object collection in MongoDB
+ */
 public interface EspnPlayerRepository extends MongoRepository<EspnPlayer, ObjectId>
 {
     Optional<EspnPlayer> findPlayerByPlayerID(String playerID);

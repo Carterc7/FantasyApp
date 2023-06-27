@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.fantasy.fantasyapi.model.TeamSchedule;
 
+/**
+ * Repository to open connection to TeamSchedule object collection in MongoDB
+ */
 public interface TeamScheduleRepository extends MongoRepository<TeamSchedule, ObjectId>
 {
     Optional<List<TeamSchedule>> findGameByGameID(String gameID);

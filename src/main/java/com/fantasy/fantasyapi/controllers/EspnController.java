@@ -21,12 +21,20 @@ public class EspnController
     @Autowired
     private EspnPlayerRepository espnPlayerRepository;
 
-    @GetMapping("/{playerID}")
+    /** 
+     * @param playerID
+     * @return Optional<EspnPlayer>
+     */
+    @GetMapping("player/{playerID}")
     public Optional<EspnPlayer> findPlayerByPlayerID(@PathVariable String playerID)
     {
         return espnPlayerRepository.findPlayerByPlayerID(playerID);
     }
 
+    /** 
+     * @param range
+     * @return List<EspnPlayer>
+     */
     @GetMapping("/list/{range}")
     public List<EspnPlayer> getFilteredEspnList(@PathVariable int range)
     {
@@ -35,7 +43,10 @@ public class EspnController
         players = getAllPlayers.getFilteredPlayerList(range);
         return players;
     }
-
+    
+    /** 
+     * @return List<EspnPlayer>
+     */
     @GetMapping("/list/all")
     public List<EspnPlayer> getAllFilteredEspnList()
     {

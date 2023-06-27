@@ -14,7 +14,11 @@ import com.fantasy.fantasyapi.model.StatsPlayer;
 @RestController
 @RequestMapping("/stats")
 public class StatsController 
-{
+{ 
+    /** 
+     * @param gameID
+     * @return List<StatsPlayer>
+     */
     @GetMapping("/{gameID}")
     public List<StatsPlayer> getPlayerStatsByGameID(@PathVariable String gameID)
     {
@@ -25,6 +29,11 @@ public class StatsController
         return playerStats;
     }
 
+    /** 
+     * @param gameID
+     * @param playerName
+     * @return StatsPlayer
+     */
     @GetMapping("/player/{gameID}/{playerName}")
     public StatsPlayer getSinglePlayerStatsByGameID(@PathVariable String gameID, @PathVariable String playerName)
     {
