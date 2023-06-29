@@ -1,5 +1,6 @@
 package com.fantasy.fantasyapi.leagueModels;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 // Model for an app user
@@ -8,6 +9,7 @@ public class User
 {
     private String username;
     private String password;
+    @Id
     private String userID;
     private String email;
     private String firstName;

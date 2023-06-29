@@ -6,11 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.leagueModels.User;
+import com.fantasy.fantasyapi.mongoServices.UserService;
 import com.fantasy.fantasyapi.repository.UserRepository;
 
 @RestController
@@ -20,6 +22,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     /** 
      * @param user
      * @return User
@@ -27,7 +32,7 @@ public class UserController {
     @PostMapping("/add")
     public User addUser(@RequestBody User user) 
     {
-        return userRepository.save(user);
+        return userService.addUser(user);
     }
 
     /** 
@@ -47,6 +52,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error deleting user with userID: " + userID);
         }
+    }
+
+    @PutMapping("/update")
+    public User updateUser(@RequestBody User user)
+    {
+        return userService.updateUser(user);
     }
 }
 
