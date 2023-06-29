@@ -16,6 +16,15 @@ import reactor.netty.http.client.HttpClient;
 
 public class GetPlayerStats 
 {
+    // public static void main(String[] args)
+    // {
+    //     // initialize objects and lists
+    //     GetPlayerStats getPlayerStats = new GetPlayerStats();
+    //     List<StatsPlayer> playerStats = new ArrayList<StatsPlayer>();
+    //     // get and store json payload for player stats at specified gameID
+    //     String json = getPlayerStats.sendRequestGetGameStats("20221016_BUF@KC");
+    //     System.out.println(json);
+    // }
     /**
      * Method to get all stats for players at a specific gameID
      * @param gameID
@@ -107,7 +116,7 @@ public class GetPlayerStats
                 .block();
         return jsonString;
     }
-
+ 
     /** 
      * Method to parse JSON from sendRequestGetGameStats() and form "StatsPlayer" objects
      * objects are stored in a list and returned
@@ -118,83 +127,103 @@ public class GetPlayerStats
     public List<StatsPlayer> mapJsonToPlayerObject(String jsonString) throws IOException 
     {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<StatsPlayer> players = new ArrayList<StatsPlayer>();
+        List<StatsPlayer> players = new ArrayList<>();
         // Read JSON payload using object mapper and store in a jsonNode
         JsonNode jsonNode = objectMapper.readTree(jsonString);
         JsonNode bodyNode = jsonNode.get("body");
         // Get the values of the "body" of the payload and store in another jsonNode
-        try{
-        JsonNode playerStatsNode = bodyNode.get("playerStats");
-        playerStatsNode.fields().forEachRemaining(entry -> {
-            JsonNode playerDataNode = entry.getValue();
-            String receptions = "";
-            String recTD = "";
-            String recYds = "";
-            String targets = "";
-            String rushYds = "";
-            String carries = "";
-            String rushTd = "";
-            String passAttempts = "";
-            String passCompletions = "";
-            String passTd = "";
-            String passYds = "";
-            String playerID = "";
-            String gameID = "";
-            String team = "";
-            String longName = "";
-            // Extract the necessary fields from the playerDataNode
-            if(playerDataNode.has("playerID"))
-            {
-                playerID = playerDataNode.get("playerID").asText();
-            }
-            if(playerDataNode.has("gameID"))
-            {
-                gameID = playerDataNode.get("gameID").asText();
-            }
-            if(playerDataNode.has("team"))
-            {
-                team = playerDataNode.get("team").asText();
-            }
-            if(playerDataNode.has("longName"))
-            {
-                longName = playerDataNode.get("longName").asText();
-            }
-            else if(playerDataNode.has("playerName"))
-            {
-                longName = playerDataNode.get("playerName").asText();
-            }
-            if(playerDataNode.has("Receiving"))
-            {
-                receptions = playerDataNode.path("Receiving").get("receptions").asText();
-                recTD = playerDataNode.path("Receiving").get("recTD").asText();
-                recYds = playerDataNode.path("Receiving").get("recYds").asText();
-                targets = playerDataNode.path("Receiving").get("targets").asText();
-            }
-
-            if(playerDataNode.has("Rushing"))
-            {
-                rushYds = playerDataNode.path("Rushing").get("rushYds").asText();
-                carries = playerDataNode.path("Rushing").get("carries").asText();
-                rushTd = playerDataNode.path("Rushing").get("rushTD").asText();
-            }
-
-            if(playerDataNode.has("Passing"))
-            {
-                passAttempts = playerDataNode.path("Passing").get("passAttempts").asText();
-                passCompletions = playerDataNode.path("Passing").get("passCompletions").asText();
-                passTd = playerDataNode.path("Passing").get("passTD").asText();
-                passYds = playerDataNode.path("Passing").get("passYds").asText();
-            }
-            // Create a new PlayerStats object and add it to the list
-            StatsPlayer playerStats = new StatsPlayer(playerID, gameID, team, longName, receptions, recTD, recYds, targets, rushYds, carries, rushTd, passAttempts, passCompletions, passYds, passTd, receptions);
-            players.add(playerStats);
-        });
-      }
-        catch(NullPointerException e)
+        try 
         {
-            System.out.println("Player stats could not be found. Please try a different gameID or player");
+            JsonNode playerStatsNode = bodyNode.get("playerStats");
+            playerStatsNode.fields().forEachRemaining(entry -> {
+                JsonNode playerDataNode = entry.getValue();
+                String receptions = "";
+                String recTD = "";
+                String recYds = "";
+                String targets = "";
+                String rushYds = "";
+                String carries = "";
+                String rushTd = "";
+                String passAttempts = "";
+                String passCompletions = "";
+                String passTd = "";
+                String passYds = "";
+                String playerID = "";
+                String gameID = "";
+                String team = "";
+                String longName = "";
+                String totalTackles = "";
+                String defTD = "";
+                String soloTackles = "";
+                String tfls = "";
+                String qbHits = "";
+                String defInterceptions = "";
+                String sacks = "";
+                String passDeflections = "";
+                // Extract the necessary fields from the playerDataNode
+                if (playerDataNode.has("playerID")) {
+                    playerID = playerDataNode.get("playerID").asText();
+                }
+                if (playerDataNode.has("gameID")) {
+                    gameID = playerDataNode.get("gameID").asText();
+                }
+                if (playerDataNode.has("team")) {
+                    team = playerDataNode.get("team").asText();
+                }
+                if (playerDataNode.has("longName")) {
+                    longName = playerDataNode.get("longName").asText();
+                } else if (playerDataNode.has("playerName")) {
+                    longName = playerDataNode.get("playerName").asText();
+                }
+                // Extract "Receiving" fields
+                if (playerDataNode.has("Receiving")) {
+                    JsonNode receivingNode = playerDataNode.get("Receiving");
+                    receptions = receivingNode.has("receptions") ? receivingNode.get("receptions").asText() : "";
+                    recTD = receivingNode.has("recTD") ? receivingNode.get("recTD").asText() : "";
+                    recYds = receivingNode.has("recYds") ? receivingNode.get("recYds").asText() : "";
+                    targets = receivingNode.has("targets") ? receivingNode.get("targets").asText() : "";
+                }
+                // Extract "Rushing" fields
+                if (playerDataNode.has("Rushing")) {
+                    JsonNode rushingNode = playerDataNode.get("Rushing");
+                    rushYds = rushingNode.has("rushYds") ? rushingNode.get("rushYds").asText() : "";
+                    carries = rushingNode.has("carries") ? rushingNode.get("carries").asText() : "";
+                    rushTd = rushingNode.has("rushTD") ? rushingNode.get("rushTD").asText() : "";
+                }
+                // Extract "Passing" fields
+                if (playerDataNode.has("Passing")) {
+                    JsonNode passingNode = playerDataNode.get("Passing");
+                    passAttempts = passingNode.has("passAttempts") ? passingNode.get("passAttempts").asText() : "";
+                    passCompletions = passingNode.has("passCompletions") ? passingNode.get("passCompletions").asText() : "";
+                    passTd = passingNode.has("passTD") ? passingNode.get("passTD").asText() : "";
+                    passYds = passingNode.has("passYds") ? passingNode.get("passYds").asText() : "";
+                }
+                // Extract "Defense" fields
+                if (playerDataNode.has("Defense")) {
+                    JsonNode defenseNode = playerDataNode.get("Defense");
+                    totalTackles = defenseNode.has("totalTackles") ? defenseNode.get("totalTackles").asText() : "";
+                    defTD = defenseNode.has("defTD") ? defenseNode.get("defTD").asText() : "";
+                    soloTackles = defenseNode.has("soloTackles") ? defenseNode.get("soloTackles").asText() : "";
+                    tfls = defenseNode.has("tfl") ? defenseNode.get("tfl").asText() : "";
+                    qbHits = defenseNode.has("qbHits") ? defenseNode.get("qbHits").asText() : "";
+                    defInterceptions = defenseNode.has("defensiveInterceptions") ? defenseNode.get("defensiveInterceptions").asText() : "";
+                    sacks = defenseNode.has("sacks") ? defenseNode.get("sacks").asText() : "";
+                    passDeflections = defenseNode.has("passDeflections") ? defenseNode.get("passDeflections").asText() : "";
+                }
+                // Create a new PlayerStats object and add it to the list
+                StatsPlayer playerStats = new StatsPlayer(playerID, gameID, team, longName, receptions, recTD, recYds,
+                        targets, rushYds, carries, rushTd, passAttempts, passCompletions, passYds, passTd, totalTackles,
+                        defTD, soloTackles, tfls, qbHits, defInterceptions, sacks, passDeflections, defInterceptions);
+                players.add(playerStats);
+            });
+        } 
+        catch (Exception e) 
+        {
+            // Handle any specific exceptions or log the error message
+            e.printStackTrace(); // Example: Printing the stack trace
         }
         return players;
-    }
+}
+
 
 }
