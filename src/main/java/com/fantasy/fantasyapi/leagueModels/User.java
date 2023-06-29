@@ -1,6 +1,9 @@
 package com.fantasy.fantasyapi.leagueModels;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 // Model for an app user
+@Document(collection = "user")
 public class User 
 {
     private String username;
