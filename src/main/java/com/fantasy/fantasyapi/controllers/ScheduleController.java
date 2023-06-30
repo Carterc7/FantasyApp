@@ -5,9 +5,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fantasy.fantasyapi.mongoServices.TeamScheduleService;
 import com.fantasy.fantasyapi.objectModels.TeamSchedule;
 import com.fantasy.fantasyapi.repository.TeamScheduleRepository;
 
@@ -17,6 +19,9 @@ public class ScheduleController
 {
     @Autowired
     TeamScheduleRepository teamScheduleRepository;
+
+    @Autowired
+    TeamScheduleService teamScheduleService;
 
     /** 
      * @param gameID
@@ -57,5 +62,11 @@ public class ScheduleController
     public Optional<List<TeamSchedule>> findScheduleByTeamAndGameWeek(@PathVariable String team, @PathVariable String gameWeek)
     {
         return teamScheduleRepository.findScheduleByTeamAndGameWeek(team, gameWeek);
+    }
+
+    @PostMapping("/add/{teamAbv}/{season}")
+    public List<TeamSchedule> addTeamSchedule(@PathVariable String teamAbv, @PathVariable String season)
+    {
+        return teamScheduleService.addTeamSchedule(teamAbv, season);
     }
 }

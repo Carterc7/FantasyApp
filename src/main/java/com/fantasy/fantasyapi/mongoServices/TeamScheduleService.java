@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.fantasy.fantasyapi.apiCalls.GetTeamSchedules;
 import com.fantasy.fantasyapi.objectModels.TeamSchedule;
 import com.fantasy.fantasyapi.repository.TeamScheduleRepository;
 
@@ -36,5 +37,12 @@ public class TeamScheduleService
     public Optional<List<TeamSchedule>> findScheduleByGameWeek(String gameWeek)
     {
         return teamScheduleRepository.findScheduleByGameWeek(gameWeek);
+    }
+
+    public List<TeamSchedule> addTeamSchedule(String teamAbv, String season)
+    {
+        GetTeamSchedules getTeamSchedules = new GetTeamSchedules();
+        List<TeamSchedule> schedulesToAdd = getTeamSchedules.getTeamSchedule(teamAbv, season);
+        return teamScheduleRepository.saveAll(schedulesToAdd);
     }
 }
