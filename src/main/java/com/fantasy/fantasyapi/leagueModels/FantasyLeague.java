@@ -3,8 +3,11 @@ package com.fantasy.fantasyapi.leagueModels;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+
 public class FantasyLeague 
 {
+    @Id
     private String leagueID;
     private String leagueName;
     private User leagueCommish;

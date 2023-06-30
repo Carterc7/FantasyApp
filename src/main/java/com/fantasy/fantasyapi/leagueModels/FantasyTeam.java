@@ -3,10 +3,13 @@ package com.fantasy.fantasyapi.leagueModels;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+
 import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 
 public class FantasyTeam 
 {
+    @Id
     private String teamID;
     private String teamName;
     private User teamOwner;

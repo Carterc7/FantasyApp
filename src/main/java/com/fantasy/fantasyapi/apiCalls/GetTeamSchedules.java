@@ -170,7 +170,6 @@ public class GetTeamSchedules
                     {
                         awayPts = gameNode.get("awayPts").asText();
                     }
-
                     // Create a TeamSchedule object using stored Strings
                     TeamSchedule schedule = new TeamSchedule(gameID, seasonType, away, teamIDHome, gameDate, gameStatus,
                             gameWeek, teamIDAway, home, awayResult, homePts, gameTime, homeResult, awayPts, team);

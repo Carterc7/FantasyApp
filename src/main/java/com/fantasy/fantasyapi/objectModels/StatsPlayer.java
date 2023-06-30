@@ -33,11 +33,8 @@ public class StatsPlayer
     @JsonProperty("int")
     public String interceptions;
 
-    
     public StatsPlayer() {
     }
-
-
     public StatsPlayer(String playerID, String gameID, String team, String longName, String receptions, String recTD,
             String recYds, String targets, String rushYds, String carries, String rushTd, String passAttempts,
             String passCompletions, String passYds, String passTD, String totalTackles, String defTD,
@@ -68,7 +65,6 @@ public class StatsPlayer
         this.passDeflections = passDeflections;
         this.interceptions = interceptions;
     }
-
 
     public String getPlayerID() {
         return playerID;
