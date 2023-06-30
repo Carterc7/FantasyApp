@@ -26,4 +26,19 @@ public class AdpPlayerService
     {
         return adpRepository.findPlayerByAverageDraftPositionPPR(averageDraftPositionPPR);
     }
+
+    public AdpPlayer updateAdpPlayer(AdpPlayer adpPlayer)
+    {
+        AdpPlayer exisitingPlayer = adpRepository.findById(adpPlayer.getPlayerID()).get();
+        exisitingPlayer.setAverageDraftPosition(adpPlayer.getAverageDraftPosition());
+        exisitingPlayer.setAverageDraftPosition2QB(adpPlayer.getAverageDraftPosition2QB());
+        exisitingPlayer.setAverageDraftPositionPPR(adpPlayer.getAverageDraftPositionPPR());
+        exisitingPlayer.setName(adpPlayer.getName());
+        exisitingPlayer.setByeWeek(adpPlayer.getByeWeek());
+        exisitingPlayer.setTeam(adpPlayer.getTeam());
+        exisitingPlayer.setAverageDraftPositionDynasty(adpPlayer.getAverageDraftPositionDynasty());
+        exisitingPlayer.setAverageDraftPosition(adpPlayer.getAverageDraftPosition());
+        exisitingPlayer.setPosition(adpPlayer.getPosition());
+        return adpRepository.save(exisitingPlayer);
+    }
 }

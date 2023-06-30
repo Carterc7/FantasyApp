@@ -2,7 +2,6 @@ package com.fantasy.fantasyapi.repository;
 
 import java.util.Optional;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
@@ -10,7 +9,7 @@ import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 /**
  * Repository to open connection to AdpPlayer object collection in MongoDB
  */
-public interface AdpPlayerRepository extends MongoRepository<AdpPlayer, ObjectId>
+public interface AdpPlayerRepository extends MongoRepository<AdpPlayer, String>
 {
      Optional<AdpPlayer> findPlayerByPlayerID(String playerID);
 

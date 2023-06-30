@@ -20,4 +20,23 @@ public class EspnPlayerService
     {
         return espnRepository.findPlayerByPlayerID(playerID);
     }
+
+    public EspnPlayer updateEspnPlayer(EspnPlayer EspnPlayer)
+    {
+        EspnPlayer exisitingPlayer = espnRepository.findById(EspnPlayer.getPlayerID()).get();
+        exisitingPlayer.setAge(EspnPlayer.getAge());
+        exisitingPlayer.setEspnHeadshot(EspnPlayer.getEspnHeadshot());
+        exisitingPlayer.setEspnLink(EspnPlayer.getEspnLink());
+        exisitingPlayer.setEspnName(EspnPlayer.getEspnName());
+        exisitingPlayer.setExp(EspnPlayer.getExp());
+        exisitingPlayer.setHeight(EspnPlayer.getHeight());
+        exisitingPlayer.setJerseyNum(EspnPlayer.getJerseyNum());
+        exisitingPlayer.setLastGamePlayed(EspnPlayer.getLastGamePlayed());
+        exisitingPlayer.setPos(EspnPlayer.getPos());
+        exisitingPlayer.setTeam(EspnPlayer.getTeam());
+        exisitingPlayer.setTeamID(EspnPlayer.getTeamID());
+        exisitingPlayer.setWeight(EspnPlayer.getWeight());
+        exisitingPlayer.setbDay(EspnPlayer.getbDay());
+        return espnRepository.save(exisitingPlayer);
+    }
 }

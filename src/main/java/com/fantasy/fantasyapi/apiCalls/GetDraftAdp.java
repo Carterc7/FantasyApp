@@ -109,6 +109,7 @@ public class GetDraftAdp
                 // check if adp is between 0 and max range
                 if(player.getAverageDraftPositionPPR() > 0 && player.getAverageDraftPositionPPR() < (maxRange+0.1))
                 {
+                    if(player.getPosition().toLowerCase().equals("wr") || player.getPosition().toLowerCase().equals("rb") || player.getPosition().toLowerCase().equals("te") || player.getPosition().toLowerCase().equals("qb"))
                     // add to list to be returned
                     filteredAdp.add(player);
                 }

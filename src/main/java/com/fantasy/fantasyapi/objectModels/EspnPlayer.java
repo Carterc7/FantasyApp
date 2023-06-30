@@ -1,5 +1,6 @@
 package com.fantasy.fantasyapi.objectModels;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
         private String height;
         private String cbsPlayerIDFull;
         private String lastGamePlayed;
+        @Id
         private String playerID;
         private String exp;
         

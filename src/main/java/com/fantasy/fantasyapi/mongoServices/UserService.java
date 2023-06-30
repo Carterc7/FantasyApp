@@ -30,7 +30,7 @@ public class UserService
     public User updateUser(User user)
     {
         User exisitingUser = userRepository.findById(user.getUserID()).get();
-        exisitingUser.setUsername(user.getUserID());
+        exisitingUser.setUsername(user.getUsername());
         exisitingUser.setPassword(user.getPassword());
         exisitingUser.setTeamName(user.getTeamName());
         exisitingUser.setFirstName(user.getFirstName());

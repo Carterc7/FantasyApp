@@ -1,5 +1,6 @@
 package com.fantasy.fantasyapi.objectModels;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class AdpPlayer
     {
+        @Id
         @JsonProperty("PlayerID")
         private String playerID;
         @JsonProperty("Name")

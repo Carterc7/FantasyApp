@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetAllPlayers;
+import com.fantasy.fantasyapi.mongoServices.EspnPlayerService;
 import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 import com.fantasy.fantasyapi.repository.EspnPlayerRepository;
 
@@ -24,6 +26,9 @@ public class EspnController
 {
     @Autowired
     private EspnPlayerRepository espnPlayerRepository;
+
+    @Autowired
+    private EspnPlayerService espnPlayerService;
 
     /** 
      * @param playerID
@@ -95,5 +100,28 @@ public class EspnController
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to add EspnPlayers. Error: " + e.getMessage());
         }
+    }
+
+    @PutMapping("/update-all")
+    public ResponseEntity<String> updateEspnPlayers()
+    {
+        List<EspnPlayer> players = new ArrayList<EspnPlayer>();
+        GetAllPlayers getAllPlayers = new GetAllPlayers();
+        players = getAllPlayers.getFilteredPlayerList(300);
+        for(EspnPlayer player : players)
+        {
+            try
+            {
+                espnPlayerService.updateEspnPlayer(player);
+                System.out.println(player.getEspnName() + " was just updated.");
+            }
+            catch(Exception e)
+            {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to updated EspnPlayers. Error: " + e.getMessage());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("All EspnPlayers updated successfully.");
     }
 }
