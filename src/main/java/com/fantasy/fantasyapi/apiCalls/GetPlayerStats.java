@@ -162,6 +162,7 @@ public class GetPlayerStats
                 String sacks = "";
                 String passDeflections = "";
                 String interceptions = "";
+                double fantasyPoints = 0;
                 // Extract the necessary fields from the playerDataNode
                 if (playerDataNode.has("playerID")) {
                     playerID = playerDataNode.get("playerID").asText();
@@ -216,7 +217,7 @@ public class GetPlayerStats
                 // Create a new PlayerStats object and add it to the list
                 StatsPlayer playerStats = new StatsPlayer(playerID, gameID, team, longName, receptions, recTD, recYds,
                         targets, rushYds, carries, rushTd, passAttempts, passCompletions, passYds, passTd, totalTackles,
-                        defTD, soloTackles, tfls, qbHits, defInterceptions, sacks, passDeflections, interceptions);
+                        defTD, soloTackles, tfls, qbHits, defInterceptions, sacks, passDeflections, interceptions, fantasyPoints);
                 players.add(playerStats);
             });
         } 

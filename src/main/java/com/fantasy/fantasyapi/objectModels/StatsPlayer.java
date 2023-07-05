@@ -32,6 +32,7 @@ public class StatsPlayer
     public String passDeflections;
     @JsonProperty("int")
     public String interceptions;
+    public double fantasyPoints;
 
     public StatsPlayer() {
     }
@@ -39,7 +40,7 @@ public class StatsPlayer
             String recYds, String targets, String rushYds, String carries, String rushTd, String passAttempts,
             String passCompletions, String passYds, String passTD, String totalTackles, String defTD,
             String soloTackles, String tfls, String qbHits, String defInterceptions, String sacks,
-            String passDeflections, String interceptions) {
+            String passDeflections, String interceptions, double fantasyPoints) {
         this.playerID = playerID;
         this.gameID = gameID;
         this.team = team;
@@ -64,8 +65,8 @@ public class StatsPlayer
         this.sacks = sacks;
         this.passDeflections = passDeflections;
         this.interceptions = interceptions;
+        this.fantasyPoints = fantasyPoints;
     }
-
     public String getPlayerID() {
         return playerID;
     }
@@ -303,6 +304,12 @@ public class StatsPlayer
 
     public void setInterceptions(String interceptions) {
         this.interceptions = interceptions;
+    }
+    public double getFantasyPoints() {
+        return fantasyPoints;
+    }
+    public void setFantasyPoints(double fantasyPoints) {
+        this.fantasyPoints = fantasyPoints;
     }
     
 }
