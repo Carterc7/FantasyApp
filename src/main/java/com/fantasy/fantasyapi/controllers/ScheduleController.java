@@ -64,6 +64,11 @@ public class ScheduleController
         return teamScheduleRepository.findScheduleByTeamAndGameWeek(team, gameWeek);
     }
 
+    /** 
+     * @param teamAbv
+     * @param season
+     * @return List<TeamSchedule>
+     */
     @PostMapping("/add/{teamAbv}/{season}")
     public List<TeamSchedule> addTeamSchedule(@PathVariable String teamAbv, @PathVariable String season)
     {

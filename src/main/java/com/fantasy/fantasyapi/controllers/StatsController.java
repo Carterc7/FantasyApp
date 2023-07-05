@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetPlayerStats;
 import com.fantasy.fantasyapi.objectModels.StatsPlayer;
-import com.fantasy.fantasyapi.points.CalculatorPPR;
+import com.fantasy.fantasyapi.points.PointsCalculator;
 
 @RestController
 @RequestMapping("/stats")
@@ -53,7 +53,7 @@ public class StatsController
         StatsPlayer player = new StatsPlayer();
         GetPlayerStats getPlayerStats = new GetPlayerStats();
         player = getPlayerStats.getSinglePlayerStatsByGameID(gameID, playerName);
-        CalculatorPPR calculatorPPR = new CalculatorPPR();
+        PointsCalculator calculatorPPR = new PointsCalculator();
         double points = calculatorPPR.calculateFantasyPoints(player);
         player.setFantasyPoints(points);
         return player;
@@ -69,7 +69,7 @@ public class StatsController
         GetPlayerStats getPlayerStats = new GetPlayerStats();
         List<StatsPlayer> playerStats = new ArrayList<StatsPlayer>();
         playerStats = getPlayerStats.getPlayerStatsByGameID(gameID);
-        CalculatorPPR calculatorPPR = new CalculatorPPR();
+        PointsCalculator calculatorPPR = new PointsCalculator();
         for(StatsPlayer player : playerStats)
         {
             double points = calculatorPPR.calculateFantasyPoints(player);

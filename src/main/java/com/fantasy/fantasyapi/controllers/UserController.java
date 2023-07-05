@@ -17,8 +17,8 @@ import com.fantasy.fantasyapi.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
-
+public class UserController 
+{
     @Autowired
     private UserRepository userRepository;
 
@@ -54,6 +54,10 @@ public class UserController {
         }
     }
 
+    /** 
+     * @param user
+     * @return User
+     */
     @PutMapping("/update")
     public User updateUser(@RequestBody User user)
     {

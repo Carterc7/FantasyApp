@@ -2,8 +2,14 @@ package com.fantasy.fantasyapi.points;
 
 import com.fantasy.fantasyapi.objectModels.StatsPlayer;
 
-public class CalculatorPPR 
+public class PointsCalculator 
 {
+    /** 
+     * Method to calculate fantasyPoints for a StatsPlayer
+     * Handles offensive and defensive scoring (PPR)
+     * @param player
+     * @return double
+     */
     public double calculateFantasyPoints(StatsPlayer player) 
     {
         double fantasyPoints = 0;
@@ -67,7 +73,7 @@ public class CalculatorPPR
         {
             qbHits = Integer.parseInt(player.getQbHits());
         }
-        double defOnePointers = assistedTackles + qbHits;
+        double defOnePointers = (assistedTackles / 2) + qbHits;
 
         int soloTackles = 0;
         int tfls = 0;
@@ -79,7 +85,7 @@ public class CalculatorPPR
         {
             tfls = Integer.parseInt(player.getTfls());
         }
-        double defTwoPointers = (soloTackles * 2) + (tfls * 2);
+        double defTwoPointers = (soloTackles) + (tfls * 2);
 
         int passDeflections = 0;
         if(player.getPassDeflections() != "")

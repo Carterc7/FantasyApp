@@ -103,6 +103,9 @@ public class EspnController
         }
     }
 
+    /** 
+     * @return ResponseEntity<String>
+     */
     @PutMapping("/update-all")
     public ResponseEntity<String> updateEspnPlayers()
     {
