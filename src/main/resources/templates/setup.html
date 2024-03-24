@@ -1,0 +1,40 @@
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="layouts/defaultTemplate"
+>
+  <div layout:fragment="content">
+    <body>
+      <h1>Draft Options</h1>
+      <form th:action="@{/draft}" method="post">
+        <label for="numOfTeams">Number of Teams:</label>
+        <input
+          type="number"
+          id="numOfTeams"
+          name="numOfTeams"
+          min="2"
+          required
+        /><br /><br />
+
+        <label for="mockTeamName">Mock Team Name:</label>
+        <input
+          type="text"
+          id="mockTeamName"
+          name="mockTeamName"
+          required
+        /><br /><br />
+
+        <label for="leagueFormat">League Format:</label>
+        <select id="leagueFormat" name="leagueFormat" required>
+          <option value="PPR">PPR</option>
+          <option value="No PPR">No PPR</option>
+          <option value="Dynasty">Dynasty</option>
+          <option value="2QB">2QB</option></select
+        ><br /><br />
+
+        <button type="submit">Start Draft</button>
+      </form>
+    </body>
+  </div>
+</html>

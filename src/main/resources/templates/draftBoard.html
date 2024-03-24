@@ -1,0 +1,29 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+<div layout:fragment="content">
+    <body>
+        <h1>Draft Board</h1>
+<table>
+    <tr>
+        <th>ADP (PPR)</th>
+        <th>Name</th>
+        <th>Team</th>
+        <th>Position</th>
+        <th>-</th>
+    </tr>
+    <tr th:each="player : ${draftBoard}">
+        <td th:text="${player.averageDraftPositionPPR}"></td>
+        <td th:text="${player.name}"></td>
+        <td th:text="${player.team}"></td>
+        <td th:text="${player.position}"></td>
+        <td>
+            <form action="#" th:action="@{/draftPlayer}" method="post">
+                <input type="hidden" name="playerId" th:value="${player.playerID}" />
+                <input type="hidden" name="playerList" th:value="${draftBoard}" />
+                <button type="submit">Draft</button>
+            </form>
+        </td>
+    </tr>
+</table>
+    </body>
+</div>
+</html>

@@ -17,26 +17,51 @@ public class UserService
     @Autowired
     UserRepository userRepository;
 
+    /**
+     * Method to delete user by userID
+     * @param userID
+     */
     public void deleteUserByUserID(String userID) 
     {
         userRepository.deleteByUserID(userID);
     }
 
-    public boolean authenticateUser(String username, String password) {
+    /**
+     * Method to authenticate user based on username and password, returns bool
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean authenticateUser(String username, String password) 
+    {
+        // find user by username
         Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
+        // check if found
+        if (userOptional.isPresent()) 
+        {
+            // fetch user
             User user = userOptional.get();
-            // Assuming you're storing passwords securely and using a secure comparison method
+            // check if match
             return user.getPassword().equals(password);
         }
         return false;
     }
 
+    /**
+     * Method to search for user by username property
+     * @param username
+     * @return
+     */
     public Optional<User> findByUsername(String username)
     {
         return userRepository.findByUsername(username);
     }
 
+    /**
+     * Method to add user to `users` collection
+     * @param user
+     * @return
+     */
     public User addUser(User user)
     {
         user.setUserID(UUID.randomUUID().toString());
