@@ -1,0 +1,26 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+  <head>
+    <title>ADP List</title>
+  </head>
+    <body>
+        <div layout:fragment="content">
+        <br/>
+        <table align="center" style="width:100%; margin: 20px;">
+          <tr style="font-size: 25px;">
+            <th>Player Name</th>
+            <th>Team</th>
+            <th>Position</th>
+            <th>ADP</th>
+            <th>ADP PPR</th>
+            <th>ADP Dynasty</th>
+          </tr>
+          <tr th:each="player : ${players}">
+            <td th:text="${player.name}"></td>
+            <td th:text="${player.team}"></td>
+            <td th:text="${player.position}"></td>
+            <td th:text="${player.averageDraftPosition}"></td>
+            <td th:text="${player.averageDraftPositionPPR}"></td>
+            <td th:text="${player.averageDraftPositionDynasty}"></td>   
+          </tr>
+        </table>
+</html>

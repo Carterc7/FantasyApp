@@ -1,5 +1,7 @@
 package com.fantasy.fantasyapi.leagueModels;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,72 +13,48 @@ public class User
     private String password;
     @Id
     private String userID;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String dateOfBirth;
-    private String teamName;
+    private List<FantasyTeam> completedMocks;
     
     public User() {
     }
-    public User(String username, String password, String userID, String email, String firstName, String lastName,
-            String dateOfBirth, String teamName) {
+
+    public User(String username, String password, String userID, List<FantasyTeam> completedMocks) {
         this.username = username;
         this.password = password;
         this.userID = userID;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.teamName = teamName;
+        this.completedMocks = completedMocks;
     }
-    
+
     public String getUsername() {
         return username;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public String getUserID() {
         return userID;
     }
+
     public void setUserID(String userID) {
         this.userID = userID;
     }
-    public String getEmail() {
-        return email;
+
+    public List<FantasyTeam> getCompletedMocks() {
+        return completedMocks;
     }
-    public void setEmail(String email) {
-        this.email = email;
+
+    public void setCompletedMocks(List<FantasyTeam> completedMocks) {
+        this.completedMocks = completedMocks;
     }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-    public String getTeamName() {
-        return teamName;
-    }
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }  
+    
 }

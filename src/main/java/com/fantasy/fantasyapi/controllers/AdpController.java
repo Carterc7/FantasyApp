@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +23,8 @@ import com.fantasy.fantasyapi.mongoServices.AdpPlayerService;
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 import com.fantasy.fantasyapi.repository.AdpPlayerRepository;
 
-
-@RestController
+// Was @RestController before thymeleaf template
+@Controller
 @RequestMapping("/adp")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AdpController 
@@ -32,6 +34,16 @@ public class AdpController
 
     @Autowired
     AdpPlayerService adpPlayerService;
+
+    @GetMapping("/list")
+    public String showAdpList(Model model)
+    {
+        List<AdpPlayer> players = new ArrayList<AdpPlayer>();
+        GetDraftAdp getDraftAdp = new GetDraftAdp();
+        players = getDraftAdp.getFilteredAdpList(300);
+        model.addAttribute("players", players);
+        return "players.html";
+    }
 
     /** 
      * @param playerID

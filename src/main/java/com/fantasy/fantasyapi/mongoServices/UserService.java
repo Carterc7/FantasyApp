@@ -1,5 +1,6 @@
 package com.fantasy.fantasyapi.mongoServices;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,21 @@ public class UserService
         userRepository.deleteByUserID(userID);
     }
 
+    public boolean authenticateUser(String username, String password) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Assuming you're storing passwords securely and using a secure comparison method
+            return user.getPassword().equals(password);
+        }
+        return false;
+    }
+
+    public Optional<User> findByUsername(String username)
+    {
+        return userRepository.findByUsername(username);
+    }
+
     public User addUser(User user)
     {
         user.setUserID(UUID.randomUUID().toString());
@@ -32,11 +48,7 @@ public class UserService
         User exisitingUser = userRepository.findById(user.getUserID()).get();
         exisitingUser.setUsername(user.getUsername());
         exisitingUser.setPassword(user.getPassword());
-        exisitingUser.setTeamName(user.getTeamName());
-        exisitingUser.setFirstName(user.getFirstName());
-        exisitingUser.setLastName(user.getLastName());
-        exisitingUser.setEmail(user.getEmail());
-        exisitingUser.setDateOfBirth(user.getDateOfBirth());
+        exisitingUser.setCompletedMocks(user.getCompletedMocks());
         return userRepository.save(exisitingUser);
     }
 }

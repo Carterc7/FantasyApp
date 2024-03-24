@@ -1,0 +1,42 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+<div layout:fragment="content">
+    <head>
+        <title>Register</title>
+    </head>
+    <body>
+        <div class="container text-center">
+            <br>
+                <h1>User Registration</h1>
+            <br>
+            <br>
+            <form th:action="@{/register/process_register}" th:object="${user}"
+                method="post" style="max-width: 600px; margin: 0 auto;">
+            <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Username: </label>
+                    <div class="col-8">
+                        <input type="text" th:field="*{username}" class="form-control" required />
+                        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">User Name Error</p>
+                    </div>
+                </div>
+                 <br>
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Password: </label>
+                    <div class="col-8">
+                        <input type="password" th:field="*{password}" class="form-control"
+                                required minlength="6" maxlength="100"/>
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+            </div>
+            </form>
+            <br>
+            <br>
+        </div>
+    </body>
+</div>
+</html>

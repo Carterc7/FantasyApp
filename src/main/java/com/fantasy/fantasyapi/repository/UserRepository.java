@@ -1,5 +1,7 @@
 package com.fantasy.fantasyapi.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.fantasy.fantasyapi.leagueModels.User;
@@ -10,4 +12,5 @@ import com.fantasy.fantasyapi.leagueModels.User;
 public interface UserRepository extends MongoRepository<User, String>
 {
     void deleteByUserID(String userID);
+    Optional<User> findByUsername(String username);
 }

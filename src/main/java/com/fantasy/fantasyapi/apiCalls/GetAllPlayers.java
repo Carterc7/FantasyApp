@@ -103,6 +103,7 @@ public class GetAllPlayers
      */
     public String sendRequestGetAllPlayers()
     {   
+        // load dotenv to get hidden variables 
         Dotenv dotenv = Dotenv.load();
         String key = dotenv.get("API_KEY");
         String baseUrl = dotenv.get("API_URL");
@@ -114,7 +115,7 @@ public class GetAllPlayers
         // JSON payload at this request URL is larger than default capacity
         // Create a custom ExchangeStrategies object with an increased buffer limit
         ExchangeStrategies strategies = ExchangeStrategies.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(3 * 1024 * 1024)) // 3 MB buffer limit
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024)) // 20 MB buffer limit
                 .build();
 
         // Create a WebClient using the custom ExchangeStrategies
