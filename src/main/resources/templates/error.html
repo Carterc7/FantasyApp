@@ -5,9 +5,9 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>Register</title>
+    <title>Login</title>
     <style>
-      /* Main container for registration form */
+      /* Main container for login form */
       .container {
         display: flex;
         justify-content: center;
@@ -16,8 +16,8 @@
         padding: 20px;
       }
 
-      /* Registration form container */
-      .registration-form {
+      /* Login form container */
+      .login-form {
         background-color: #0c2c3a;
         border-radius: 30px;
         padding: 40px;
@@ -27,7 +27,7 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
       }
 
-      .registration-form h1 {
+      .login-form h1 {
         font-family: Georgia, "Times New Roman", Times, serif;
         font-size: 2rem;
         font-weight: bold;
@@ -62,7 +62,6 @@
         width: 100%;
         background-color: #00ced1;
         color: #0c2c3a;
-        font-family: Georgia, 'Times New Roman', Times, serif;
         padding: 15px;
         font-size: 1.2rem;
         font-weight: bold;
@@ -79,7 +78,8 @@
       /* Error message styling */
       .error-message {
         color: red;
-        margin-top: 10px;
+        font-weight: bold;
+        margin-top: 20px;
         text-align: center;
       }
     </style>
@@ -87,54 +87,36 @@
   <body style="background-color: black !important">
     <div layout:fragment="content">
       <div class="container">
-        <div class="registration-form">
-          <h1>User Registration</h1>
-          <form
-            th:action="@{/register/process_register}"
-            th:object="${user}"
-            method="post"
-          >
+        <div class="login-form">
+          <h1>Login Failed - Try Again</h1>
+          <form th:action="@{/login}" method="post">
             <div class="form-group">
               <label for="username">Username:</label>
               <input
                 type="text"
                 id="username"
-                th:field="*{username}"
+                name="username"
                 class="form-control"
                 required
               />
-              <p
-                th:if="${#fields.hasErrors('username')}"
-                th:errors="*{username}"
-                class="error-message"
-              >
-                User Name Error
-              </p>
             </div>
             <div class="form-group">
               <label for="password">Password:</label>
               <input
                 type="password"
                 id="password"
-                th:field="*{password}"
+                name="password"
                 class="form-control"
                 required
-                minlength="6"
-                maxlength="100"
               />
-              <p
-                th:if="${#fields.hasErrors('password')}"
-                th:errors="*{password}"
-                class="error-message"
-              >
-                Password Error
-              </p>
             </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
+            <button type="submit" class="btn btn-primary">Login</button>
           </form>
+          <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+          </div>
         </div>
       </div>
     </div>
   </body>
 </html>
-

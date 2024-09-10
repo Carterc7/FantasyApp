@@ -1,12 +1,91 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
-<div layout:fragment="content">
-    <h2>You successfully registered!</h2>
-    <h5 align="left">Your Username:</h5>
-        <hr/>
-		<p align="left" th:text="${user.username}"></p>
-        <br>
-        <h5 align="left">Your Password:</h5>
-        <hr/>
-        <p align="left" th:text="${user.password}"></p>
-</div>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
+  <head>
+    <title>Registration Success</title>
+    <style>
+      /* Main container for success message */
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70vh;
+        padding: 20px;
+      }
+
+      /* Success message styling */
+      .success-message {
+        background-color: #0c2c3a;
+        border-radius: 30px;
+        padding: 40px;
+        max-width: 600px;
+        width: 100%;
+        color: #00ced1;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+
+      h2 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      h5 {
+        font-family: Arial, sans-serif;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+
+      p {
+        font-family: Arial, sans-serif;
+        font-size: 1.2rem;
+        color: lightblue;
+      }
+
+      hr {
+        border: 1px solid #00ced1;
+        width: 80%;
+        margin: 10px auto;
+      }
+
+      .button-link {
+        display: inline-block;
+        background-color: lightblue;
+        color: #0c2c3a;
+        font-weight: bold;
+        font-size: xx-large;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 10px;
+        width: 250px;
+        height: 75px;
+        line-height: 75px; /* Center text vertically */
+        text-decoration: none;
+        font-family: Georgia, "Times New Roman", Times, serif;
+      }
+    </style>
+  </head>
+  <body style="background-color: black !important">
+    <div layout:fragment="content">
+      <div class="container">
+        <div class="success-message">
+          <h2>You successfully registered!</h2>
+          <h5>Your Username:</h5>
+          <hr />
+          <p th:text="${user.username}"></p>
+          <br />
+          <h5>Your Password:</h5>
+          <hr />
+          <p th:text="${user.password}"></p>
+          <a class="button-link" href="http://127.0.0.1:8080/login">Login</a>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

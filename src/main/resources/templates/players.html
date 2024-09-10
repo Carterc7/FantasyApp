@@ -1,12 +1,96 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
   <head>
     <title>ADP List</title>
+    <style>
+      /* Table styles */
+      table {
+        width: 90%;
+        margin: 20px auto;
+        background-color: #0c2c3a;
+        border-radius: 20px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        color: #00ced1;
+        font-family: Arial, sans-serif;
+        border-collapse: separate; /* Prevents collapsing borders */
+        border-spacing: 0; /* Removes gap between cells */
+      }
+
+      /* Header row */
+      th {
+        background-color: #2d677d;
+        text-align: center;
+        color: #0c2c3a;
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.8rem;
+        font-weight: bolder;
+        padding: 15px;
+      }
+
+      /* Data rows */
+      td {
+        text-align: center;
+        padding: 10px;
+        font-size: 1.2rem;
+      }
+
+      /* Alternating row colors */
+      tr:nth-child(even) {
+        background-color: #1a1a1a;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #0c2c3a;
+      }
+
+      /* Hover effect on rows */
+      tr:hover {
+        background-color: #333;
+      }
+
+      /* Rounded corners for the table */
+      table tr:first-child th:first-child {
+        border-top-left-radius: 20px;
+      }
+
+      table tr:first-child th:last-child {
+        border-top-right-radius: 20px;
+      }
+
+      table tr:last-child td:first-child {
+        border-bottom-left-radius: 20px;
+      }
+
+      table tr:last-child td:last-child {
+        border-bottom-right-radius: 20px;
+      }
+
+      /* Overall body style */
+      body {
+        background-color: black;
+        color: #00ced1;
+        font-weight: bold;
+        font-family: "Georgia", "Times New Roman", serif;
+      }
+
+      .content h1 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    </style>
   </head>
-    <body>
-        <div layout:fragment="content">
-        <br/>
-        <table align="center" style="width:100%; margin: 20px;">
-          <tr style="font-size: 25px;">
+  <body>
+    <div layout:fragment="content">
+      <h1 align="center">ADP Player List</h1>
+      <table>
+        <thead>
+          <tr>
             <th>Player Name</th>
             <th>Team</th>
             <th>Position</th>
@@ -14,13 +98,18 @@
             <th>ADP PPR</th>
             <th>ADP Dynasty</th>
           </tr>
+        </thead>
+        <tbody>
           <tr th:each="player : ${players}">
             <td th:text="${player.name}"></td>
             <td th:text="${player.team}"></td>
             <td th:text="${player.position}"></td>
             <td th:text="${player.averageDraftPosition}"></td>
             <td th:text="${player.averageDraftPositionPPR}"></td>
-            <td th:text="${player.averageDraftPositionDynasty}"></td>   
+            <td th:text="${player.averageDraftPositionDynasty}"></td>
           </tr>
-        </table>
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>

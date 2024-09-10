@@ -1,39 +1,122 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
-<div layout:fragment="content">
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
-        <br>
-        <h1>Login to your Account</h1>
-        <br>
-        <br>
-        <div class="container text-center">
-        <form th:action="@{/login}" method="post" style="max-width: 600px; margin: 0 auto;">
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Username: </label>
-                <div class="col-8">
-                <input type="text" id="username" name="username" class="form-control" required/>
-                </div>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
+  <head>
+    <title>Login</title>
+    <style>
+      /* Main container for login form */
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70vh;
+        padding: 20px;
+      }
+
+      /* Login form container */
+      .login-form {
+        background-color: #0c2c3a;
+        border-radius: 30px;
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        color: #00ced1;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .login-form h1 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-control {
+        background-color: #0e3d4e;
+        border: 1px solid #00ced1;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        width: 100%;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: lightblue;
+      }
+
+      label {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        background-color: #00ced1;
+        color: #0c2c3a;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        padding: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #d0e6f2;
+      }
+
+      /* Error message styling */
+      .error-message {
+        color: red;
+        margin-top: 10px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body style="background-color: black !important">
+    <div layout:fragment="content">
+      <div class="container">
+        <div class="login-form">
+          <h1>Login to your Account</h1>
+          <form th:action="@{/login}" method="post">
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+                required
+              />
             </div>
-            <br>
-            <div class="form-group row">
-                <label class="col-4 col-form-label">Password: </label>
-                <div class="col-8">
-                <input type="password" id="password" name="password" class="form-control" required/>
-                </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                required
+              />
             </div>
-            <br>
-            <div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-        </form>
-        <div th:if="${error}" style="color: red;">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <div th:if="${error}" class="error-message">
             <p th:text="${error}"></p>
+          </div>
         </div>
-        <br>
-        <br>
-        </body>
+      </div>
     </div>
-</div>
+  </body>
 </html>

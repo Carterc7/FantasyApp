@@ -14,4 +14,6 @@ public interface AdpPlayerRepository extends MongoRepository<AdpPlayer, String>
      Optional<AdpPlayer> findPlayerByPlayerID(String playerID);
 
      Optional<AdpPlayer> findPlayerByAverageDraftPositionPPR(int averageDraftPositionPPR);
+
+     
 }

@@ -24,7 +24,7 @@
         justify-content: flex-start; /* Align text at the top */
         align-items: flex-start; /* Align items to the top */
         flex-direction: column; /* Stack text vertically */
-        height: 60vh; /* Take most of the height of the screen */
+        height: 72vh; /* Take most of the height of the screen */
         background-color: #0c2c3a;
         border-radius: 30px; /* Rounded corners */
         padding: 20px; /* Padding for text spacing */
@@ -32,7 +32,7 @@
 
       .left-column h1 {
         font-weight: bolder;
-        font-size: 2rem;
+        font-size: 2.3rem;
         margin: 0;
         padding-left: 110px;
         font-family: Georgia, "Times New Roman", Times, serif;
@@ -48,7 +48,7 @@
       /* Bullet point list */
       .left-column ul {
         color: #00ced1;
-        font-size: 1.2rem; /* Smaller than the title */
+        font-size: 1.4rem; /* Smaller than the title */
         padding-left: 45px;
       }
 
@@ -66,10 +66,10 @@
         font-size: x-large;
         border-radius: 8px;
         text-align: center;
-        margin-left: 175px;
+        margin-left: 170px;
         margin-top: 1px;
         padding-bottom: 20px;
-        width: 200px;
+        width: 250px;
         height: 50px;
         line-height: 50px; /* Center text vertically */
         text-decoration: none;
@@ -93,34 +93,14 @@
       .right-column img {
         border-radius: 50%;
         border: 5px solid #00ced1;
-        width: 450px;
-        height: 450px;
+        width: 520px;
+        height: 520px;
         object-fit: cover;
-      }
-
-      /* Welcome message styling */
-      .welcome-message {
-        text-align: center;
-        background-color: #0c2c3a;
-        border-radius: 8px;
-        width: 90%;
-        margin-left: 75px;
-        padding-left: 10px;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        color: #00ced1;
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 15px;
       }
     </style>
   </head>
   <body style="background-color: black !important">
     <div layout:fragment="content">
-      <!-- Welcome message, displayed only if the user is authenticated -->
-      <div th:if="${authenticatedUser != null}" class="welcome-message">
-        Welcome, <span th:text="${authenticatedUser.username}">User</span>!
-      </div>
-
       <div class="container">
         <!-- Left column for the text -->
         <div class="left-column">

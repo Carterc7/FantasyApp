@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.ArrayList;
 
 // Model for an app user
 @Document(collection = "user")
@@ -13,12 +14,13 @@ public class User
     private String password;
     @Id
     private String userID;
-    private List<FantasyTeam> completedMocks;
+     // Change completedMocks to a list of lists
+    private List<List<FantasyTeam>> completedMocks = new ArrayList<>();
     
     public User() {
     }
 
-    public User(String username, String password, String userID, List<FantasyTeam> completedMocks) {
+    public User(String username, String password, String userID, List<List<FantasyTeam>> completedMocks) {
         this.username = username;
         this.password = password;
         this.userID = userID;
@@ -49,11 +51,11 @@ public class User
         this.userID = userID;
     }
 
-    public List<FantasyTeam> getCompletedMocks() {
+    public List<List<FantasyTeam>> getCompletedMocks() {
         return completedMocks;
     }
 
-    public void setCompletedMocks(List<FantasyTeam> completedMocks) {
+    public void setCompletedMocks(List<List<FantasyTeam>> completedMocks) {
         this.completedMocks = completedMocks;
     }
     

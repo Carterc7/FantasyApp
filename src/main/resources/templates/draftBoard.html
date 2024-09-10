@@ -1,29 +1,230 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemplate">
-<div layout:fragment="content">
-    <body>
-        <h1>Draft Board</h1>
-<table>
-    <tr>
-        <th>ADP (PPR)</th>
-        <th>Name</th>
-        <th>Team</th>
-        <th>Position</th>
-        <th>-</th>
-    </tr>
-    <tr th:each="player : ${draftBoard}">
-        <td th:text="${player.averageDraftPositionPPR}"></td>
-        <td th:text="${player.name}"></td>
-        <td th:text="${player.team}"></td>
-        <td th:text="${player.position}"></td>
-        <td>
-            <form action="#" th:action="@{/draftPlayer}" method="post">
-                <input type="hidden" name="playerId" th:value="${player.playerID}" />
-                <input type="hidden" name="playerList" th:value="${draftBoard}" />
-                <button type="submit">Draft</button>
-            </form>
-        </td>
-    </tr>
-</table>
-    </body>
-</div>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Draft Board</title>
+    <style>
+      /* Styles remain the same */
+      body {
+        background-color: black;
+        color: #00ffff;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 90%;
+        margin: 0 auto;
+        border-radius: 15px;
+        padding: 10px;
+      }
+      .player-cell {
+    background-color: #0c2c3a;
+    padding: 15px;
+    border-radius: 8px;
+    height: 40px;
+    margin-bottom: 10px;
+    display: flex; /* Use Flexbox */
+    align-items: center; /* Vertically center the content */
+    justify-content: flex-start; /* Align content to the left */
+    text-align: left; /* Ensure text is aligned to the left */
+}
+
+      h1 {
+        color: white;
+      }
+      p {
+        color: white;
+        font-size: 1.2rem;
+      }
+      span {
+        color: #00ffff;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #2d677d;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #1a1a1a;
+      }
+      tr:hover {
+        background-color: #333;
+      }
+      .adp-list-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #0c2c3a;
+        border-top: 1px solid #00ffff;
+        max-height: 400px;
+        overflow-y: auto;
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(100%);
+      }
+      .adp-list-container.open {
+        transform: translateY(0);
+      }
+      .adp-list-toggle {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #00ced1;
+        color: #0c2c3a;
+        border: none;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 1.2rem;
+      }
+      .adp-list-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: #ff4c4c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      Round: <span th:text="${roundNumber}"></span> Pick:
+      <span th:text="${currentPick}"></span>
+    </h1>
+    <div class="container">
+      <div th:each="player : ${pickedPlayers}">
+        <div class="player-cell">
+          <h1><span th:text="${player.Name}"> <span th:text="${player.Team}"></span></h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADP List Toggle Button -->
+    <button class="adp-list-toggle" onclick="toggleAdpList()">
+      Toggle ADP List
+    </button>
+
+    <!-- ADP List Container -->
+    <div class="adp-list-container">
+      <button
+        class="adp-list-close"
+        onclick="toggleAdpList()"
+        style="font-weight: bold; border-radius: 50%"
+      >
+        X
+      </button>
+      <table>
+        <thead>
+          <tr>
+            <th>Player Name</th>
+            <th>Team</th>
+            <th>Position</th>
+            <th>ADP</th>
+            <th>ADP PPR</th>
+            <th>ADP Dynasty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="player : ${adpList}">
+            <td th:text="${player.name}"></td>
+            <td th:text="${player.team}"></td>
+            <td th:text="${player.position}"></td>
+            <td th:text="${player.averageDraftPosition}"></td>
+            <td th:text="${player.averageDraftPositionPPR}"></td>
+            <td th:text="${player.averageDraftPositionDynasty}"></td>
+            <td>
+              <form th:action="@{/draft/select}" method="post">
+                <input
+                  type="hidden"
+                  th:value="${player.playerID}"
+                  name="selectedPlayerId"
+                />
+                <input type="hidden" th:value="${userId}" name="userId" />
+                <input
+                  type="hidden"
+                  th:value="${currentPick}"
+                  name="currentPick"
+                />
+                <input
+                  type="hidden"
+                  th:value="${isRevered}"
+                  name="isReversed"
+                />
+                <input
+                  type="hidden"
+                  th:value="${roundNumber}"
+                  name="roundNumber"
+                />
+                <input
+                  type="hidden"
+                  th:value="${numSelections}"
+                  name="numSelections"
+                />
+                <button type="submit">Select</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Hidden form for auto-picking when it's not the user's turn -->
+    <form
+      id="autoPickForm"
+      th:action="@{/draft/select}"
+      method="post"
+      style="display: none"
+    >
+      <input type="hidden" id="autoSelectedPlayerId" name="selectedPlayerId" />
+      <input type="hidden" th:value="${isRevered}" name="isReversed" />
+      <input type="hidden" th:value="${roundNumber}" name="roundNumber" />
+      <input type="hidden" th:value="${userId}" name="userId" />
+      <input type="hidden" th:value="${numSelections}" name="numSelections" />
+      <input type="hidden" th:value="${currentPick}" name="currentPick" />
+    </form>
+
+    <script>
+      function toggleAdpList() {
+        var adpListContainer = document.querySelector(".adp-list-container");
+        adpListContainer.classList.toggle("open");
+      }
+
+      function checkTurn() {
+        var userId = "/*[[${userId}]]*/"; // Get userId from Thymeleaf
+        var currentTeamId = "/*[[${currentTeamId}]]*/"; // Get currentTeamId from Thymeleaf
+
+        // If it's not the user's turn, auto-pick the first player
+        if (userId !== currentTeamId) {
+          setTimeout(function () {
+            // Get the first player from the ADP list
+            var firstPlayerId = document.querySelector(
+              'input[name="selectedPlayerId"]'
+            ).value;
+
+            // Set the first player's ID in the hidden form
+            document.getElementById("autoSelectedPlayerId").value =
+              firstPlayerId;
+
+            // Submit the form to auto-pick the first player for the CPU
+            document.getElementById("autoPickForm").submit();
+          }, 1200); // 1.2 second delay (1200 milliseconds)
+        }
+      }
+
+      // Call the function to check if it's the user's turn
+      window.onload = checkTurn;
+    </script>
+  </body>
 </html>

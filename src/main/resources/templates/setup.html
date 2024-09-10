@@ -2,39 +2,109 @@
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="layouts/defaultTemplate"
+  layout:decorate="~{layouts/defaultTemplate}"
 >
-  <div layout:fragment="content">
-    <body>
-      <h1>Draft Options</h1>
-      <form th:action="@{/draft}" method="post">
-        <label for="numOfTeams">Number of Teams:</label>
-        <input
-          type="number"
-          id="numOfTeams"
-          name="numOfTeams"
-          min="2"
-          required
-        /><br /><br />
+  <head>
+    <style>
+      /* Styles for centering the form */
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 75vh; /* Full viewport height */
+        background-color: black; /* Background color for body */
+      }
 
-        <label for="mockTeamName">Mock Team Name:</label>
-        <input
-          type="text"
-          id="mockTeamName"
-          name="mockTeamName"
-          required
-        /><br /><br />
+      .form-container {
+        background-color: #0c2c3a; /* Background color for the form container */
+        width: 500px;
+        margin-top: 0px;
+        margin-bottom: 20px;
+        border-radius: 15px; /* Rounded corners for the form container */
+        padding: 20px; /* Padding inside the form container */
+        color: #00ced1; /* Text color inside the form */
+      }
 
-        <label for="leagueFormat">League Format:</label>
-        <select id="leagueFormat" name="leagueFormat" required>
-          <option value="PPR">PPR</option>
-          <option value="No PPR">No PPR</option>
-          <option value="Dynasty">Dynasty</option>
-          <option value="2QB">2QB</option></select
-        ><br /><br />
+      .form-container h1 {
+        font-weight: bold;
+        text-align: center;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
 
-        <button type="submit">Start Draft</button>
-      </form>
-    </body>
-  </div>
+      form label {
+        display: block;
+        margin: 10px 0 5px;
+      }
+
+      form input, form select, form button {
+        display: block;
+        width: 100%; /* Full width of the form container */
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #00ffff; /* Border color */
+        border-radius: 5px; /* Rounded borders for inputs and button */
+        background-color: #1a1a1a; /* Background color for inputs and button */
+        color: #00ffff; /* Text color for inputs and button */
+      }
+
+      form button {
+        cursor: pointer; /* Pointer cursor for button */
+        background-color: #00ced1; /* Button background color */
+        border: none; /* Remove default border */
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #0c2c3a;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+      }
+
+      form button:hover {
+        background-color: #00b2a1; /* Darker button color on hover */
+      }
+    </style>
+  </head>
+  <body style="background-color: black !important;">
+    <div layout:fragment="content" class="container">
+      <div class="form-container">
+        <h1>Draft Options</h1>
+        <form th:action="@{/draft}" method="post">
+          <label for="numOfTeams">Number of Teams:</label>
+          <input
+            type="number"
+            id="numOfTeams"
+            name="numOfTeams"
+            min="2"
+            required
+          />
+
+          <label for="numOfRounds">Number of Rounds:</label>
+          <input
+            type="number"
+            id="numOfRounds"
+            name="numOfRounds"
+            min="2"
+            required
+          />
+
+          <label for="mockTeamName">Mock Team Name:</label>
+          <input
+            type="text"
+            id="mockTeamName"
+            name="mockTeamName"
+            required
+          />
+
+          <label for="draftPosition">Starting Draft Position:</label>
+          <input
+            type="number"
+            id="draftPosition"
+            name="draftPosition"
+            min="1"
+            required
+          />
+
+          <button type="submit">Start Draft</button>
+        </form>
+      </div>
+    </div>
+  </body>
 </html>

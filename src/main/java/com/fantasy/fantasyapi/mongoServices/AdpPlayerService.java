@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 import com.fantasy.fantasyapi.repository.AdpPlayerRepository;
@@ -40,5 +41,11 @@ public class AdpPlayerService
         exisitingPlayer.setAverageDraftPosition(adpPlayer.getAverageDraftPosition());
         exisitingPlayer.setPosition(adpPlayer.getPosition());
         return adpRepository.save(exisitingPlayer);
+    }
+
+    // New method to get all AdpPlayers
+    public List<AdpPlayer> getAllAdpPlayers() 
+    {
+        return adpRepository.findAll();
     }
 }

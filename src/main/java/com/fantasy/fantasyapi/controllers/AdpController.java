@@ -19,16 +19,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetDraftAdp;
+import com.fantasy.fantasyapi.leagueModels.User;
 import com.fantasy.fantasyapi.mongoServices.AdpPlayerService;
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 import com.fantasy.fantasyapi.repository.AdpPlayerRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 // Was @RestController before thymeleaf template
 @Controller
 @RequestMapping("/adp")
 @CrossOrigin(origins = "http://localhost:3000")
-public class AdpController 
-{
+public class AdpController {
     @Autowired
     AdpPlayerRepository adpPlayerRepository;
 
@@ -36,120 +38,107 @@ public class AdpController
     AdpPlayerService adpPlayerService;
 
     @GetMapping("/list")
-    public String showAdpList(Model model)
-    {
+    public String showAdpList(HttpSession session, Model model) {
+        // Retrieve the authenticated user from the session
+        User authenticatedUser = (User) session.getAttribute("authenticatedUser");
+        if (authenticatedUser == null) {
+            System.out.println("User not found in session");
+        }
         List<AdpPlayer> players = new ArrayList<AdpPlayer>();
-        GetDraftAdp getDraftAdp = new GetDraftAdp();
-        players = getDraftAdp.getFilteredAdpList(300);
+        players = adpPlayerService.getAllAdpPlayers();
+        model.addAttribute("authenticatedUser", authenticatedUser);
         model.addAttribute("players", players);
         return "players.html";
     }
 
-    /** 
+    /**
      * @param playerID
      * @return Optional<AdpPlayer>
      */
     @GetMapping("/player/{playerID}")
-    public Optional<AdpPlayer> findAdpPlayerByPlayerID(@PathVariable String playerID)
-    {
+    public Optional<AdpPlayer> findAdpPlayerByPlayerID(@PathVariable String playerID) {
         return adpPlayerRepository.findPlayerByPlayerID(playerID);
     }
 
-    /** 
+    /**
      * @param averageDraftPositionPPR
      * @return Optional<AdpPlayer>
      */
     @GetMapping("/ppr/{averageDraftPositionPPR}")
-    public Optional<AdpPlayer> findPlayerByAverageDraftPositionPPR(@PathVariable int averageDraftPositionPPR)
-    {
+    public Optional<AdpPlayer> findPlayerByAverageDraftPositionPPR(@PathVariable int averageDraftPositionPPR) {
         return adpPlayerRepository.findPlayerByAverageDraftPositionPPR(averageDraftPositionPPR);
     }
 
-    /** 
+    /**
      * @param range
      * @return List<AdpPlayer>
      */
     @GetMapping("/list/{range}")
-    public List<AdpPlayer> getFilteredAdpList(@PathVariable int range)
-    {
+    public List<AdpPlayer> getFilteredAdpList(@PathVariable int range) {
         List<AdpPlayer> players = new ArrayList<AdpPlayer>();
         GetDraftAdp getDraftAdp = new GetDraftAdp();
         players = getDraftAdp.getFilteredAdpList(range);
         return players;
     }
 
-    /** 
+    /**
      * @return List<AdpPlayer>
      */
     @GetMapping("/list/all")
-    public List<AdpPlayer> getAllFilteredAdpList()
-    {
+    public List<AdpPlayer> getAllFilteredAdpList() {
         return adpPlayerRepository.findAll();
     }
 
-    /** 
+    /**
      * @return ResponseEntity<String>
      */
     @DeleteMapping("/delete-all")
-    public ResponseEntity<String> deleteAllAdpPlayers() 
-    {
-        try 
-        {
+    public ResponseEntity<String> deleteAllAdpPlayers() {
+        try {
             adpPlayerRepository.deleteAll();
             return ResponseEntity.ok("All AdpPlayers deleted successfully.");
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to delete AdpPlayers. Error: " + e.getMessage());
         }
     }
 
-    /** 
+    /**
      * @return ResponseEntity<String>
      */
     @PostMapping("/add-all")
-    public ResponseEntity<String> addAllAdpPlayers() 
-    {
+    public ResponseEntity<String> addAllAdpPlayers() {
         List<AdpPlayer> players = new ArrayList<AdpPlayer>();
         GetDraftAdp getDraftAdp = new GetDraftAdp();
         players = getDraftAdp.getFilteredAdpList(300);
-        try 
-        {
+        try {
             adpPlayerRepository.saveAll(players);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("All AdpPlayers added successfully.");
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to add AdpPlayers. Error: " + e.getMessage());
         }
     }
-    
-    /** 
+
+    /**
      * @return ResponseEntity<String>
      */
     @PutMapping("/update-all")
-    public ResponseEntity<String> updateAdpPlayers()
-    {
+    public ResponseEntity<String> updateAdpPlayers() {
         List<AdpPlayer> players = new ArrayList<AdpPlayer>();
         GetDraftAdp getDraftAdp = new GetDraftAdp();
         players = getDraftAdp.getFilteredAdpList(300);
-        for(AdpPlayer player : players)
-        {
-            try
-            {
+        for (AdpPlayer player : players) {
+            try {
                 adpPlayerService.updateAdpPlayer(player);
                 System.out.println(player.getName() + " was just updated.");
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to updated AdpPlayers. Error: " + e.getMessage());
+                        .body("Failed to updated AdpPlayers. Error: " + e.getMessage());
             }
         }
         return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("All AdpPlayers updated successfully.");
+                .body("All AdpPlayers updated successfully.");
     }
 }
