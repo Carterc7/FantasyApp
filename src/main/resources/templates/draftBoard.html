@@ -5,52 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Draft Board</title>
     <style>
-      /* Styles remain the same */
       body {
         background-color: black;
         color: #00ffff;
         font-family: Arial, sans-serif;
+        height: auto;
+        padding-bottom: 60px;
       }
       .container {
-        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        width: 100%;
         margin: 0 auto;
         border-radius: 15px;
         padding: 10px;
+        box-sizing: border-box;
       }
-      .player-cell {
-    background-color: #0c2c3a;
-    padding: 15px;
-    border-radius: 8px;
-    height: 40px;
-    margin-bottom: 10px;
-    display: flex; /* Use Flexbox */
-    align-items: center; /* Vertically center the content */
-    justify-content: flex-start; /* Align content to the left */
-    text-align: left; /* Ensure text is aligned to the left */
-}
-
-      h1 {
-        color: white;
-      }
-      p {
-        color: white;
-        font-size: 1.2rem;
-      }
-      span {
-        color: #00ffff;
+      .team-table-container {
+        flex: 1;
+        box-sizing: border-box;
       }
       table {
+        background-color: #0c2c3a;
+        border-radius: 8px;
         width: 100%;
-        border-collapse: collapse;
       }
       th,
       td {
-        padding: 10px;
+        height: 50px;
+        padding: 3px;
         text-align: left;
+        font-size: 10px;
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-radius: 8pxs;
       }
       th {
         background-color: #2d677d;
-        color: white;
       }
       tr:nth-child(even) {
         background-color: #1a1a1a;
@@ -59,6 +53,7 @@
         background-color: #333;
       }
       .adp-list-container {
+        font-family: Georgia, 'Times New Roman', Times, serif;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -85,6 +80,7 @@
         text-align: center;
         cursor: pointer;
         font-size: 1.2rem;
+        font-weight: bolder;
       }
       .adp-list-close {
         position: absolute;
@@ -96,18 +92,68 @@
         border-radius: 5px;
         cursor: pointer;
       }
+      .adp-list-container table button {
+        background-color: #00ced1;
+        color: #0c2c3a;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .adp-list-container table button:hover {
+        background-color: #00a3b1;
+      }
+
+      .adp-list-container td {
+        padding: 10px;
+        font-weight: bold;
+        font-size: 20px !important;
+        color: #00a3b1 !important;
+      }
+
+      .adp-list-container th {
+        padding: 10px;
+        font-size: 25px;
+        background-color:#1a1a1a;
+        font-weight: bolder;
+        color: #00ced1;
+      }
+
+      .round-pick-info {
+        background-color: #0c2c3a;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
-    <h1>
-      Round: <span th:text="${roundNumber}"></span> Pick:
-      <span th:text="${currentPick}"></span>
-    </h1>
+    <div class="round-pick-info">
+      <h1 style="padding-right: 30px !important;">Round: <span th:text="${roundNumber}"></span></h1>
+      <h1>Pick: <span th:text="${currentPick}"></span></h1>
+    </div>
     <div class="container">
-      <div th:each="player : ${pickedPlayers}">
-        <div class="player-cell">
-          <h1><span th:text="${player.Name}"> <span th:text="${player.Team}"></span></h1>
-        </div>
+      <!-- Loop through each FantasyTeam and display their players in a table -->
+      <div th:each="team : ${mockTeams}" class="team-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th th:text="${team.teamName}"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="player : ${team.roster}">
+              <td th:text="${player.name}"></td>
+              <td th:text="${player.team}"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -159,7 +205,7 @@
                 />
                 <input
                   type="hidden"
-                  th:value="${isRevered}"
+                  th:value="${isReversed}"
                   name="isReversed"
                 />
                 <input
@@ -171,6 +217,11 @@
                   type="hidden"
                   th:value="${numSelections}"
                   name="numSelections"
+                />
+                <input
+                  type="hidden"
+                  th:value="${numOfTeams}"
+                  name="numOfTeams"
                 />
                 <button type="submit">Select</button>
               </form>
@@ -188,11 +239,12 @@
       style="display: none"
     >
       <input type="hidden" id="autoSelectedPlayerId" name="selectedPlayerId" />
-      <input type="hidden" th:value="${isRevered}" name="isReversed" />
+      <input type="hidden" th:value="${isReversed}" name="isReversed" />
       <input type="hidden" th:value="${roundNumber}" name="roundNumber" />
       <input type="hidden" th:value="${userId}" name="userId" />
       <input type="hidden" th:value="${numSelections}" name="numSelections" />
       <input type="hidden" th:value="${currentPick}" name="currentPick" />
+      <input type="hidden" th:value="${numOfTeams}" name="numOfTeams" />
     </form>
 
     <script>
@@ -201,25 +253,45 @@
         adpListContainer.classList.toggle("open");
       }
 
-      function checkTurn() {
-        var userId = "/*[[${userId}]]*/"; // Get userId from Thymeleaf
-        var currentTeamId = "/*[[${currentTeamId}]]*/"; // Get currentTeamId from Thymeleaf
+      function adjustTableWidths() {
+        var numOfTeams = "/*[[${numOfTeams}]]*/";  // Ensure this line is correctly rendered
+        var container = document.querySelector('.container');
+        var containerWidth = container.offsetWidth;
+        var tableWidth = Math.floor((containerWidth * 0.95) / numOfTeams);
 
-        // If it's not the user's turn, auto-pick the first player
+        var tables = document.querySelectorAll('.team-table-container table');
+        tables.forEach(function(table) {
+          table.style.width = tableWidth + 'px';
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        adjustTableWidths();
+      });
+
+      window.addEventListener('resize', function() {
+        adjustTableWidths();
+      });
+
+      function checkTurn() {
+        var userId = "/*[[${userId}]]*/"; 
+        var currentTeamId = "/*[[${currentTeamId}]]*/";
+
+        // If it's not the user's turn, auto-draft to team at currentTeamId
         if (userId !== currentTeamId) {
           setTimeout(function () {
-            // Get the first player from the ADP list
-            var firstPlayerId = document.querySelector(
+
+            var selectedPlayerId = document.querySelector(
               'input[name="selectedPlayerId"]'
             ).value;
 
-            // Set the first player's ID in the hidden form
+            // Set the player's ID in the hidden form
             document.getElementById("autoSelectedPlayerId").value =
-              firstPlayerId;
+              selectedPlayerId;
 
             // Submit the form to auto-pick the first player for the CPU
             document.getElementById("autoPickForm").submit();
-          }, 1200); // 1.2 second delay (1200 milliseconds)
+          }, 1000); // 1.0 second delay
         }
       }
 

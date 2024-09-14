@@ -15,12 +15,15 @@ import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 
 import jakarta.servlet.http.HttpSession;
 
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import java.util.Arrays;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-// Annotate the controller with SessionAttributes
+// SessionAttributes (global variables that are initialized in showDraftBoard and used through the draft)
 @Controller
 @SessionAttributes({ "adpList", "mockTeams", "currentTeamId", "roundNumber", "isReversed" })
 public class DraftController {
@@ -28,10 +31,22 @@ public class DraftController {
     @Autowired
     UserService userService;
 
+    // global var for total num selection to be made in a draft (end-point)
     public int numOfSelections;
+    // globar var for players picked in the draft
     List<AdpPlayer> pickedPlayers = new ArrayList<AdpPlayer>();
 
-    // Initialize and store lists in the session
+    /**
+     * Method to initialize Teams and draft format from setup.html, and then show
+     * the draftBoard.
+     * 
+     * @param numOfTeams
+     * @param mockTeamName
+     * @param draftPosition
+     * @param numOfRounds
+     * @param model
+     * @return
+     */
     @PostMapping("/draft")
     public String showDraftBoard(
             @RequestParam("numOfTeams") int numOfTeams,
@@ -47,34 +62,55 @@ public class DraftController {
         // Set up teams
         List<FantasyTeam> mockTeams = new ArrayList<>();
         for (int i = 0; i < numOfTeams; i++) {
+            // Set teamIDs and teamNames
             String teamID = String.valueOf(i);
             String teamName = "";
             if (i == (draftPosition - 1)) {
+                // set user's teamName to parameter value
                 teamName = mockTeamName;
                 userId = teamID;
             } else {
+                // set default teamName for mock teams
                 teamName = "Mock Team " + (i + 1);
             }
+            // Give each team an empty list of players
             mockTeams.add(new FantasyTeam(teamID, teamName, new ArrayList<AdpPlayer>()));
         }
         boolean isReversed = false;
         int currentPick = 1;
         pickedPlayers = new ArrayList<AdpPlayer>();
-        model.addAttribute("currentPick", currentPick);
-        model.addAttribute("pickedPlayers", pickedPlayers);
-        model.addAttribute("adpList", adpList);
-        model.addAttribute("isReversed", isReversed);
-        model.addAttribute("roundNumber", 1);
-        model.addAttribute("mockTeams", mockTeams);
+        model.addAttribute("numOfTeams", numOfTeams); // number of teams
+        model.addAttribute("currentPick", currentPick); // Current pick number
+        model.addAttribute("pickedPlayers", pickedPlayers); // List of all picked players (empty)
+        model.addAttribute("adpList", adpList); // List of ADP
+        model.addAttribute("isReversed", isReversed); // Set to false, draft will start in forward direction
+        model.addAttribute("roundNumber", 1); // Start at round 1
+        model.addAttribute("mockTeams", mockTeams); // Teams with empty player lists.
         model.addAttribute("currentTeamId", 0); // First team's turn
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", userId); // User's team ID used to check if it's the users turn.
 
         return "draftBoard";
     }
 
+    /**
+     * Method to select a player and add to selected team's roster
+     * 
+     * @param selectedPlayerId
+     * @param userId
+     * @param currentPick
+     * @param adpList
+     * @param mockTeams
+     * @param currentTeamId
+     * @param roundNumber
+     * @param isReversed
+     * @param session
+     * @param model
+     * @return
+     */
     @PostMapping("/draft/select")
     public String selectPlayer(
             @RequestParam("selectedPlayerId") String selectedPlayerId,
+            @RequestParam("numOfTeams") int numOfTeams,
             @RequestParam("userId") String userId,
             @RequestParam("currentPick") int currentPick,
             @ModelAttribute("adpList") List<AdpPlayer> adpList,
@@ -113,16 +149,49 @@ public class DraftController {
                 currentPick++;
             }
         } else {
-            // Auto-select the first player for the CPU
+            AdpPlayer autoSelectedPlayer = null;
+            // Auto-select the player for the CPU
             if (!adpList.isEmpty()) {
-                AdpPlayer autoSelectedPlayer = adpList.get(0);
+                // if roundNumber is greater than 5, check to make sure CPU has players at each position
+                if (roundNumber >= 5) {
+                    // Define the required positions for a complete roster
+                    List<String> requiredPositions = Arrays.asList("QB", "RB", "WR", "TE");
 
-                // Add the player to the current CPU team's roster
-                mockTeams.get(currentTeamId).getRoster().add(autoSelectedPlayer);
-                pickedPlayers.add(autoSelectedPlayer);
-                // Remove the player from the ADP list
-                adpList.remove(autoSelectedPlayer);
-                currentPick++;
+                    // Retrieve the current team's roster
+                    List<AdpPlayer> currentTeamRoster = mockTeams.get(currentTeamId).getRoster();
+
+                    // Find out which positions the team still needs to draft
+                    List<String> neededPositions = new ArrayList<>(requiredPositions);
+                    for (AdpPlayer player : currentTeamRoster) {
+                        neededPositions.remove(player.getPosition());
+                    }
+
+                    // Check if the team still needs to fill any position
+                    if (!neededPositions.isEmpty()) {
+                        // Prioritize drafting a player for the missing position
+                        String nextNeededPosition = neededPositions.get(0); // Select the first needed position
+                        autoSelectedPlayer = adpList.stream()
+                                .filter(player -> player.getPosition().equals(nextNeededPosition))
+                                .findFirst()
+                                .orElse(null);
+                    }
+                }
+
+                // If no players are available for the needed position, select one of the best available players
+                if (autoSelectedPlayer == null) {
+                    Random rand = new Random();
+                    int randomIndex = rand.nextInt(Math.min(3, adpList.size()));
+                    autoSelectedPlayer = adpList.get(randomIndex);
+                }
+
+                if (autoSelectedPlayer != null) {
+                    // Add the selected player to the current team's roster
+                    mockTeams.get(currentTeamId).getRoster().add(autoSelectedPlayer);
+                    pickedPlayers.add(autoSelectedPlayer);
+                    // Remove the player from the ADP list
+                    adpList.remove(autoSelectedPlayer);
+                    currentPick++;
+                }
             }
         }
 
@@ -138,6 +207,7 @@ public class DraftController {
             authenticatedUser.getCompletedMocks().add(mockTeams);
             // Save updated user data
             userService.updateUser(authenticatedUser);
+            model.addAttribute("authenticatedUser", authenticatedUser);
             // Draft is over, show draft ended screen
             model.addAttribute("mockTeams", mockTeams);
             return "draftEnded";
@@ -169,16 +239,58 @@ public class DraftController {
             }
         }
 
+        model.addAttribute("numOfTeams", numOfTeams); // number of teams
         model.addAttribute("pickedPlayers", pickedPlayers);
         model.addAttribute("currentPick", currentPick);
         model.addAttribute("currentTeamId", currentTeamId); // Next team's turn
         model.addAttribute("roundNumber", roundNumber); // Current round number
         model.addAttribute("isReversed", isReversed); // Whether the round is reversed or not
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", userId); // User's teamID
 
         return "draftBoard";
     }
 
+    /**
+     * Method to show teams drafted by an authenticated user
+     * 
+     * @param session
+     * @param model
+     * @return
+     */
+    @GetMapping("/user/teams")
+    public String getUserTeams(HttpSession session, Model model) {
+        // Retrieve the authenticated user from the session
+        User authenticatedUser = (User) session.getAttribute("authenticatedUser");
+        if (authenticatedUser != null) {
+            List<List<FantasyTeam>> userTeams = authenticatedUser.getCompletedMocks();
+            // List to store user teams
+            List<FantasyTeam> matchingTeams = new ArrayList<>();
+
+            // iterate through each List of Teams
+            for (List<FantasyTeam> teamList : userTeams) {
+                // iterate through each team
+                for (FantasyTeam team : teamList) {
+                    // Check if the team name does not start with "Mock Team" (User's Team)
+                    if (!team.getTeamName().startsWith("Mock Team")) {
+                        // Add the team to the list of matching teams
+                        matchingTeams.add(team);
+                    }
+                }
+            }
+            model.addAttribute("completedMocks", matchingTeams);
+        }
+        // Add the user to the model
+        model.addAttribute("authenticatedUser", authenticatedUser);
+        return "userTeams";
+    }
+
+    /**
+     * Method to initialize draft settings before starting draft
+     * 
+     * @param session
+     * @param model
+     * @return
+     */
     @GetMapping("/setup")
     public String setupDraft(HttpSession session, Model model) {
         // Retrieve the authenticated user from the session

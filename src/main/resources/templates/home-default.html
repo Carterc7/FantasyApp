@@ -10,8 +10,8 @@
       .container {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start; /* Align items to the top */
-        height: 90vh; /* Slightly larger height for both columns */
+        align-items: flex-start;
+        height: auto;
         padding-right: 20px;
         padding-left: 20px;
       }
@@ -21,39 +21,38 @@
         flex: 1;
         color: #00ced1;
         display: flex;
-        justify-content: flex-start; /* Align text at the top */
-        align-items: flex-start; /* Align items to the top */
-        flex-direction: column; /* Stack text vertically */
-        height: 72vh; /* Take most of the height of the screen */
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        height: 70vh;
         background-color: #0c2c3a;
-        border-radius: 30px; /* Rounded corners */
-        padding: 20px; /* Padding for text spacing */
+        border-radius: 30px;
+        padding: 20px; 
       }
 
       .left-column h1 {
         font-weight: bolder;
-        font-size: 2.3rem;
+        font-size: 2rem;
         margin: 0;
         padding-left: 110px;
         font-family: Georgia, "Times New Roman", Times, serif;
       }
 
-      /* Style for the horizontal rule (hr) */
       .left-column hr {
         border: none;
-        border-top: 2px solid #00ced1; /* Same color as the text */
+        border-top: 2px solid #00ced1;
         width: 100%;
       }
 
       /* Bullet point list */
       .left-column ul {
         color: #00ced1;
-        font-size: 1.4rem; /* Smaller than the title */
+        font-size: 1.2rem;
         padding-left: 45px;
       }
 
       .left-column ul li {
-        margin-bottom: 10px; /* Add spacing between bullets */
+        margin-bottom: 10px;
         padding-top: 10px;
       }
 
@@ -66,18 +65,18 @@
         font-size: x-large;
         border-radius: 8px;
         text-align: center;
-        margin-left: 170px;
-        margin-top: 1px;
+        margin-top: 40px;
+        margin-left: 135px;
         padding-bottom: 20px;
-        width: 250px;
-        height: 50px;
-        line-height: 50px; /* Center text vertically */
+        width: 300px;
+        height: 100px;
         text-decoration: none;
+        line-height: 100px;
         font-family: Georgia, "Times New Roman", Times, serif;
       }
 
       .left-column .button-link:hover {
-        background-color: #d0e6f2; /* Slightly darker shade on hover */
+        background-color: #d0e6f2;
       }
 
       /* Right column for the image */
@@ -89,12 +88,11 @@
         padding-left: 50px;
       }
 
-      /* Image styling with circular border */
+      /* Image styling */
       .right-column img {
-        border-radius: 50%;
         border: 5px solid #00ced1;
-        width: 520px;
-        height: 520px;
+        width: 70vh;
+        height: 70vh;
         object-fit: cover;
       }
     </style>
@@ -114,14 +112,14 @@
             <li>Practice strategies to build a strong team.</li>
             <li>Compare your roster with others at the end of the draft.</li>
           </ul>
-          <!-- Button as a link -->
-          <a class="button-link" href="http://127.0.0.1:8080/setup"
-            >Draft Now</a
+          <!-- Draft Page button -->
+          <a class="button-link" href="http://127.0.0.1:8080/login"
+            >Login to Draft</a
           >
         </div>
         <!-- Right column for the image -->
         <div class="right-column">
-          <img th:src="@{/images/mocklogo.jpeg}" alt="Mock O' Clock Logo" />
+          <img th:src="@{/images/mock-o-clock.jpeg}" alt="Mock O' Clock Logo" />
         </div>
       </div>
     </div>

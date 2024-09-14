@@ -6,23 +6,22 @@
 >
   <head>
     <style>
-      /* Styles for centering the form */
       .container {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 75vh; /* Full viewport height */
-        background-color: black; /* Background color for body */
+        height: auto;
+        background-color: black;
       }
 
       .form-container {
-        background-color: #0c2c3a; /* Background color for the form container */
+        background-color: #0c2c3a;
         width: 500px;
         margin-top: 0px;
         margin-bottom: 20px;
-        border-radius: 15px; /* Rounded corners for the form container */
-        padding: 20px; /* Padding inside the form container */
-        color: #00ced1; /* Text color inside the form */
+        border-radius: 15px; 
+        padding: 20px;
+        color: #00ced1;
       }
 
       .form-container h1 {
@@ -38,19 +37,19 @@
 
       form input, form select, form button {
         display: block;
-        width: 100%; /* Full width of the form container */
+        width: 100%; 
         padding: 10px;
         margin-bottom: 15px;
-        border: 1px solid #00ffff; /* Border color */
-        border-radius: 5px; /* Rounded borders for inputs and button */
-        background-color: #1a1a1a; /* Background color for inputs and button */
-        color: #00ffff; /* Text color for inputs and button */
+        border: 1px solid #00ffff;
+        border-radius: 5px; 
+        background-color: #1a1a1a; 
+        color: #00ffff;
       }
 
       form button {
-        cursor: pointer; /* Pointer cursor for button */
-        background-color: #00ced1; /* Button background color */
-        border: none; /* Remove default border */
+        cursor: pointer;
+        background-color: #00ced1;
+        border: none; 
         font-weight: bold;
         font-size: 1.2rem;
         color: #0c2c3a;
@@ -58,7 +57,7 @@
       }
 
       form button:hover {
-        background-color: #00b2a1; /* Darker button color on hover */
+        background-color: #00b2a1;
       }
     </style>
   </head>
@@ -81,11 +80,11 @@
             type="number"
             id="numOfRounds"
             name="numOfRounds"
-            min="2"
+            min="1"
             required
           />
 
-          <label for="mockTeamName">Mock Team Name:</label>
+          <label for="mockTeamName">Team Name:</label>
           <input
             type="text"
             id="mockTeamName"

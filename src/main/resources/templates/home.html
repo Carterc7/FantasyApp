@@ -10,8 +10,8 @@
       .container {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start; /* Align items to the top */
-        height: 90vh; /* Slightly larger height for both columns */
+        align-items: flex-start;
+        height: auto;
         padding-right: 20px;
         padding-left: 20px;
       }
@@ -21,13 +21,13 @@
         flex: 1;
         color: #00ced1;
         display: flex;
-        justify-content: flex-start; /* Align text at the top */
-        align-items: flex-start; /* Align items to the top */
-        flex-direction: column; /* Stack text vertically */
-        height: 60vh; /* Take most of the height of the screen */
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-direction: column;
+        height: 60vh; 
         background-color: #0c2c3a;
-        border-radius: 30px; /* Rounded corners */
-        padding: 20px; /* Padding for text spacing */
+        border-radius: 30px;
+        padding: 20px; 
       }
 
       .left-column h1 {
@@ -38,22 +38,21 @@
         font-family: Georgia, "Times New Roman", Times, serif;
       }
 
-      /* Style for the horizontal rule (hr) */
       .left-column hr {
         border: none;
-        border-top: 2px solid #00ced1; /* Same color as the text */
+        border-top: 2px solid #00ced1;
         width: 100%;
       }
 
       /* Bullet point list */
       .left-column ul {
         color: #00ced1;
-        font-size: 1.2rem; /* Smaller than the title */
+        font-size: 1.2rem;
         padding-left: 45px;
       }
 
       .left-column ul li {
-        margin-bottom: 10px; /* Add spacing between bullets */
+        margin-bottom: 10px;
         padding-top: 10px;
       }
 
@@ -71,13 +70,13 @@
         padding-bottom: 20px;
         width: 200px;
         height: 50px;
-        line-height: 50px; /* Center text vertically */
+        line-height: 50px;
         text-decoration: none;
         font-family: Georgia, "Times New Roman", Times, serif;
       }
 
       .left-column .button-link:hover {
-        background-color: #d0e6f2; /* Slightly darker shade on hover */
+        background-color: #d0e6f2; 
       }
 
       /* Right column for the image */
@@ -91,10 +90,9 @@
 
       /* Image styling with circular border */
       .right-column img {
-        border-radius: 50%;
         border: 5px solid #00ced1;
-        width: 450px;
-        height: 450px;
+        width: 60vh;
+        height: 60vh;
         object-fit: cover;
       }
 
@@ -141,7 +139,7 @@
         </div>
         <!-- Right column for the image -->
         <div class="right-column">
-          <img th:src="@{/images/mocklogo.jpeg}" alt="Mock O' Clock Logo" />
+          <img th:src="@{/images/mock-o-clock.jpeg}" alt="Mock O' Clock Logo" />
         </div>
       </div>
     </div>

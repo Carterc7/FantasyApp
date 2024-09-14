@@ -23,12 +23,14 @@
       body {
         height: 100%;
         margin: 0;
+        display: flex;
+        flex-direction: column;
       }
 
       .content {
-        min-height: 100%;
-        padding-bottom: 40px;
+        flex: 1;
         padding-top: 130px;
+        padding-bottom: 70px;
         box-sizing: border-box;
       }
 
@@ -36,24 +38,24 @@
         position: fixed;
         z-index: 100;
         border-bottom: 2px solid #00ffff;
-        height: 110px;
+        height: 90px;
         width: 100%;
         background-color: #2d677d;
-        color: white;
+        top: 0;
       }
 
       .footer-section {
-        position: fixed;
-        bottom: 0;
-        left: 0;
+        flex-shrink: 0;
         width: 100%;
         height: 50px;
         background-color: #2d677d;
         font-family: Georgia, "Times New Roman", Times, serif;
         color: #0c2c3a;
         font-weight: bold;
-        z-index: 100;
         border-top: 2px solid #00ffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       .header-section .navbar-brand,
@@ -62,7 +64,7 @@
         color: #0c2c3a;
         font-weight: bolder;
         font-family: Georgia, "Times New Roman", Times, serif;
-        font-size: 2rem; /* Match the size of the "Mock O' Clock" text */
+        font-size: 2rem;
       }
 
       .dropdown-item {
@@ -75,7 +77,6 @@
         background-color: black;
       }
 
-      /* Justify items to the right */
       .navbar .container-fluid {
         justify-content: space-between;
       }
@@ -83,6 +84,26 @@
       .dropdown-menu {
         background-color: #0c2c3a;
         border-radius: 8px;
+        margin-top: 0 !important;
+      }
+
+      .logo {
+        margin-bottom: 50px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+      }
+
+      .navbar-brand {
+        margin-bottom: 0;
+      }
+
+      .navbar-nav {
+        margin-top: auto;
       }
     </style>
   </head>
@@ -96,12 +117,12 @@
             <img
               th:src="@{/images/mock-o-clock.jpeg}"
               alt="Mock O' Clock Logo"
-              class="rounded-circle"
+              class="rounded-circle logo"
               style="
-                width: 85px;
-                height: 85px;
-                margin-right: 10px;
-                margin-top: 0;
+                width: 80px;
+                height: 80px;
+                padding: 10px;
+                margin-top: 50px !important;
               "
             />
             <a
@@ -110,7 +131,7 @@
               style="
                 font-weight: bold !important;
                 font-family: Georgia, 'Times New Roman', Times, serif;
-                font-size: 4rem !important;
+                font-size: 3rem !important;
                 text-shadow: 2px 2px 2px #00ced1, 4px 4px 0px #00ced1,
                   2px 2px 2px #00ced1, 2px 2px 2px #00ced1 !important;
               "
@@ -131,10 +152,10 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <!-- Align items to the right -->
+              <!-- Nav Links -->
               <li class="nav-item" style="padding-right: 15px">
                 <a
-                th:href="${authenticatedUser != null ? '/' : '/'}"
+                  th:href="${authenticatedUser != null ? '/' : '/'}"
                   class="nav-link"
                   aria-current="page"
                   href="http://127.0.0.1:8080/"
@@ -142,9 +163,10 @@
                 >
               </li>
               <li class="nav-item" style="padding-right: 15px">
-                <a 
-                th:href="${authenticatedUser != null ? '/adp/list' : '/adp/list'}"
-                class="nav-link" href="http://127.0.0.1:8080/adp/list"
+                <a
+                  th:href="${authenticatedUser != null ? '/adp/list' : '/adp/list'}"
+                  class="nav-link"
+                  href="http://127.0.0.1:8080/adp/list"
                   >ADP</a
                 >
               </li>
@@ -155,6 +177,7 @@
                   >Draft</a
                 >
               </li>
+              <!-- Dropdown to display Login/Register or Logout/MyTeams -->
               <li class="nav-item dropdown" style="padding-right: 15px">
                 <a
                   class="nav-link dropdown-toggle"
@@ -166,6 +189,7 @@
                 >
                   Account
                 </a>
+                <!-- If not logged in display Login/Register -->
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li th:if="${authenticatedUser == null}">
                     <a class="dropdown-item" href="http://localhost:8080/login"
@@ -179,9 +203,15 @@
                       >Register</a
                     >
                   </li>
+                  <!-- If authenticatedLogin display Logout/MyTeams -->
                   <li th:if="${authenticatedUser != null}">
                     <a class="dropdown-item" href="http://127.0.0.1:8080/logout"
                       >Logout</a
+                    >
+                  </li>
+                  <li th:if="${authenticatedUser != null}">
+                    <a th:href="@{/user/teams}" class="dropdown-item"
+                      >My Teams</a
                     >
                   </li>
                 </ul>
@@ -195,18 +225,20 @@
     <!-- Content -->
     <div class="content">
       <section layout:fragment="content">
-        <!-- The body content will be injected here -->
+        <!-- Body of the page -->
       </section>
     </div>
 
     <!-- Footer -->
-    <div
-      class="footer-section"
-      style="display: flex; justify-items: center; justify-content: center"
-    >
+    <div class="footer-section">
       <h6
         align="left"
-        style="margin-bottom: 0; padding-top: 15px; padding-left: 10px; font-size: 1rem;"
+        style="
+          margin-bottom: 0;
+          padding-top: 15px;
+          padding-left: 10px;
+          font-size: 1rem;
+        "
       >
         Copyright &copy; 2024 - Mock O' Clock
       </h6>

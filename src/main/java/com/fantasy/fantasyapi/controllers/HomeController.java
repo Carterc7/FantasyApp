@@ -10,6 +10,12 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
+    /**
+     * Method to display home page conditionally if authenticatedUser
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/")
     public String showHomePage(HttpSession session, Model model) {
         // Retrieve the authenticated user from the session

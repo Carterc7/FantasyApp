@@ -14,7 +14,7 @@ public class User
     private String password;
     @Id
     private String userID;
-     // Change completedMocks to a list of lists
+    // User's list of completed teams, includes mock teams
     private List<List<FantasyTeam>> completedMocks = new ArrayList<>();
     
     public User() {

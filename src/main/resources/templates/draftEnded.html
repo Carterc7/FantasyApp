@@ -1,15 +1,108 @@
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}"
->
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/defaultTemplate}">
   <head>
-    
+    <title>Draft Ended</title>
+    <style>
+      body {
+        background-color: black !important;
+        color: #00ced1;
+      }
+
+      .team-container {
+        align-items: center;
+        background-color: #0c2c3a;
+        border-radius: 30px;
+        padding: 20px;
+        margin: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        color: #00ced1;
+      }
+
+      .team-container h2 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .team-container h3 {
+        font-family: Georgia, "Times New Roman", Times, serif;
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+        color: lightblue;
+      }
+
+      .team-container ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      .team-container li {
+        background-color: #0e3d4e;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        color: white;
+      }
+
+      .team-container li:hover {
+        background-color: #1f5d7a;
+      }
+    </style>
   </head>
-  <body style="background-color: black !important">
+  <body>
     <div layout:fragment="content">
-       <h1>Draft Ended!</h1>
+      <h1 style="text-align: center; font-family: Georgia, 'Times New Roman', Times, serif; font-weight: bolder; font-size: 2rem;">Draft Results</h1>
+
+      <!-- Iterate over each team in the mockTeams list -->
+      <div th:each="team : ${mockTeams}" class="team-container">
+        <h2 th:text="'Team: ' + ${team.teamName}"></h2>
+
+        <!-- Group players by position -->
+        <div>
+          <h3>Quarterbacks (QB)</h3>
+          <ul>
+            <li
+              th:each="player : ${team.roster}"
+              th:if="${player.position} == 'QB'"
+              th:text="${player.name}"
+            ></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Running Backs (RB)</h3>
+          <ul>
+            <li
+              th:each="player : ${team.roster}"
+              th:if="${player.position} == 'RB'"
+              th:text="${player.name}"
+            ></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Wide Receivers (WR)</h3>
+          <ul>
+            <li
+              th:each="player : ${team.roster}"
+              th:if="${player.position} == 'WR'"
+              th:text="${player.name}"
+            ></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Tight Ends (TE)</h3>
+          <ul>
+            <li
+              th:each="player : ${team.roster}"
+              th:if="${player.position} == 'TE'"
+              th:text="${player.name}"
+            ></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </body>
 </html>
+

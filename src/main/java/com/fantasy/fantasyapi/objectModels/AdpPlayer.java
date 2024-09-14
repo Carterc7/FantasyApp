@@ -39,6 +39,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
         @JsonProperty("AverageDraftPosition2QB")
         private int averageDraftPosition2QB;
         
+        
+        public AdpPlayer(String playerID, String name, String team, String position, int averageDraftPosition,
+                int averageDraftPositionPPR, String byeWeek, String auctionValue, String auctionValuePPR,
+                String averageDraftPositionIDP, String averageDraftPositionRookie, int averageDraftPositionDynasty,
+                int averageDraftPosition2QB) {
+            this.playerID = playerID;
+            this.name = name;
+            this.team = team;
+            this.position = position;
+            this.averageDraftPosition = averageDraftPosition;
+            this.averageDraftPositionPPR = averageDraftPositionPPR;
+            this.byeWeek = byeWeek;
+            this.auctionValue = auctionValue;
+            this.auctionValuePPR = auctionValuePPR;
+            this.averageDraftPositionIDP = averageDraftPositionIDP;
+            this.averageDraftPositionRookie = averageDraftPositionRookie;
+            this.averageDraftPositionDynasty = averageDraftPositionDynasty;
+            this.averageDraftPosition2QB = averageDraftPosition2QB;
+        }
+        
+        public AdpPlayer() {
+        }
+
         public String getPlayerID() {
             return playerID;
         }

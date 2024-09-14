@@ -17,6 +17,11 @@ public class RegistrationController
     @Autowired
     UserService userService;
 
+    /**
+     * Method to show registration
+     * @param model
+     * @return
+     */
     @GetMapping("/")
     public String showRegistrationForm(Model model) 
     {
@@ -24,6 +29,12 @@ public class RegistrationController
         return "registration.html";
     }
 
+    /**
+     * Method to process registration form and add user to db
+     * @param model
+     * @param user
+     * @return
+     */
     @PostMapping("/process_register")
     public String processRegister(Model model, User user) 
     {  

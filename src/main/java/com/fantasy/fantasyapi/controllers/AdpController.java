@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.fantasy.fantasyapi.apiCalls.GetDraftAdp;
 import com.fantasy.fantasyapi.leagueModels.User;
@@ -37,6 +36,12 @@ public class AdpController {
     @Autowired
     AdpPlayerService adpPlayerService;
 
+    /**
+     * Method to get ADP list and display
+     * @param session
+     * @param model
+     * @return
+     */
     @GetMapping("/list")
     public String showAdpList(HttpSession session, Model model) {
         // Retrieve the authenticated user from the session

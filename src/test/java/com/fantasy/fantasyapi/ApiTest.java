@@ -1,21 +1,16 @@
 package com.fantasy.fantasyapi;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.util.Assert;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fantasy.fantasyapi.apiCalls.GetAllPlayers;
 import com.fantasy.fantasyapi.objectModels.EspnPlayer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
 
 class ApiTest {
 
-    // Mocking the ObjectMapper to avoid real JSON parsing
-    private ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
     private GetAllPlayers getAllPlayers = new GetAllPlayers();
 
     @Test

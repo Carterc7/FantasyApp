@@ -43,7 +43,6 @@ public class AdpPlayerService
         return adpRepository.save(exisitingPlayer);
     }
 
-    // New method to get all AdpPlayers
     public List<AdpPlayer> getAllAdpPlayers() 
     {
         return adpRepository.findAll();

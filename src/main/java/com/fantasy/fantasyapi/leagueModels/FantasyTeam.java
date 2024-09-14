@@ -1,13 +1,11 @@
 package com.fantasy.fantasyapi.leagueModels;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
-import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 
+// Model for a fantasy team, each having a name, id, and roster of players
 public class FantasyTeam 
 {
     @Id
@@ -18,6 +16,7 @@ public class FantasyTeam
     
     public FantasyTeam() {
     }
+
     public FantasyTeam(String teamID, String teamName, List<AdpPlayer> roster) {
         this.teamID = teamID;
         this.teamName = teamName;
