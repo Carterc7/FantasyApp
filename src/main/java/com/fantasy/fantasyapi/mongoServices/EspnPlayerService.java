@@ -11,18 +11,19 @@ import com.fantasy.fantasyapi.repository.EspnPlayerRepository;
 
 @Service
 @Component
-public class EspnPlayerService 
-{
+public class EspnPlayerService {
     @Autowired
     private EspnPlayerRepository espnRepository;
 
-    public Optional<EspnPlayer> findPlayerByPlayerID(String playerID)
-    {
+    public Optional<EspnPlayer> findPlayerByPlayerID(String playerID) {
         return espnRepository.findPlayerByPlayerID(playerID);
     }
 
-    public EspnPlayer updateEspnPlayer(EspnPlayer EspnPlayer)
-    {
+    public Optional<EspnPlayer> findPlayerByEspnName(String espnName) {
+        return espnRepository.findPlayerByEspnName(espnName);
+    }
+
+    public EspnPlayer updateEspnPlayer(EspnPlayer EspnPlayer) {
         EspnPlayer exisitingPlayer = espnRepository.findById(EspnPlayer.getPlayerID()).get();
         exisitingPlayer.setAge(EspnPlayer.getAge());
         exisitingPlayer.setEspnHeadshot(EspnPlayer.getEspnHeadshot());

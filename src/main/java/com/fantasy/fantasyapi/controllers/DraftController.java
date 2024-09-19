@@ -10,14 +10,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.fantasy.fantasyapi.apiCalls.GetDraftAdp;
 import com.fantasy.fantasyapi.leagueModels.FantasyTeam;
 import com.fantasy.fantasyapi.leagueModels.User;
+import com.fantasy.fantasyapi.mongoServices.EspnPlayerService;
+import com.fantasy.fantasyapi.mongoServices.TeamScheduleService;
 import com.fantasy.fantasyapi.mongoServices.UserService;
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.EspnPlayer;
+import com.fantasy.fantasyapi.objectModels.TeamSchedule;
 
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.SessionAttributes;
 import java.util.Arrays;
 
@@ -30,6 +36,12 @@ public class DraftController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private EspnPlayerService espnPlayerService;
+
+    @Autowired
+    private TeamScheduleService teamScheduleService;
 
     // global var for total num selection to be made in a draft (end-point)
     public int numOfSelections;
@@ -152,7 +164,8 @@ public class DraftController {
             AdpPlayer autoSelectedPlayer = null;
             // Auto-select the player for the CPU
             if (!adpList.isEmpty()) {
-                // if roundNumber is greater than 5, check to make sure CPU has players at each position
+                // if roundNumber is greater than 5, check to make sure CPU has players at each
+                // position
                 if (roundNumber >= 5) {
                     // Define the required positions for a complete roster
                     List<String> requiredPositions = Arrays.asList("QB", "RB", "WR", "TE");
@@ -177,7 +190,8 @@ public class DraftController {
                     }
                 }
 
-                // If no players are available for the needed position, select one of the best available players
+                // If no players are available for the needed position, select one of the best
+                // available players
                 if (autoSelectedPlayer == null) {
                     Random rand = new Random();
                     int randomIndex = rand.nextInt(Math.min(3, adpList.size()));
@@ -248,6 +262,31 @@ public class DraftController {
         model.addAttribute("userId", userId); // User's teamID
 
         return "draftBoard";
+    }
+
+    @PostMapping("/player-details")
+    public String getPlayerByEspnName(@RequestParam("espnName") String espnName, Model model) {
+        System.out.println("Player name provided: " + espnName);
+        Optional<EspnPlayer> player = espnPlayerService.findPlayerByEspnName(espnName);
+        if (player.isPresent()) {
+            EspnPlayer espnPlayer = player.get();
+            System.out.println(espnPlayer.getEspnName());
+            
+            // Fetch team schedule by team abbreviation
+            String teamAbv = espnPlayer.getTeam();
+            Optional<List<TeamSchedule>> teamSchedule = teamScheduleService.findScheduleByTeam(teamAbv);
+
+            // Add team schedule to the model if present
+            if (teamSchedule.isPresent()) {
+                model.addAttribute("teamSchedule", teamSchedule.get());
+            } else {
+                model.addAttribute("teamSchedule", "No schedule available for this team.");
+            }
+            model.addAttribute("espnPlayer", espnPlayer);
+            return "player-details";
+        } else {
+            return "error";
+        }
     }
 
     /**

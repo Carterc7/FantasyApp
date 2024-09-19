@@ -3,9 +3,13 @@ package com.fantasy.fantasyapi;
 import com.fantasy.fantasyapi.apiCalls.GetDraftAdp;
 import com.fantasy.fantasyapi.controllers.DraftController;
 import com.fantasy.fantasyapi.objectModels.AdpPlayer;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +18,12 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 class DraftTest {
+
+    @BeforeEach
+    void setUp() {
+        // Initialize mocks before each test
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void testShowDraftBoard() {
@@ -42,4 +52,5 @@ class DraftTest {
         // Verify the returned view name
         assertEquals("draftBoard", viewName);
     }
+
 }

@@ -12,4 +12,5 @@ import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 public interface EspnPlayerRepository extends MongoRepository<EspnPlayer, String>
 {
     Optional<EspnPlayer> findPlayerByPlayerID(String playerID);
+    Optional<EspnPlayer> findPlayerByEspnName(String espnName);
 }

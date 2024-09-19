@@ -21,6 +21,7 @@ public class LoginController {
 
     /**
      * Method to show login
+     * 
      * @return
      */
     @GetMapping("/login")
@@ -30,6 +31,7 @@ public class LoginController {
 
     /**
      * Method to perform user login and add User to the session
+     * 
      * @param username
      * @param password
      * @param model
@@ -64,12 +66,15 @@ public class LoginController {
 
     /**
      * Method to logout the user and remove from the session
+     * 
      * @param sessionStatus
      * @return
      */
     @GetMapping("/logout")
-    public String logout(SessionStatus sessionStatus) {
+    public String logout(SessionStatus sessionStatus, HttpSession httpSession) {
         System.out.println("User logged out.");
+        // Invalidate the current session to clear all session attributes
+        httpSession.invalidate();
         sessionStatus.setComplete(); // clear the session
         return "redirect:/login";
     }

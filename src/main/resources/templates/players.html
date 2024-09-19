@@ -17,7 +17,7 @@
         color: #00ced1;
         font-family: Arial, sans-serif;
         border-collapse: separate;
-        border-spacing: 0; 
+        border-spacing: 0;
       }
 
       th {
@@ -48,7 +48,6 @@
         background-color: #333;
       }
 
-      /* Rounded corners for the table */
       table tr:first-child th:first-child {
         border-top-left-radius: 20px;
       }
@@ -77,6 +76,21 @@
         font-size: 2rem;
         font-weight: bold;
       }
+
+      button {
+        background-color: #2d677d;
+        color:#00ced1;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #235160;
+      }
     </style>
   </head>
   <body>
@@ -91,6 +105,7 @@
             <th>ADP</th>
             <th>ADP PPR</th>
             <th>ADP Dynasty</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -101,6 +116,16 @@
             <td th:text="${player.averageDraftPosition}"></td>
             <td th:text="${player.averageDraftPositionPPR}"></td>
             <td th:text="${player.averageDraftPositionDynasty}"></td>
+            <td>
+              <form th:action="@{/player-details}" method="post">
+                <input
+                  type="hidden"
+                  th:value="${player.name}"
+                  name="espnName"
+                />
+                <button type="submit">View Details</button>
+              </form>
+            </td>
           </tr>
         </tbody>
       </table>
