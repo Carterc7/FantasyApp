@@ -1,4 +1,4 @@
-# FantasyApp
+# Carter Campbell's Fantasy Football Mock Draft Simulator
 View this repository: https://github.com/Carterc7/FantasyApp
 <br/>
 This website is a Fantasy Football Mock Draft Simulator, where users can compete in mock drafts against a set number of CPUs. Login to draft today!
