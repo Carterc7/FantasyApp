@@ -1,3 +1,3 @@
 # FantasyApp
-(IN PROGRESS) My largest project to date. Create or join a fantasy football league where you can draft your offense AND your defense!
-Implements external API's, MVC Design Pattern, and MongoDB. Back-end is near completion with the front-end coming soon!
+This website is a Fantasy Football Mock Draft Simulator, where users can compete in mock drafts against a set number of CPU's. Login to draft today!
+Implements external APIs for unique and accurate player data.
