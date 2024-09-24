@@ -26,6 +26,6 @@ public class HomeController {
         }
         // Add the user to the model
         model.addAttribute("authenticatedUser", authenticatedUser);
-        return "home.html";
+        return "index.html";
     }
 }
