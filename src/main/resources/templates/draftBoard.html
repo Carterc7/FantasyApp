@@ -53,7 +53,7 @@
         background-color: #333;
       }
       .adp-list-container {
-        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-family: Georgia, "Times New Roman", Times, serif;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -116,26 +116,30 @@
       .adp-list-container th {
         padding: 10px;
         font-size: 25px;
-        background-color:#1a1a1a;
+        background-color: #1a1a1a;
         font-weight: bolder;
         color: #00ced1;
       }
 
       .round-pick-info {
+        width: 100%;
+        border-bottom: #00ced1 2px solid;
         background-color: #0c2c3a;
         border-radius: 8px;
         margin-bottom: 10px;
         display: flex;
         justify-content: center;
         flex-direction: row;
-        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-family: Georgia, "Times New Roman", Times, serif;
         font-weight: bold;
       }
     </style>
   </head>
   <body>
     <div class="round-pick-info">
-      <h1 style="padding-right: 30px !important;">Round: <span th:text="${roundNumber}"></span></h1>
+      <h1 style="padding-right: 30px !important">
+        Round: <span th:text="${roundNumber}"></span>
+      </h1>
       <h1>Pick: <span th:text="${currentPick}"></span></h1>
     </div>
     <div class="container">
@@ -254,33 +258,42 @@
       }
 
       function adjustTableWidths() {
-        var numOfTeams = "/*[[${numOfTeams}]]*/";  // Ensure this line is correctly rendered
-        var container = document.querySelector('.container');
+        var numOfTeams = "/*[[${numOfTeams}]]*/"; // Ensure this line is correctly rendered
+        var container = document.querySelector(".container");
         var containerWidth = container.offsetWidth;
         var tableWidth = Math.floor((containerWidth * 0.95) / numOfTeams);
 
-        var tables = document.querySelectorAll('.team-table-container table');
-        tables.forEach(function(table) {
-          table.style.width = tableWidth + 'px';
+        var tables = document.querySelectorAll(".team-table-container table");
+        tables.forEach(function (table) {
+          table.style.width = tableWidth + "px";
         });
       }
 
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener("DOMContentLoaded", function () {
         adjustTableWidths();
       });
 
-      window.addEventListener('resize', function() {
+      window.addEventListener("resize", function () {
         adjustTableWidths();
       });
 
       function checkTurn() {
-        var userId = "/*[[${userId}]]*/"; 
+        var userId = "/*[[${userId}]]*/";
         var currentTeamId = "/*[[${currentTeamId}]]*/";
+
+        if (userId === currentTeamId.toString()) {
+          // It's the user's turn, so add the text "You're on the clock!"
+          var roundPickInfo = document.querySelector(".round-pick-info");
+          var clockText = document.createElement("h1");
+          clockText.textContent = "You're on the clock!";
+          clockText.style.color = "green";
+          clockText.style.marginLeft = "20px";
+          roundPickInfo.appendChild(clockText);
+        }
 
         // If it's not the user's turn, auto-draft to team at currentTeamId
         if (userId !== currentTeamId) {
           setTimeout(function () {
-
             var selectedPlayerId = document.querySelector(
               'input[name="selectedPlayerId"]'
             ).value;

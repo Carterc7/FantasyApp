@@ -111,10 +111,15 @@
   <body>
     <div layout:fragment="content">
       <a
-        href="/adp/list"
-        style="color: #00ced1; text-decoration: none; font-weight: bold; margin-left: 20px;"
+        href="/user/teams"
+        style="
+          color: #00ced1;
+          text-decoration: none;
+          font-weight: bold;
+          margin-left: 20px;
+        "
       >
-        &larr; Back to Players
+        &larr; Back to Completed Teams
       </a>
       <div class="player-container">
         <!-- Player Headshot and Name Row -->
@@ -197,7 +202,9 @@
                   <strong>Game Week:</strong>
                   <span th:text="${schedule.gameWeek}"></span>
                   <span>: </span>
-                  <span th:text="${#strings.substring(schedule.gameDate, 0, 4)}"></span>
+                  <span
+                    th:text="${#strings.substring(schedule.gameDate, 0, 4)}"
+                  ></span>
                 </p>
                 <p>
                   <strong>Opponent:</strong>

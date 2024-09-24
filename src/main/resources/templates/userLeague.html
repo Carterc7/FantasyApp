@@ -4,7 +4,7 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>User Teams</title>
+    <title>User League</title>
     <style>
       body {
         background-color: black !important;
@@ -54,15 +54,16 @@
       .team-container li:hover {
         background-color: #1f5d7a;
       }
-
-      span:hover {
-        color: white;
-        cursor: pointer;
-      }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
+        <a
+        href="/user/teams"
+        style="color: #00ced1; text-decoration: none; font-weight: bold; margin-left: 40px;"
+      >
+        &larr; Back to Completed Teams
+      </a>
       <h1
         style="
           text-align: center;
@@ -71,7 +72,7 @@
           font-size: 2rem;
         "
       >
-        Completed Teams
+        League Results
       </h1>
 
       <!-- Iterate over each completed mock (list of teams) -->
@@ -81,8 +82,7 @@
           <h2>
             <a
               th:href="@{/league/teams(teamName=${team.teamName})}"
-              style="color: #00ced1 
-              !important; text-decoration: none; font-weight: bolder !important; font-size: 2rem !important;"
+              style="color: #00ced1; text-decoration: none"
             >
               Team: <span th:text="${team.teamName}"></span>
             </a>

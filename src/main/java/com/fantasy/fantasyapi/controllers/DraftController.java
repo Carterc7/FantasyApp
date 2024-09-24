@@ -265,13 +265,15 @@ public class DraftController {
     }
 
     @PostMapping("/player-details")
-    public String getPlayerByEspnName(@RequestParam("espnName") String espnName, Model model) {
-        System.out.println("Player name provided: " + espnName);
+    public String getPlayerByEspnName(@RequestParam("espnName") String espnName, Model model, HttpSession session) {
+        // Retrieve authenticatedUser from session
+        User authenticatedUser = (User) session.getAttribute("authenticatedUser");
+        if (authenticatedUser != null) {
+            model.addAttribute("authenticatedUser", authenticatedUser);
+        }
         Optional<EspnPlayer> player = espnPlayerService.findPlayerByEspnName(espnName);
         if (player.isPresent()) {
             EspnPlayer espnPlayer = player.get();
-            System.out.println(espnPlayer.getEspnName());
-            
             // Fetch team schedule by team abbreviation
             String teamAbv = espnPlayer.getTeam();
             Optional<List<TeamSchedule>> teamSchedule = teamScheduleService.findScheduleByTeam(teamAbv);
@@ -284,6 +286,33 @@ public class DraftController {
             }
             model.addAttribute("espnPlayer", espnPlayer);
             return "player-details";
+        } else {
+            return "error";
+        }
+    }
+
+    @PostMapping("/team/player-details")
+    public String getTeamPlayerByEspnName(@RequestParam("espnName") String espnName, Model model, HttpSession session) {
+        // Retrieve authenticatedUser from session
+        User authenticatedUser = (User) session.getAttribute("authenticatedUser");
+        if (authenticatedUser != null) {
+            model.addAttribute("authenticatedUser", authenticatedUser);
+        }
+        Optional<EspnPlayer> player = espnPlayerService.findPlayerByEspnName(espnName);
+        if (player.isPresent()) {
+            EspnPlayer espnPlayer = player.get();
+            // Fetch team schedule by team abbreviation
+            String teamAbv = espnPlayer.getTeam();
+            Optional<List<TeamSchedule>> teamSchedule = teamScheduleService.findScheduleByTeam(teamAbv);
+
+            // Add team schedule to the model if present
+            if (teamSchedule.isPresent()) {
+                model.addAttribute("teamSchedule", teamSchedule.get());
+            } else {
+                model.addAttribute("teamSchedule", "No schedule available for this team.");
+            }
+            model.addAttribute("espnPlayer", espnPlayer);
+            return "team-player-details";
         } else {
             return "error";
         }
@@ -321,6 +350,51 @@ public class DraftController {
         // Add the user to the model
         model.addAttribute("authenticatedUser", authenticatedUser);
         return "userTeams";
+    }
+
+    @GetMapping("/league/teams")
+    public String getUserLeague(
+            @RequestParam("teamName") String teamName,
+            HttpSession session,
+            Model model) {
+        // Retrieve the authenticated user from the session
+        User authenticatedUser = (User) session.getAttribute("authenticatedUser");
+
+        if (authenticatedUser != null) {
+            // Retrieve the user's completed mocks (List<List<FantasyTeam>>)
+            List<List<FantasyTeam>> userTeams = authenticatedUser.getCompletedMocks();
+
+            // List to store the teams that match the given team name
+            List<FantasyTeam> matchingTeamList = null;
+
+            // Iterate through each List of FantasyTeam
+            for (List<FantasyTeam> teamList : userTeams) {
+                // Check if any team in the list matches the teamName
+                for (FantasyTeam team : teamList) {
+                    if (team.getTeamName().equalsIgnoreCase(teamName)) {
+                        // If a match is found, store this team list
+                        matchingTeamList = teamList;
+                        break;
+                    }
+                }
+                if (matchingTeamList != null) {
+                    // Stop iterating if we've found the matching team list
+                    break;
+                }
+            }
+
+            // Add the matching teams to the model if found
+            if (matchingTeamList != null) {
+                model.addAttribute("completedMocks", matchingTeamList);
+            } else {
+                model.addAttribute("errorMessage", "No matching team found with name: " + teamName);
+            }
+        }
+
+        // Add the user to the model
+        model.addAttribute("authenticatedUser", authenticatedUser);
+
+        return "userLeague";
     }
 
     /**
