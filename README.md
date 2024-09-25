@@ -1,5 +1,3 @@
-<div style="background-color: #2e2e2e; padding: 20px; color: #e0e0e0; font-family: Arial, sans-serif;">
-  
 # Carter Campbell's Fantasy Football Mock Draft Simulator
 View this repository: https://github.com/Carterc7/FantasyApp
 <br/>
@@ -90,6 +88,3 @@ After we make a call to receive the JSON payload, the code snippet "mapJsonToPla
 <br/>
 
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/e815bd55-e6b5-4a3c-80ac-0d1ef2887fde"> 
-
-</div>
-
