@@ -3,6 +3,24 @@ View this repository: https://github.com/Carterc7/FantasyApp
 <br/>
 This website is a Fantasy Football Mock Draft Simulator, where users can compete in mock drafts against a set number of CPUs. Login to draft today!
 
+# Getting Started
+
+- Clone the repository using GitHub Desktop or URL.
+- Create a mongoDB database with 5 collections.
+- Get your FREE API key for RapidAPI @ (https://rapidapi.com/tank01/api/tank01-nfl-live-in-game-real-time-statistics-nfl)
+- Get your FREE API key for FantasyData API @ (https://rapidapi.com/tank01/api/tank01-nfl-live-in-game-real-time-statistics-nfl)
+</br>
+Mongo Collection Schema
+</br>
+<img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/f8c2e768-7fa0-41ef-a11c-53c4b3f11636">
+</br>
+- Update .env file with your new "CONNECTION_STRING", "DATABASE_NAME_API", "API-KEY", and "API-URL"
+</br>
+- Run the applicaton and get started drafting!
+
+
+
+
 # Documentation
 ### Logical System Design
 The logical system design shows data flow in each application feature, and where that data comes from. Users will enter from the web under the HomeController, which contains a nav bar to access any application feature. The login module utilizes the UserModel and the usersDAO to validate user input against database values. Once the user is logged in, they may either draft, logout, or view previously completed drafts. The registration model utilizes the UserModel as well and will create a UserModel object before a HTTP POST will send the new user object to the database. The ADP (Average Draft Position) module shows the flow of JSON data from the FantasyData API, which is then mapped to the AdpPlayer object model, and then accessed by the AdpController through the adpDAO to display the list of players with adp. Finally, the Mock Draft module shows the flow of JSON data from both our external APIs. The FantasyData API is used to fetch the adp, map to AdpPlayer object models, and then accessed by the DraftController through the adpDAO to create a draft board where users can select players ordered by adp. The RapidAPI is used to obtain JSON data for general information and stats of players, which is mapped to their respective object model and used by the DraftController through the playerDAO to dynamically show player stats and information whenever the user expands a player view.
@@ -48,7 +66,7 @@ The NoSQL collections (imaged below) store all our data from the external APIs, 
 
 # Code
 
-### Draft Functionality
+# Draft Functionality
 
 This code snippet "showDraftBoard" shows the controller endpoint to start a draft, where the user will input a number of teams, a team name, a draft position, and a number of rounds. With this, we will create <FantasyTeam> objects that will hold the user's player selections, as well as CPUs. This information is sent to draftBoard.html, which begins the draft.
 <br/>
