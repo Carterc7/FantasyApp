@@ -12,18 +12,18 @@ This website is a Fantasy Football Mock Draft Simulator, where users can compete
 - Create a mongoDB database with 5 collections.
 - Get your FREE API key for RapidAPI @ (https://rapidapi.com/tank01/api/tank01-nfl-live-in-game-real-time-statistics-nfl)
 - Get your FREE API key for FantasyData API @ (https://rapidapi.com/tank01/api/tank01-nfl-live-in-game-real-time-statistics-nfl)
-</br>
+
 Mongo Collection Schema
-</br>
+
 <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/f8c2e768-7fa0-41ef-a11c-53c4b3f11636">
-</br>
+
 - Update .env file with your new "CONNECTION_STRING", "DATABASE_NAME_API", "API-KEY", and "API-URL"
-</br>
+
 - Use Postman to run the following controller methods, which will populate your mongo collections with data from the APIs.
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/a8ada17e-1ec1-4159-a488-5984f9096ca8">
-</br>
+
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/96927570-6699-4a3b-911f-1b40177f5719">
-</br>
+
 <img width="500" alt="image" src="https://github.com/user-attachments/assets/53bbe85e-0749-4c3c-b778-eddfb81c32a7">
 
 
