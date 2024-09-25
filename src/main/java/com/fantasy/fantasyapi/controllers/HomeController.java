@@ -22,10 +22,10 @@ public class HomeController {
         User authenticatedUser = (User) session.getAttribute("authenticatedUser");
         if (authenticatedUser == null) {
             System.out.println("User not found in session");
-            return "home-default.html";
+            return "index.html";
         }
         // Add the user to the model
         model.addAttribute("authenticatedUser", authenticatedUser);
-        return "index.html";
+        return "home.html";
     }
 }
