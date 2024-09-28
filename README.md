@@ -4,7 +4,7 @@ View this repository: https://github.com/Carterc7/FantasyApp
 This website is a Fantasy Football Mock Draft Simulator, where users can compete in mock drafts against a set number of CPUs. Login to draft today!
 
 # Application Demonstration
-- demo link
+<a href="https://www.loom.com/share/2e672a0961934b4cb57f4bf820f2fec1?sid=fc2289e4-6d86-4be3-a6d5-b04834cb8fa2">Demo</a>
 
 # Getting Started
 
