@@ -140,7 +140,7 @@
               <a
                 class="navbar-brand"
                 style="color: #00ced1; font-weight: bolder"
-                href="@{/'"
+                href="/"
               >
                 Mock O' Clock
               </a>
@@ -161,7 +161,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <!-- ADP and Draft Links -->
               <li class="nav-item">
-                <a class="nav-link" th:href="@{/adp/list}">ADP</a>
+                <a class="nav-link" href="/adp/list">ADP</a>
               </li>
               <li class="nav-item">
                 <a
@@ -185,24 +185,24 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li th:if="${authenticatedUser == null}">
-                    <a class="dropdown-item" href="@{/login}"
+                    <a class="dropdown-item" href="/login"
                       >Login</a
                     >
                   </li>
                   <li th:if="${authenticatedUser == null}">
                     <a
                       class="dropdown-item"
-                      href="@{/register/}"
+                      href="/register"
                       >Register</a
                     >
                   </li>
                   <li th:if="${authenticatedUser != null}">
-                    <a class="dropdown-item" href="@{/user/teams}"
+                    <a class="dropdown-item" href="/user/teams"
                       >My Mocks</a
                     >
                   </li>
                   <li th:if="${authenticatedUser != null}">
-                    <a class="dropdown-item" href="@{/logout}"
+                    <a class="dropdown-item" href="/logout"
                       >Logout</a
                     >
                   </li>
