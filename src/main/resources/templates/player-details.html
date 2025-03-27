@@ -1,23 +1,39 @@
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
   <head>
     <title>Player Details</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
+    <!-- Import Doto font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
     <style>
       body {
-        background-color: black;
+        background-color: #121212;
         color: #00ced1;
-        font-family: Arial, sans-serif;
+        font-family: 'Doto', sans-serif;
       }
 
       .player-container {
         background-color: #0c2c3a;
-        color: #00ced1;
         border-radius: 10px;
-        padding: 50px;
+        padding: 20px;
         margin: 20px;
       }
 
@@ -35,18 +51,10 @@
       }
 
       .player-image {
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        margin-right: 20px;
-        border: #00ced1 2px solid;
-      }
-
-      .player-name {
-        font-weight: bolder;
-        font-family: Georgia, "Times New Roman", Times, serif;
-        font-size: 3rem;
-        text-align: center;
+        width: 120px;
+        height: 120px;
+        margin-right: 80px;
+        margin-bottom: 20px;
       }
 
       .player-name h1 {
@@ -61,15 +69,8 @@
         display: inline;
       }
 
-      .player-details {
-        text-align: left;
-        font-size: 1.5rem;
-        margin: 0 auto;
-      }
-
       .player-details p {
-        font-family: Georgia, "Times New Roman", Times, serif;
-        font-size: 1.5 rem;
+        font-size: 1.5rem;
         font-weight: bold;
         margin: 5px 0;
       }
@@ -83,18 +84,11 @@
       .schedule-container h2 {
         text-align: center;
         font-weight: bold;
-        font-family: Georgia, "Times New Roman", Times, serif;
         margin-bottom: 20px;
         font-size: 2rem;
       }
 
-      .schedule-container ul {
-        list-style-type: none;
-        padding: 0;
-      }
-
       .schedule-container li {
-        font-family: Georgia, "Times New Roman", Times, serif;
         background-color: #1a1a1a;
         font-weight: bold;
         margin: 5px 0;
@@ -102,124 +96,57 @@
         border-radius: 8px;
       }
 
-      .schedule-container span {
-        font-family: Arial, Helvetica, sans-serif !important;
-        color: white !important;
+      .back-button {
+        display: block;
+        width: fit-content;
+        margin: 20px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        background-color: #2d677d;
+        color: #00ced1;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .back-button:hover {
+        background-color: #2d677d;
+        color: #f0a500;
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <a
-        href="/adp/list"
-        style="color: #00ced1; text-decoration: none; font-weight: bold; margin-left: 20px;"
-      >
-        &larr; Back to Players
-      </a>
+      <a th:href="@{/adp/list}" class="back-button">&larr; Back to Players</a>
       <div class="player-container">
-        <!-- Player Headshot and Name Row -->
         <div class="player-header">
-          <img
-            th:src="${espnPlayer.espnHeadshot}"
-            alt="Player Headshot"
-            class="player-image"
-          />
+          <img th:src="${espnPlayer.espnHeadshot}" alt="Player Headshot" class="player-image" />
           <div class="player-name">
             <h1 th:text="${espnPlayer.espnName}"></h1>
-            <span
-              class="jersey-number"
-              th:text="'#' + ${espnPlayer.jerseyNum}"
-            ></span>
+            <span class="jersey-number" th:text="'#' + ${espnPlayer.jerseyNum}"></span>
           </div>
         </div>
-
-        <!-- Player Details Below -->
         <div class="player-details">
-          <p>
-            Team:
-            <span
-              style="
-                font-family: Arial, Helvetica, sans-serif !important;
-                color: white !important;
-              "
-              th:text="${espnPlayer.team}"
-            ></span>
-          </p>
-          <p>
-            Position:
-            <span
-              style="
-                font-family: Arial, Helvetica, sans-serif !important;
-                color: white !important;
-              "
-              th:text="${espnPlayer.pos}"
-            ></span>
-          </p>
-          <p>
-            Age:
-            <span
-              style="
-                font-family: Arial, Helvetica, sans-serif !important;
-                color: white !important;
-              "
-              th:text="${espnPlayer.age}"
-            ></span>
-          </p>
-          <p>
-            Experience:
-            <span
-              style="
-                font-family: Arial, Helvetica, sans-serif !important;
-                color: white !important;
-              "
-              th:text="${espnPlayer.exp}"
-            ></span>
-          </p>
-          <p>
-            Birthday:
-            <span
-              style="
-                font-family: Arial, Helvetica, sans-serif !important;
-                color: white !important;
-              "
-              th:text="${espnPlayer.bDay}"
-            ></span>
-          </p>
+          <p>Team: <span th:text="${espnPlayer.team}"></span></p>
+          <p>Position: <span th:text="${espnPlayer.pos}"></span></p>
+          <p>Age: <span th:text="${espnPlayer.age}"></span></p>
+          <p>Experience: <span th:text="${espnPlayer.exp}"></span></p>
+          <p>Birthday: <span th:text="${espnPlayer.bDay}"></span></p>
         </div>
-
-        <!-- Schedule Details -->
         <div class="schedule-container">
-          <h2 style="text-align: center; align-self: center">Team Schedule</h2>
+          <h2>Team Schedule</h2>
           <div th:if="${teamSchedule}">
             <ul>
               <li th:each="schedule : ${teamSchedule}">
-                <p>
-                  <strong>Game Week:</strong>
-                  <span th:text="${schedule.gameWeek}"></span>
-                  <span>: </span>
-                  <span th:text="${#strings.substring(schedule.gameDate, 0, 4)}"></span>
-                </p>
-                <p>
-                  <strong>Opponent:</strong>
-                  <span th:text="${schedule.away}"></span> (Home:
-                  <span th:text="${schedule.home}"></span>)
-                </p>
-                <p>
-                  <strong>Game Time:</strong>
-                  <span th:text="${schedule.gameTime}"></span>
-                </p>
-                <p>
-                  <strong>Home Points:</strong>
-                  <span th:text="${schedule.homePts}"></span>
-                </p>
-                <p>
-                  <strong>Away Points:</strong>
-                  <span th:text="${schedule.awayPts}"></span>
-                </p>
-                <p>
-                  <strong>Home Result:</strong>
-                  <span th:text="${schedule.homeResult}"></span>
-                </p>
+                <p><strong>Game Week:</strong> <span th:text="${schedule.gameWeek}"></span></p>
+                <p><strong>Opponent:</strong> <span th:text="${schedule.away}"></span> (Home: <span th:text="${schedule.home}"></span>)</p>
+                <p><strong>Game Time:</strong> <span th:text="${schedule.gameTime}"></span></p>
+                <p><strong>Home Points:</strong> <span th:text="${schedule.homePts}"></span></p>
+                <p><strong>Away Points:</strong> <span th:text="${schedule.awayPts}"></span></p>
+                <p><strong>Home Result:</strong> <span th:text="${schedule.homeResult}"></span></p>
               </li>
             </ul>
           </div>

@@ -1,42 +1,52 @@
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}"
->
+  layout:decorate="~{layouts/defaultTemplate}">
+  
   <head>
-    <title>Login</title>
+    <title>Login Failed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-      /* Main container for login form */
-      .container {
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        background-color: #121212;
+        color: #00ced1;
+        font-family: 'Doto', sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 70vh;
-        padding: 20px;
       }
 
-      /* Login form container */
-      .login-form {
-        background-color: #0c2c3a;
-        border-radius: 30px;
+      .login-container {
+        width: 500px;
         padding: 40px;
-        max-width: 500px;
-        width: 100%;
-        color: #00ced1;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
       }
 
-      .login-form h1 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+      .login-container h1 {
         font-size: 2rem;
         font-weight: bold;
-        text-align: center;
-        margin-bottom: 30px;
+        color: #f0a500;
+        margin-bottom: 20px;
       }
 
       .form-group {
-        margin-bottom: 20px;
+        text-align: left;
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        font-size: 1.1rem;
+        color: lightblue;
+        display: block;
+        margin-bottom: 5px;
       }
 
       .form-control {
@@ -53,68 +63,57 @@
         border-color: lightblue;
       }
 
-      label {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-      }
-
-      .btn-primary {
+      .btn-login {
         width: 100%;
-        background-color: #00ced1;
-        color: #0c2c3a;
-        padding: 15px;
+        padding: 12px;
+        background-color: #2d677d;
+        color: #00ced1;
         font-size: 1.2rem;
         font-weight: bold;
         border-radius: 8px;
         border: none;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      .btn-primary:hover {
-        background-color: #d0e6f2;
+      .btn-login:hover {
+        background-color: #2d677d;
+        color: #f0a500;
       }
 
-      /* Error message styling */
       .error-message {
         color: red;
         font-weight: bold;
         margin-top: 20px;
         text-align: center;
       }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
     </style>
   </head>
-  <body style="background-color: black !important">
+  
+  <body>
     <div layout:fragment="content">
-      <div class="container">
-        <div class="login-form">
-          <h1>Login Failed - Try Again</h1>
-          <form th:action="@{/login}" method="post">
-            <div class="form-group">
-              <label for="username">Username:</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                class="form-control"
-                required
-              />
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-          </form>
-          <div th:if="${error}" class="error-message">
-            <p th:text="${error}"></p>
+      <div class="login-container">
+        <h1>Error</h1>
+        <form th:action="@{/login}" method="post">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required />
           </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required />
+          </div>
+          <button type="submit" class="btn-login">Login</button>
+        </form>
+        <div th:if="${error}" class="error-message">
+          <p th:text="${error}"></p>
         </div>
       </div>
     </div>

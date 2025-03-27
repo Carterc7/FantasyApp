@@ -7,15 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fantasy.fantasyapi.apiCalls.GetDraftAdp;
+import com.fantasy.fantasyapi.draft.CsvParser;
 import com.fantasy.fantasyapi.leagueModels.FantasyTeam;
 import com.fantasy.fantasyapi.leagueModels.User;
 import com.fantasy.fantasyapi.mongoServices.EspnPlayerService;
 import com.fantasy.fantasyapi.mongoServices.TeamScheduleService;
 import com.fantasy.fantasyapi.mongoServices.UserService;
-import com.fantasy.fantasyapi.objectModels.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.AdpPlayerCSV;
 import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 import com.fantasy.fantasyapi.objectModels.TeamSchedule;
+import com.fantasy.fantasyapi.repository.UserRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,6 +27,7 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.SessionAttributes;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -38,6 +40,9 @@ public class DraftController {
     UserService userService;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     private EspnPlayerService espnPlayerService;
 
     @Autowired
@@ -46,7 +51,7 @@ public class DraftController {
     // global var for total num selection to be made in a draft (end-point)
     public int numOfSelections;
     // globar var for players picked in the draft
-    List<AdpPlayer> pickedPlayers = new ArrayList<AdpPlayer>();
+    List<AdpPlayerCSV> pickedPlayers = new ArrayList<AdpPlayerCSV>();
 
     /**
      * Method to initialize Teams and draft format from setup.html, and then show
@@ -66,10 +71,13 @@ public class DraftController {
             @RequestParam("draftPosition") int draftPosition,
             @RequestParam("numOfRounds") int numOfRounds,
             Model model) {
+
         numOfSelections = numOfRounds * numOfTeams;
-        // Get ADP list
-        GetDraftAdp getDraftAdp = new GetDraftAdp();
-        List<AdpPlayer> adpList = getDraftAdp.getFilteredAdpList(200);
+        // Get ADP list from CSV
+        System.out.println("Attempting to read csv");
+        CsvParser parser = new CsvParser();
+        List<AdpPlayerCSV> adpList = parser.parseCsv();
+
         String userId = "";
         // Set up teams
         List<FantasyTeam> mockTeams = new ArrayList<>();
@@ -78,26 +86,27 @@ public class DraftController {
             String teamID = String.valueOf(i);
             String teamName = "";
             if (i == (draftPosition - 1)) {
-                // set user's teamName to parameter value
+                // Set user's teamName to parameter value
                 teamName = mockTeamName;
                 userId = teamID;
             } else {
-                // set default teamName for mock teams
+                // Set default teamName for mock teams
                 teamName = "Mock Team " + (i + 1);
             }
             // Give each team an empty list of players
-            mockTeams.add(new FantasyTeam(teamID, teamName, new ArrayList<AdpPlayer>()));
+            mockTeams.add(new FantasyTeam(teamID, teamName, new ArrayList<AdpPlayerCSV>()));
         }
+
         boolean isReversed = false;
         int currentPick = 1;
-        pickedPlayers = new ArrayList<AdpPlayer>();
-        model.addAttribute("numOfTeams", numOfTeams); // number of teams
+        pickedPlayers = new ArrayList<AdpPlayerCSV>();
+        model.addAttribute("numOfTeams", numOfTeams); // Number of teams
         model.addAttribute("currentPick", currentPick); // Current pick number
         model.addAttribute("pickedPlayers", pickedPlayers); // List of all picked players (empty)
-        model.addAttribute("adpList", adpList); // List of ADP
+        model.addAttribute("adpList", adpList); // List of ADP from CSV
         model.addAttribute("isReversed", isReversed); // Set to false, draft will start in forward direction
         model.addAttribute("roundNumber", 1); // Start at round 1
-        model.addAttribute("mockTeams", mockTeams); // Teams with empty player lists.
+        model.addAttribute("mockTeams", mockTeams); // Teams with empty player lists
         model.addAttribute("currentTeamId", 0); // First team's turn
         model.addAttribute("userId", userId); // User's team ID used to check if it's the users turn.
 
@@ -121,11 +130,11 @@ public class DraftController {
      */
     @PostMapping("/draft/select")
     public String selectPlayer(
-            @RequestParam("selectedPlayerId") String selectedPlayerId,
+            @RequestParam("selectedPlayerName") String selectedPlayerName,
             @RequestParam("numOfTeams") int numOfTeams,
             @RequestParam("userId") String userId,
             @RequestParam("currentPick") int currentPick,
-            @ModelAttribute("adpList") List<AdpPlayer> adpList,
+            @ModelAttribute("adpList") List<AdpPlayerCSV> adpList,
             @ModelAttribute("mockTeams") List<FantasyTeam> mockTeams,
             @ModelAttribute("currentTeamId") int currentTeamId,
             @ModelAttribute("roundNumber") int roundNumber,
@@ -147,8 +156,8 @@ public class DraftController {
         // Check if it's the user's turn
         if (userId.equals(currentTeamIdStr)) {
             // Manually select the player for the user
-            AdpPlayer selectedPlayer = adpList.stream()
-                    .filter(player -> player.getPlayerID().equals(selectedPlayerId))
+            AdpPlayerCSV selectedPlayer = adpList.stream()
+                    .filter(player -> player.getPlayerName().equals(selectedPlayerName))
                     .findFirst()
                     .orElse(null);
 
@@ -161,7 +170,7 @@ public class DraftController {
                 currentPick++;
             }
         } else {
-            AdpPlayer autoSelectedPlayer = null;
+            AdpPlayerCSV autoSelectedPlayer = null;
             // Auto-select the player for the CPU
             if (!adpList.isEmpty()) {
                 // if roundNumber is greater than 5, check to make sure CPU has players at each
@@ -171,23 +180,31 @@ public class DraftController {
                     List<String> requiredPositions = Arrays.asList("QB", "RB", "WR", "TE");
 
                     // Retrieve the current team's roster
-                    List<AdpPlayer> currentTeamRoster = mockTeams.get(currentTeamId).getRoster();
+                    List<AdpPlayerCSV> currentTeamRoster = mockTeams.get(currentTeamId).getRoster();
 
                     // Find out which positions the team still needs to draft
                     List<String> neededPositions = new ArrayList<>(requiredPositions);
-                    for (AdpPlayer player : currentTeamRoster) {
+                    for (AdpPlayerCSV player : currentTeamRoster) {
                         neededPositions.remove(player.getPosition());
                     }
 
                     // Check if the team still needs to fill any position
                     if (!neededPositions.isEmpty()) {
-                        // Prioritize drafting a player for the missing position
-                        String nextNeededPosition = neededPositions.get(0); // Select the first needed position
-                        autoSelectedPlayer = adpList.stream()
-                                .filter(player -> player.getPosition().equals(nextNeededPosition))
-                                .findFirst()
-                                .orElse(null);
+                        for (String neededPosition : neededPositions) {
+                            // Try to find a player for this position within the top 8 players
+                            autoSelectedPlayer = adpList.stream()
+                                    .limit(8) // Consider only the top 8 players in ADP
+                                    .filter(player -> player.getPosition().equals(neededPosition))
+                                    .findFirst()
+                                    .orElse(null);
+
+                            // If we found a valid player, stop searching
+                            if (autoSelectedPlayer != null) {
+                                break;
+                            }
+                        }
                     }
+
                 }
 
                 // If no players are available for the needed position, select one of the best
@@ -266,11 +283,10 @@ public class DraftController {
 
     @PostMapping("/player-details")
     public String getPlayerByEspnName(@RequestParam("espnName") String espnName, Model model, HttpSession session) {
+        System.out.println("In player-details");
         // Retrieve authenticatedUser from session
         User authenticatedUser = (User) session.getAttribute("authenticatedUser");
-        if (authenticatedUser != null) {
-            model.addAttribute("authenticatedUser", authenticatedUser);
-        }
+        model.addAttribute("authenticatedUser", authenticatedUser);
         Optional<EspnPlayer> player = espnPlayerService.findPlayerByEspnName(espnName);
         if (player.isPresent()) {
             EspnPlayer espnPlayer = player.get();
@@ -287,12 +303,13 @@ public class DraftController {
             model.addAttribute("espnPlayer", espnPlayer);
             return "player-details";
         } else {
-            return "error";
+            return "playerNotFound";
         }
     }
 
     @PostMapping("/team/player-details")
     public String getTeamPlayerByEspnName(@RequestParam("espnName") String espnName, Model model, HttpSession session) {
+        System.out.println("In player details team");
         // Retrieve authenticatedUser from session
         User authenticatedUser = (User) session.getAttribute("authenticatedUser");
         if (authenticatedUser != null) {
@@ -314,7 +331,7 @@ public class DraftController {
             model.addAttribute("espnPlayer", espnPlayer);
             return "team-player-details";
         } else {
-            return "error";
+            return "playerNotFound";
         }
     }
 
@@ -345,11 +362,32 @@ public class DraftController {
                     }
                 }
             }
+            // Reverse the order of the matching teams list
+            Collections.reverse(matchingTeams);
             model.addAttribute("completedMocks", matchingTeams);
+            // Add the user to the model
+            model.addAttribute("authenticatedUser", authenticatedUser);
         }
-        // Add the user to the model
-        model.addAttribute("authenticatedUser", authenticatedUser);
         return "userTeams";
+    }
+
+    @PostMapping("/user/delete-team")
+    public String deleteTeam(@RequestParam("userID") String userID, @RequestParam("teamName") String teamName,
+            HttpSession session, Model model) {
+        // Call service to delete the team from completedMocks
+        userService.deleteTeamFromMocks(userID, teamName);
+
+        // Reload the updated user data
+        Optional<User> userOptional = userRepository.findByUserID(userID);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Update the session with the new user data
+            session.setAttribute("authenticatedUser", user);
+            model.addAttribute("authenticatedUser", user);
+        }
+
+        // Redirect to the updated teams page with the new list
+        return "redirect:/user/teams";
     }
 
     @GetMapping("/league/teams")

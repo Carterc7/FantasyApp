@@ -1,5 +1,6 @@
 package com.fantasy.fantasyapi.mongoServices;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,21 @@ public class EspnPlayerService {
     private EspnPlayerRepository espnRepository;
 
     public Optional<EspnPlayer> findPlayerByPlayerID(String playerID) {
+        System.out.println("In findPlayerByPlayerID");
         return espnRepository.findPlayerByPlayerID(playerID);
     }
 
     public Optional<EspnPlayer> findPlayerByEspnName(String espnName) {
-        return espnRepository.findPlayerByEspnName(espnName);
+        List<EspnPlayer> players = espnRepository.findPlayersByEspnName(espnName);
+        if (players.size() == 1) {
+            return Optional.of(players.get(0));
+        } else if (players.size() > 1) {
+            // Handle case where there are multiple results, choose the best match (e.g.,
+            // based on more data)
+            return Optional.of(players.get(0)); // Or apply more logic here to decide
+        } else {
+            return Optional.empty();
+        }
     }
 
     public EspnPlayer updateEspnPlayer(EspnPlayer EspnPlayer) {

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
@@ -6,16 +7,36 @@
 >
   <head>
     <title>ADP List</title>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        background-color: #121212;
+        color: #00ced1;
+        font-family: "Doto", sans-serif;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
       table {
         width: 90%;
         margin: 20px auto;
         background-color: #0c2c3a;
         border-radius: 20px;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
         color: #00ced1;
-        font-family: Arial, sans-serif;
         border-collapse: separate;
         border-spacing: 0;
       }
@@ -23,8 +44,7 @@
       th {
         background-color: #2d677d;
         text-align: center;
-        color: #0c2c3a;
-        font-family: Georgia, "Times New Roman", Times, serif;
+        color: #010b0f;
         font-size: 1.8rem;
         font-weight: bolder;
         padding: 15px;
@@ -48,82 +68,125 @@
         background-color: #333;
       }
 
-      table tr:first-child th:first-child {
-        border-top-left-radius: 20px;
+      h1 {
+        font-size: 2.5rem;
+        font-weight: bolder;
+        text-align: center;
+        margin: 20px;
+        color: #f0a500;
       }
 
-      table tr:first-child th:last-child {
-        border-top-right-radius: 20px;
-      }
-
-      table tr:last-child td:first-child {
-        border-bottom-left-radius: 20px;
-      }
-
-      table tr:last-child td:last-child {
-        border-bottom-right-radius: 20px;
-      }
-
-      body {
-        background-color: black;
-        color: #00ced1;
-        font-weight: bold;
-        font-family: "Georgia", "Times New Roman", serif;
-      }
-
-      .content h1 {
-        font-family: Georgia, "Times New Roman", Times, serif;
-        font-size: 2rem;
-        font-weight: bold;
-      }
-
-      button {
+      .details-btn {
         background-color: #2d677d;
-        color:#00ced1;
+        color: #00ced1;
         font-size: 1rem;
         font-weight: bold;
-        padding: 10px 20px;
+        padding: 8px 15px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
       }
 
-      button:hover {
-        background-color: #235160;
+      .details-btn:hover {
+        background-color: #2d677d;
+        color: #f0a500;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      table {
+        animation: fadeIn 1s ease-out;
+      }
+
+      .filter-container {
+        text-align: center;
+        margin: 20px auto;
+      }
+
+      .filter-label {
+        color: #f0a500;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      .filter-select {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: #0c2c3a;
+        color: #00ced1;
+        border: 2px solid #2d677d;
+        cursor: pointer;
+      }
+
+      .filter-select:hover {
+        border-color: #f0a500;
+      }
+
+      .filter-container form {
+        display: inline-block;
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <h1 align="center">ADP Player List</h1>
-      <table>
+      <h1>Player ADP</h1>
+      <!-- Filter Form -->
+      <div class="filter-container">
+        <form method="get" action="/adp/list">
+          <label for="positionFilter" class="filter-label">Filter by Position:</label>
+          <select id="positionFilter" name="position" class="filter-select" onchange="this.form.submit()">
+            <option value="all" th:selected="${selectedPosition == 'all'}">All</option>
+            <option value="QB" th:selected="${selectedPosition == 'QB'}">QB</option>
+            <option value="RB" th:selected="${selectedPosition == 'RB'}">RB</option>
+            <option value="WR" th:selected="${selectedPosition == 'WR'}">WR</option>
+            <option value="TE" th:selected="${selectedPosition == 'TE'}">TE</option>
+          </select>
+        </form>
+      </div>
+      <p
+        style="
+          opacity: 60;
+          color: #00ced1;
+          font-family: 'Doto';
+          text-align: right;
+          margin-right: 70px;
+        "
+      >
+        Last Updated: March 2025
+      </p>
+
+      <table id="playerTable">
         <thead>
           <tr>
+            <th>Rank</th>
             <th>Player Name</th>
-            <th>Team</th>
             <th>Position</th>
-            <th>ADP</th>
-            <th>ADP PPR</th>
-            <th>ADP Dynasty</th>
+            <th>Position Rank</th>
+            <th>Recent ADP Change</th>
             <th>Details</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="player : ${players}">
-            <td th:text="${player.name}"></td>
-            <td th:text="${player.team}"></td>
+            <td th:text="${player.rank}"></td>
+            <td th:text="${player.playerName}"></td>
             <td th:text="${player.position}"></td>
-            <td th:text="${player.averageDraftPosition}"></td>
-            <td th:text="${player.averageDraftPositionPPR}"></td>
-            <td th:text="${player.averageDraftPositionDynasty}"></td>
+            <td th:text="${player.positionRank}"></td>
+            <td th:text="${player.adpChange}"></td>
             <td>
               <form th:action="@{/player-details}" method="post">
-                <input
-                  type="hidden"
-                  th:value="${player.name}"
-                  name="espnName"
-                />
-                <button type="submit">View Details</button>
+                <input type="hidden" th:value="${player.playerName}" name="espnName" />
+                <button type="submit" class="details-btn">View</button>
               </form>
             </td>
           </tr>
@@ -132,3 +195,4 @@
     </div>
   </body>
 </html>
+

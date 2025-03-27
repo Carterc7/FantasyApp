@@ -5,101 +5,162 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
+    <title>Draft Options</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        background-color: #121212;
+        color: #00ced1;
+        font-family: 'Doto', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       .container {
         display: flex;
         justify-content: center;
         align-items: center;
         height: auto;
-        background-color: black;
       }
 
       .form-container {
-        background-color: #0c2c3a;
+        background-color: rgba(0, 0, 0, 0.8);
         width: 500px;
-        margin-top: 0px;
-        margin-bottom: 20px;
-        border-radius: 15px; 
-        padding: 20px;
-        color: #00ced1;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
       }
 
       .form-container h1 {
+        font-size: 2rem;
         font-weight: bold;
-        text-align: center;
-        font-family: Georgia, 'Times New Roman', Times, serif;
+        color: #f0a500;
+        margin-bottom: 20px;
       }
 
-      form label {
-        display: block;
-        margin: 10px 0 5px;
-      }
-
-      form input, form select, form button {
-        display: block;
-        width: 100%; 
-        padding: 10px;
+      .form-group {
         margin-bottom: 15px;
-        border: 1px solid #00ffff;
-        border-radius: 5px; 
-        background-color: #1a1a1a; 
-        color: #00ffff;
+        text-align: left;
       }
 
-      form button {
-        cursor: pointer;
-        background-color: #00ced1;
-        border: none; 
-        font-weight: bold;
+      .form-control {
+        background-color: #0e3d4e;
+        border: 1px solid #00ced1;
+        color: white;
+        padding: 10px;
+        border-radius: 8px;
+        width: 100%;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: lightblue;
+      }
+
+      button {
+        width: 100%;
+        background-color: #2d677d;
+        color: #00ced1;
+        font-family: 'Doto', sans-serif;
+        padding: 12px;
         font-size: 1.2rem;
-        color: #0c2c3a;
-        font-family: Georgia, 'Times New Roman', Times, serif;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
       }
 
-      form button:hover {
-        background-color: #00b2a1;
+      button:hover {
+        background-color: #2d677d;
+        color: #f0a500;
+      }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
       }
     </style>
   </head>
-  <body style="background-color: black !important;">
+  <body>
     <div layout:fragment="content" class="container">
       <div class="form-container">
         <h1>Draft Options</h1>
         <form th:action="@{/draft}" method="post">
-          <label for="numOfTeams">Number of Teams:</label>
-          <input
-            type="number"
-            id="numOfTeams"
-            name="numOfTeams"
-            min="2"
-            required
-          />
+          <div class="form-group">
+            <label for="numOfTeams">Number of Teams:</label>
+            <input
+              type="number"
+              id="numOfTeams"
+              name="numOfTeams"
+              min="2"
+              class="form-control"
+              required
+            />
+          </div>
 
-          <label for="numOfRounds">Number of Rounds:</label>
-          <input
-            type="number"
-            id="numOfRounds"
-            name="numOfRounds"
-            min="1"
-            required
-          />
+          <div class="form-group">
+            <label for="numOfRounds">Number of Rounds:</label>
+            <input
+              type="number"
+              id="numOfRounds"
+              name="numOfRounds"
+              min="1"
+              class="form-control"
+              required
+            />
+          </div>
 
-          <label for="mockTeamName">Team Name:</label>
-          <input
-            type="text"
-            id="mockTeamName"
-            name="mockTeamName"
-            required
-          />
+          <div class="form-group">
+            <label for="mockTeamName">Team Name:</label>
+            <input
+              type="text"
+              id="mockTeamName"
+              name="mockTeamName"
+              class="form-control"
+              required
+            />
+          </div>
 
-          <label for="draftPosition">Starting Draft Position:</label>
-          <input
-            type="number"
-            id="draftPosition"
-            name="draftPosition"
-            min="1"
-            required
-          />
+          <div class="form-group">
+            <label for="draftPosition">Starting Draft Position:</label>
+            <input
+              type="number"
+              id="draftPosition"
+              name="draftPosition"
+              min="1"
+              class="form-control"
+              required
+            />
+          </div>
 
           <button type="submit">Start Draft</button>
         </form>
