@@ -1,49 +1,53 @@
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}"
->
+  layout:decorate="~{layouts/defaultTemplate}">
+  
   <head>
     <title>Registration Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-      .container {
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        background-color: #121212;
+        color: #00ced1;
+        font-family: 'Doto', sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 70vh;
-        padding: 20px;
       }
 
-      .success-message {
-        background-color: #0c2c3a;
-        border-radius: 30px;
+      .success-container {
+        width: 500px;
         padding: 40px;
-        max-width: 600px;
-        width: 100%;
-        color: #00ced1;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 20px;
         text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
       }
 
-      h2 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+      .success-container h2 {
         font-size: 2rem;
         font-weight: bold;
+        color: #f0a500;
         margin-bottom: 20px;
       }
 
-      h5 {
-        font-family: Arial, sans-serif;
+      .success-container h5 {
         font-size: 1.2rem;
         font-weight: bold;
-        margin-top: 20px;
+        color: lightblue;
+        margin-top: 15px;
       }
 
-      p {
-        font-family: Arial, sans-serif;
-        font-size: 1.2rem;
-        color: lightblue;
+      .success-container p {
+        font-size: 1.1rem;
+        color: #00ced1;
+        margin-bottom: 10px;
       }
 
       hr {
@@ -52,38 +56,48 @@
         margin: 10px auto;
       }
 
-      .button-link {
-        display: inline-block;
-        background-color: lightblue;
-        color: #0c2c3a;
+      .btn-login {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #2d677d;
+        color: #00ced1;
+        font-size: 1.2rem;
         font-weight: bold;
-        font-size: xx-large;
         border-radius: 8px;
-        text-align: center;
-        margin-top: 10px;
-        width: 250px;
-        height: 75px;
-        line-height: 75px; /* Center text vertically */
+        border: none;
+        cursor: pointer;
         text-decoration: none;
-        font-family: Georgia, "Times New Roman", Times, serif;
+        text-align: center;
+        margin-top: 20px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      .btn-login:hover {
+        background-color: #2d677d;
+        color: #f0a500;
+      }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
       }
     </style>
   </head>
-  <body style="background-color: black !important">
+  
+  <body>
     <div layout:fragment="content">
-      <div class="container">
-        <div class="success-message">
-          <h2>You successfully registered!</h2>
-          <h5>Your Username:</h5>
-          <hr />
-          <p th:text="${user.username}"></p>
-          <br />
-          <h5>Your Password:</h5>
-          <hr />
-          <p th:text="${user.password}"></p>
-          <a class="button-link" href="http://127.0.0.1:8080/login">Login</a>
-        </div>
+      <div class="success-container">
+        <h2>Registration Successful!</h2>
+        <h5>Your Username:</h5>
+        <hr />
+        <p th:text="${user.username}"></p>
+        <h5>Your Password:</h5>
+        <hr />
+        <p th:text="${user.password}"></p>
+        <a class="btn-login" href="http://127.0.0.1:8080/login">Go to Login</a>
       </div>
     </div>
   </body>
 </html>
+

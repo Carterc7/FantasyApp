@@ -3,7 +3,7 @@ package com.fantasy.fantasyapi.leagueModels;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import com.fantasy.fantasyapi.objectModels.AdpPlayer;
+import com.fantasy.fantasyapi.objectModels.AdpPlayerCSV;
 
 // Model for a fantasy team, each having a name, id, and roster of players
 public class FantasyTeam 
@@ -11,13 +11,13 @@ public class FantasyTeam
     @Id
     private String teamID;
     private String teamName;
-    private List<AdpPlayer> roster;
+    private List<AdpPlayerCSV> roster;
 
     
     public FantasyTeam() {
     }
 
-    public FantasyTeam(String teamID, String teamName, List<AdpPlayer> roster) {
+    public FantasyTeam(String teamID, String teamName, List<AdpPlayerCSV> roster) {
         this.teamID = teamID;
         this.teamName = teamName;
         this.roster = roster;
@@ -35,10 +35,10 @@ public class FantasyTeam
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
-    public List<AdpPlayer> getRoster() {
+    public List<AdpPlayerCSV> getRoster() {
         return roster;
     }
-    public void setTeamOwner(List<AdpPlayer> roster) {
+    public void setTeamOwner(List<AdpPlayerCSV> roster) {
         this.roster = roster;
     }  
 }

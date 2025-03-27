@@ -3,35 +3,60 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/defaultTemplate}">
   <head>
-    <title>Draft Ended</title>
+    <title>Draft Results</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        background-color: black !important;
+        background-color: #121212;
         color: #00ced1;
+        font-family: "Doto", sans-serif;
+        padding-bottom: 60px;
       }
 
       .team-container {
-        align-items: center;
         background-color: #0c2c3a;
-        border-radius: 30px;
+        border-radius: 15px;
         padding: 20px;
         margin: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        color: #00ced1;
+        color:#f0a500;
       }
 
       .team-container h2 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+        font-family: "Doto", sans-serif;
         font-size: 1.5rem;
         font-weight: bold;
         margin-bottom: 10px;
       }
 
       .team-container h3 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+        font-family: "Doto", sans-serif;
         font-size: 1.2rem;
         margin-bottom: 10px;
-        color: lightblue;
+        color:#00ced1;
       }
 
       .team-container ul {
@@ -50,11 +75,20 @@
       .team-container li:hover {
         background-color: #1f5d7a;
       }
+
+      h1 {
+        font-family: "Doto", sans-serif;
+        font-weight: bolder;
+        font-size: 2rem;
+        text-align: center;
+        margin-top: 20px;
+        color:#f0a500 !important;
+      }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <h1 style="text-align: center; font-family: Georgia, 'Times New Roman', Times, serif; font-weight: bolder; font-size: 2rem;">Draft Results</h1>
+      <h1>Draft Results</h1>
 
       <!-- Iterate over each team in the mockTeams list -->
       <div th:each="team : ${mockTeams}" class="team-container">
@@ -67,7 +101,7 @@
             <li
               th:each="player : ${team.roster}"
               th:if="${player.position} == 'QB'"
-              th:text="${player.name}"
+              th:text="${player.playerName}"
             ></li>
           </ul>
         </div>
@@ -77,7 +111,7 @@
             <li
               th:each="player : ${team.roster}"
               th:if="${player.position} == 'RB'"
-              th:text="${player.name}"
+              th:text="${player.playerName}"
             ></li>
           </ul>
         </div>
@@ -87,7 +121,7 @@
             <li
               th:each="player : ${team.roster}"
               th:if="${player.position} == 'WR'"
-              th:text="${player.name}"
+              th:text="${player.playerName}"
             ></li>
           </ul>
         </div>
@@ -97,7 +131,7 @@
             <li
               th:each="player : ${team.roster}"
               th:if="${player.position} == 'TE'"
-              th:text="${player.name}"
+              th:text="${player.playerName}"
             ></li>
           </ul>
         </div>
@@ -105,4 +139,5 @@
     </div>
   </body>
 </html>
+
 

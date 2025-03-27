@@ -5,37 +5,60 @@
 >
   <head>
     <title>User Teams</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
     <style>
       body {
-        background-color: black !important;
+        background-color: #121212;
         color: #00ced1;
+        font-family: "Doto", sans-serif;
+        padding-bottom: 60px;
       }
 
       .team-container {
-        margin-left: 40px;
-        margin-right: 40px;
-        margin-bottom: 20px;
         background-color: #0c2c3a;
-        border-radius: 30px;
+        border-radius: 15px;
         padding: 20px;
-        margin-bottom: 20px;
+        margin: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        color: #00ced1;
+        color: #f0a500 !important;
+      }
+
+      .team-name:hover {
+        color: #00ced1 !important;
+        font-size: 2.2rem !important;
       }
 
       .team-container h2 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+        font-family: "Doto", sans-serif;
         font-size: 1.5rem;
         font-weight: bold;
         margin-bottom: 10px;
-        cursor: pointer;
       }
 
       .team-container h3 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+        font-family: "Doto", sans-serif;
         font-size: 1.2rem;
         margin-bottom: 10px;
-        color: lightblue;
+        color: #00ced1;
       }
 
       .team-container ul {
@@ -55,37 +78,101 @@
         background-color: #1f5d7a;
       }
 
+      h1 {
+        font-family: "Doto", sans-serif;
+        font-weight: bolder;
+        font-size: 2rem;
+        text-align: center;
+        margin-top: 20px;
+        color: #f0a500 !important;
+      }
+
       span:hover {
         color: white;
         cursor: pointer;
+      }
+
+      .team-container a {
+        color: #00ced1 !important;
+        text-decoration: none;
+        font-weight: bolder !important;
+        font-size: 2rem !important;
+      }
+
+      /* Welcome message styling */
+      .welcome-message {
+        width: 70%; /* Similar width to the modal */
+        padding: 20px;
+        margin: 20px auto;
+        background:#0c2c3a;
+        border-radius: 20px;
+        text-align: center;
+        color: #00ced1;
+        font-size: 1.1rem;
+        font-weight: bolder;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
+      }
+
+      .delete-team {
+        background: none;
+        border: none;
+        color:#00ced1;
+        cursor: pointer;
+        font-size: 0.9rem; /* Make text slightly smaller */
+        transition: color 0.3s ease-in-out;
+      }
+
+      .delete-team:hover {
+        color: #f0a500 !important; /* Same color as the h1 tag */
+        font-weight: bolder;
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <h1
-        style="
-          text-align: center;
-          font-family: Georgia, 'Times New Roman', Times, serif;
-          font-weight: bolder;
-          font-size: 2rem;
-        "
-      >
-        Completed Teams
-      </h1>
-
+      <div th:if="${authenticatedUser != null}" class="welcome-message">
+        <h1><span th:text="${authenticatedUser.username}"></span>'s Teams</h1>
+      </div>
       <!-- Iterate over each completed mock (list of teams) -->
       <div th:each="teamList : ${completedMocks}">
         <!-- Iterate over each team -->
         <div th:each="team : ${teamList}" class="team-container">
-          <h2>
+          <h2 style="color: #f0a500">
             <a
+              style="color: #f0a500"
               th:href="@{/league/teams(teamName=${team.teamName})}"
-              style="color: #00ced1 
-              !important; text-decoration: none; font-weight: bolder !important; font-size: 2rem !important;"
             >
-              Team: <span th:text="${team.teamName}"></span>
+              <span
+                class="team-name"
+                style="color: #f0a500"
+                th:text="${team.teamName}"
+              ></span>
             </a>
+            <form th:action="@{/user/delete-team}" method="post">
+              <input
+                type="hidden"
+                th:value="${authenticatedUser.userID}"
+                name="userID"
+              />
+              <input
+                type="hidden"
+                th:value="${team.teamName}"
+                name="teamName"
+              />
+              <button
+                class="delete-team"
+                type="submit"
+                style="
+                  background: none;
+                  border: none;
+                  color: white;
+                  cursor: pointer;
+                "
+              >
+                Delete Team
+              </button>
+            </form>
           </h2>
 
           <!-- Roster is initially hidden -->
@@ -101,7 +188,7 @@
                   <form th:action="@{/team/player-details}" method="post">
                     <input
                       type="hidden"
-                      th:value="${player.name}"
+                      th:value="${player.playerName}"
                       name="espnName"
                     />
                     <button
@@ -113,7 +200,7 @@
                         cursor: pointer;
                       "
                     >
-                      <span th:text="${player.name}"></span>
+                      <span th:text="${player.playerName}"></span>
                     </button>
                   </form>
                 </li>
@@ -130,7 +217,7 @@
                   <form th:action="@{/team/player-details}" method="post">
                     <input
                       type="hidden"
-                      th:value="${player.name}"
+                      th:value="${player.playerName}"
                       name="espnName"
                     />
                     <button
@@ -142,7 +229,7 @@
                         cursor: pointer;
                       "
                     >
-                      <span th:text="${player.name}"></span>
+                      <span th:text="${player.playerName}"></span>
                     </button>
                   </form>
                 </li>
@@ -159,7 +246,7 @@
                   <form th:action="@{/team/player-details}" method="post">
                     <input
                       type="hidden"
-                      th:value="${player.name}"
+                      th:value="${player.playerName}"
                       name="espnName"
                     />
                     <button
@@ -171,7 +258,7 @@
                         cursor: pointer;
                       "
                     >
-                      <span th:text="${player.name}"></span>
+                      <span th:text="${player.playerName}"></span>
                     </button>
                   </form>
                 </li>
@@ -188,7 +275,7 @@
                   <form th:action="@{/team/player-details}" method="post">
                     <input
                       type="hidden"
-                      th:value="${player.name}"
+                      th:value="${player.playerName}"
                       name="espnName"
                     />
                     <button
@@ -200,7 +287,7 @@
                         cursor: pointer;
                       "
                     >
-                      <span th:text="${player.name}"></span>
+                      <span th:text="${player.playerName}"></span>
                     </button>
                   </form>
                 </li>

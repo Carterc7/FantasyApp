@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
@@ -5,141 +6,169 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
+    <title>Mock Draft Simulator</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
+
+    <!-- Import Doto font from Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      /* Main container for two columns */
-      .container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        height: auto;
-        padding-right: 20px;
-        padding-left: 20px;
-      }
-
-      /* Left column for the text */
-      .left-column {
-        flex: 1;
-        color: #00ced1;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        flex-direction: column;
-        height: 60vh; 
-        background-color: #0c2c3a;
-        border-radius: 30px;
-        padding: 20px; 
-      }
-
-      .left-column h1 {
-        font-weight: bolder;
-        font-size: 2rem;
+      html,
+      body {
         margin: 0;
-        padding-left: 120px;
-        font-family: Georgia, "Times New Roman", Times, serif;
-      }
-
-      .left-column hr {
-        border: none;
-        border-top: 2px solid #00ced1;
-        width: 100%;
-      }
-
-      /* Bullet point list */
-      .left-column ul {
-        color: #00ced1;
-        font-size: 1.2rem;
-        padding-left: 45px;
-      }
-
-      .left-column ul li {
-        margin-bottom: 10px;
-        padding-top: 10px;
-      }
-
-      /* Button styling */
-      .left-column .button-link {
-        display: inline-block;
-        background-color: lightblue;
-        color: #0c2c3a;
-        font-weight: bold;
-        font-size: x-large;
-        border-radius: 8px;
-        text-align: center;
-        margin-left: 200px;
-        margin-top: 1px;
-        padding-bottom: 20px;
-        width: 200px;
-        height: 50px;
-        line-height: 50px;
-        text-decoration: none;
-        font-family: Georgia, "Times New Roman", Times, serif;
-      }
-
-      .left-column .button-link:hover {
-        background-color: #d0e6f2; 
-      }
-
-      /* Right column for the image */
-      .right-column {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-left: 50px;
-      }
-
-      /* Image styling with circular border */
-      .right-column img {
-        border: 5px solid #00ced1;
-        width: 60vh;
-        height: 60vh;
-        object-fit: cover;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        background-color: #121212; /* Dark background to match the ADP page */
+        color: #00ced1; /* Text color from ADP page */
+        font-family: "Doto", sans-serif;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
 
       /* Welcome message styling */
       .welcome-message {
+        width: 70%; /* Similar width to the modal */
+        padding: 20px;
+        margin: 20px auto;
+        background: rgba(0, 0, 0, 0.8); /* Dark background like modal */
+        border-radius: 20px;
         text-align: center;
-        background-color: #0c2c3a;
-        border-radius: 8px;
-        width: 90%;
-        margin-left: 75px;
-        padding-left: 10px;
-        font-family: Georgia, 'Times New Roman', Times, serif;
         color: #00ced1;
-        font-size: 2rem;
+        font-size: 1.5rem;
+        font-weight: bolder;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
+      }
+
+      /* Centered content */
+      .content-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+
+      /* Info modal styling */
+      .info-modal {
+        width: 70%; /* Modal width set to 70% of the screen */
+        height: 60%;
+        padding: 80px;
+        text-align: center;
+        margin-top: 10px;
+        color: #00ced1;
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        font-size: 1.2rem;
+      }
+
+      .info-modal h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
         font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #f0a500; /* Color from the ADP page */
+      }
+
+      .info-modal ul {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .info-modal ul li {
         margin-bottom: 15px;
+      }
+
+      /* Adding some subtle animations */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .info-modal {
+        animation: fadeIn 1s ease-out;
+      }
+
+      /* Responsiveness */
+      @media (max-width: 768px) {
+        .info-modal h1 {
+          font-size: 2rem;
+        }
+
+        .info-modal ul li {
+          font-size: 1.3rem;
+          font-weight: bolder;
+          color: #00ced1;
+        }
+
+        .button-link {
+          padding: 10px 18px;
+          font-size: 1rem;
+        }
+
+        .info-modal {
+          width: 90%; /* On smaller screens, make modal a bit narrower */
+        }
+      }
+
+      @media (max-width: 480px) {
+        .info-modal {
+          width: 100%; /* Full width for very small screens */
+        }
       }
     </style>
   </head>
-  <body style="background-color: black !important">
+  <body>
     <div layout:fragment="content">
-      <!-- Welcome message, displayed only if the user is authenticated -->
+      <!-- Welcome message (only visible when the user is authenticated) -->
       <div th:if="${authenticatedUser != null}" class="welcome-message">
-        Welcome, <span th:text="${authenticatedUser.username}">User</span>!
+        <h1>Welcome, <span th:text="${authenticatedUser.username}"></span>!</h1>
       </div>
 
-      <div class="container">
-        <!-- Left column for the text -->
-        <div class="left-column">
+      <!-- Centered content -->
+      <div class="content-container">
+        <div class="info-modal">
           <h1>Mock Draft Simulator</h1>
-          <hr />
           <ul>
             <li>Choose your league settings and number of teams.</li>
             <li>Select your draft position before the simulation starts.</li>
             <li>Take turns selecting players from available lists.</li>
             <li>Fill your roster by drafting players for each position.</li>
-            <li>Practice strategies to build a strong team.</li>
-            <li>Compare your roster with others at the end of the draft.</li>
           </ul>
-          <!-- Button as a link -->
-          <a class="button-link" href="http://127.0.0.1:8080/setup"
-            >Draft Now</a
-          >
-        </div>
-        <!-- Right column for the image -->
-        <div class="right-column">
-          <img th:src="@{/images/mock-o-clock.jpeg}" alt="Mock O' Clock Logo" />
         </div>
       </div>
     </div>

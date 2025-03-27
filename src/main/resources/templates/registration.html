@@ -1,40 +1,63 @@
-<html
-  lang="en"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}"
->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}">
   <head>
     <title>Register</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-      .container {
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        background-color: #121212;
+        color: #00ced1;
+        font-family: 'Doto', sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 70vh;
-        padding: 20px;
       }
 
-      .registration-form {
-        background-color: #0c2c3a;
-        border-radius: 30px;
+      .register-container {
+        width: 500px;
         padding: 40px;
-        max-width: 500px;
-        width: 100%;
-        color: #00ced1;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
       }
 
-      .registration-form h1 {
-        font-family: Georgia, "Times New Roman", Times, serif;
+      .register-container h1 {
         font-size: 2rem;
         font-weight: bold;
-        text-align: center;
-        margin-bottom: 30px;
+        color: #f0a500;
+        margin-bottom: 20px;
       }
 
       .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
+        text-align: left;
       }
 
       .form-control {
@@ -51,17 +74,12 @@
         border-color: lightblue;
       }
 
-      label {
-        font-size: 1.2rem;
-        margin-bottom: 5px;
-      }
-
       .btn-primary {
         width: 100%;
-        background-color: #00ced1;
-        color: #0c2c3a;
-        font-family: Georgia, 'Times New Roman', Times, serif;
-        padding: 15px;
+        background-color: #2d677d;
+        color: #00ced1;
+        font-family: 'Doto', sans-serif;
+        padding: 12px;
         font-size: 1.2rem;
         font-weight: bold;
         border-radius: 8px;
@@ -71,68 +89,42 @@
       }
 
       .btn-primary:hover {
-        background-color: #d0e6f2;
+        background-color: #2d677d;
+        color: #f0a500;
       }
 
-      /* Error message styling */
       .error-message {
         color: red;
         margin-top: 10px;
         text-align: center;
       }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
     </style>
   </head>
-  <body style="background-color: black !important">
+  <body>
     <div layout:fragment="content">
-      <div class="container">
-        <div class="registration-form">
-          <h1>User Registration</h1>
-          <form
-            th:action="@{/register/process_register}"
-            th:object="${user}"
-            method="post"
-          >
-            <div class="form-group">
-              <label for="username">Username:</label>
-              <input
-                type="text"
-                id="username"
-                th:field="*{username}"
-                class="form-control"
-                required
-              />
-              <p
-                th:if="${#fields.hasErrors('username')}"
-                th:errors="*{username}"
-                class="error-message"
-              >
-                User Name Error
-              </p>
-            </div>
-            <div class="form-group">
-              <label for="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                th:field="*{password}"
-                class="form-control"
-                required
-                minlength="6"
-                maxlength="100"
-              />
-              <p
-                th:if="${#fields.hasErrors('password')}"
-                th:errors="*{password}"
-                class="error-message"
-              >
-                Password Error
-              </p>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign Up</button>
-          </form>
-        </div>
+      <div class="register-container">
+        <h1>Register</h1>
+        <form th:action="@{/register/process_register}" th:object="${user}" method="post">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" th:field="*{username}" class="form-control" required />
+            <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></p>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" th:field="*{password}" class="form-control" required minlength="6" maxlength="100" />
+            <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></p>
+          </div>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
       </div>
     </div>
   </body>
 </html>
+
 

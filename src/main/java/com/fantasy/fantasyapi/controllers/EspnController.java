@@ -40,7 +40,7 @@ public class EspnController
     @GetMapping("/player/{playerID}")
     public Optional<EspnPlayer> findPlayerByPlayerID(@PathVariable String playerID)
     {
-        return espnPlayerRepository.findPlayerByPlayerID(playerID);
+        return espnPlayerService.findPlayerByPlayerID(playerID);
     }
 
     /** 
@@ -52,7 +52,7 @@ public class EspnController
     {
         List<EspnPlayer> players = new ArrayList<EspnPlayer>();
         GetAllPlayers getAllPlayers = new GetAllPlayers();
-        players = getAllPlayers.getFilteredPlayerList(range);
+        players = getAllPlayers.getFilteredPlayerList();
         return players;
     }
     
@@ -91,7 +91,7 @@ public class EspnController
     {
         List<EspnPlayer> players = new ArrayList<EspnPlayer>();
         GetAllPlayers getAllPlayers = new GetAllPlayers();
-        players = getAllPlayers.getFilteredPlayerList(300);
+        players = getAllPlayers.getFilteredPlayerList();
         try 
         {
             espnPlayerRepository.saveAll(players);
@@ -113,7 +113,7 @@ public class EspnController
     {
         List<EspnPlayer> players = new ArrayList<EspnPlayer>();
         GetAllPlayers getAllPlayers = new GetAllPlayers();
-        players = getAllPlayers.getFilteredPlayerList(300);
+        players = getAllPlayers.getFilteredPlayerList();
         for(EspnPlayer player : players)
         {
             try

@@ -9,7 +9,6 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.fantasy.fantasyapi.objectModels.AdpPlayer;
 import com.fantasy.fantasyapi.objectModels.EspnPlayer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cdimascio.dotenv.Dotenv;
 import reactor.netty.http.client.HttpClient;
 
-public class GetAllPlayers 
-{
+public class GetAllPlayers {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /** 
@@ -27,57 +25,29 @@ public class GetAllPlayers
      * @param maxRange
      * @return List<EspnPlayer>
      */
-    public List<EspnPlayer> getFilteredPlayerList(int maxRange)
+    public List<EspnPlayer> getFilteredPlayerList()
     {
-        // initialize empty lists and class objects needed later
-        GetAllPlayers getAllPlayers = new GetAllPlayers();
-        GetDraftAdp getDraftAdp = new GetDraftAdp();
-        List<AdpPlayer> adpList = new ArrayList<AdpPlayer>();
-        List<EspnPlayer> filteredPlayerList = new ArrayList<EspnPlayer>();
-        // get jsonString to send to parse method
-        String jsonString = getAllPlayers.sendRequestGetAllPlayers();
-        try 
-        {
-            // parse jsonString and store in List
-            List<EspnPlayer> allPlayersList = getAllPlayers.mapJsonToPlayerObject(jsonString);
-            // retrieve up-to-date adp list and implement range parameter
-            adpList = getDraftAdp.getFilteredAdpList(maxRange);
-            // iterate through the adpList of players
-            for(AdpPlayer adpPlayer : adpList)
-            {
-                // Store the name of the player to be checked with allPlayersList
-                String nameCheck = adpPlayer.getName().toLowerCase();
-                for(EspnPlayer espnPlayer : allPlayersList)
-                {
-                    // check if name of player equals a player in the adp list
-                    if(espnPlayer.getEspnName().toLowerCase().contains(nameCheck))
-                    {
-                        // check that the position of the player is a fantasy position (names could be duplicated without this check)
-                        if(espnPlayer.getPos().toLowerCase().equals("wr") || espnPlayer.getPos().toLowerCase().equals("rb") || espnPlayer.getPos().toLowerCase().equals("te") || espnPlayer.getPos().toLowerCase().equals("qb"))
-                        {
-                            // add each player to list to be returned
-                            filteredPlayerList.add(espnPlayer);
-                        }
-                    }
-                }
-            }
-        }
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
-        return filteredPlayerList;
+       List<EspnPlayer> players = new ArrayList<EspnPlayer>();
+       String text = sendRequestGetAllPlayers();
+       try {
+       players = mapJsonToPlayerObject(text);
+       } catch (IOException e) {
+        e.printStackTrace();
+       }
+       return players;
+       
     }
 
-    /** 
-     * Method to parse jsonString returned from sendRequestGetAllPlayers() and form "EspnPlayer" objects
+    /**
+     * Method to parse jsonString returned from sendRequestGetAllPlayers() and form
+     * "EspnPlayer" objects
      * Returns a list of unfiltered players (~3500 total)
+     * 
      * @param jsonString
      * @return List<EspnPlayer>
      * @throws IOException
      */
-    public List<EspnPlayer> mapJsonToPlayerObject(String jsonString) throws IOException 
-    {
+    public List<EspnPlayer> mapJsonToPlayerObject(String jsonString) throws IOException {
         // Read JSON payload using object mapper and store in a jsonNode
         JsonNode jsonNode = objectMapper.readTree(jsonString);
 
@@ -87,23 +57,23 @@ public class GetAllPlayers
             throw new IllegalArgumentException("Invalid JSON format. 'body' array not found.");
         }
 
-        // Object mapper reads through the body jsonNode and maps each value to the EspnPlayer object model, then returned
+        // Object mapper reads through the body jsonNode and maps each value to the
+        // EspnPlayer object model, then returned
         return Arrays.asList(objectMapper.readValue(bodyNode.toString(), EspnPlayer[].class));
 
         // ORIGINAL RETURN STATEMENT AS ARRAY
         // return objectMapper.readValue(bodyNode.toString(), EspnPlayer[].class);
     }
 
- 
-    
-    /** 
-     * Method to send HTTP request to "GetAllPlayers" endpoint and returns the payload as a String
+    /**
+     * Method to send HTTP request to "GetAllPlayers" endpoint and returns the
+     * payload as a String
      * String can be parsed using the mapJsonToPlayerObject() method
+     * 
      * @return String
      */
-    public String sendRequestGetAllPlayers()
-    {   
-        // load dotenv to get hidden variables 
+    public String sendRequestGetAllPlayers() {
+        // load dotenv to get hidden variables
         Dotenv dotenv = Dotenv.load();
         String key = dotenv.get("API_KEY");
         String baseUrl = dotenv.get("API_URL");
@@ -111,11 +81,12 @@ public class GetAllPlayers
         String url = baseUrl + "/getNFLPlayerList";
         // string for the payload to be stored in
         String roster = "";
-    
+
         // JSON payload at this request URL is larger than default capacity
         // Create a custom ExchangeStrategies object with an increased buffer limit
         ExchangeStrategies strategies = ExchangeStrategies.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024)) // 20 MB buffer limit
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(20 * 1024 * 1024)) // 20 MB buffer
+                                                                                                    // limit
                 .build();
 
         // Create a WebClient using the custom ExchangeStrategies

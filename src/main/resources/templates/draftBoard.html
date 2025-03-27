@@ -4,14 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Draft Board</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- For web app manifest -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/web-app-manifest-512x512.png"
+      sizes="512x512"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        background-color: black;
-        color: #00ffff;
-        font-family: Arial, sans-serif;
+        background-color: #121212;
+        color: #00ced1;
+        font-family: "Doto", sans-serif;
         height: auto;
         padding-bottom: 60px;
       }
+
       .container {
         display: flex;
         flex-wrap: wrap;
@@ -22,38 +47,75 @@
         padding: 10px;
         box-sizing: border-box;
       }
+
       .team-table-container {
         flex: 1;
         box-sizing: border-box;
       }
+
       table {
         background-color: #0c2c3a;
-        border-radius: 8px;
+        border-radius: 3px;
         width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed; /* Ensures rows have consistent height */
       }
-      th,
-      td {
-        height: 50px;
-        padding: 3px;
-        text-align: left;
-        font-size: 10px;
-        color: white;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        border-radius: 8pxs;
-      }
+
       th {
         background-color: #2d677d;
+        color: #010b0f;
+        font-size: 1.1rem;
+        font-weight: bolder;
+        padding: 10px;
+        height: 110px; /* Ensures the team name row has a consistent height */
       }
+
+      td {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.8rem;
+        color: #00ced1;
+        height: 90px; /* Ensures player rows have a consistent height */
+      }
+
       tr:nth-child(even) {
         background-color: #1a1a1a;
       }
+
       tr:hover {
         background-color: #333;
       }
+
+      .round-pick-info {
+        width: 100%;
+        border-bottom: 2px solid #00ced1;
+        background-color: #0c2c3a;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        font-weight: bold;
+        font-size: 2rem;
+        text-align: center;
+        padding: 15px;
+      }
+
+      .round-pick-info h1 {
+        margin: 0;
+        padding-right: 30px;
+      }
+
+      .on-the-clock {
+        font-size: 1.8rem;
+        color: green;
+        text-align: center;
+        margin-top: 10px;
+      }
+
       .adp-list-container {
-        font-family: Georgia, "Times New Roman", Times, serif;
+        font-family: "Doto", sans-serif;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -64,74 +126,79 @@
         overflow-y: auto;
         transition: transform 0.3s ease-in-out;
         transform: translateY(100%);
-      }
-      .adp-list-container.open {
-        transform: translateY(0);
-      }
-      .adp-list-toggle {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #00ced1;
-        color: #0c2c3a;
-        border: none;
-        padding: 10px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 1.2rem;
-        font-weight: bolder;
-      }
-      .adp-list-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: #ff4c4c;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      .adp-list-container table button {
-        background-color: #00ced1;
-        color: #0c2c3a;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 5px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      .adp-list-container table button:hover {
-        background-color: #00a3b1;
-      }
-
-      .adp-list-container td {
-        padding: 10px;
-        font-weight: bold;
-        font-size: 20px !important;
-        color: #00a3b1 !important;
+        z-index: 200;
       }
 
       .adp-list-container th {
-        padding: 10px;
-        font-size: 25px;
-        background-color: #1a1a1a;
+        background-color: #2d677d;
+        color: #010b0f;
+        font-size: 1.8rem;
         font-weight: bolder;
-        color: #00ced1;
+        height: 60px; /* Ensures the team name row has a consistent height */
       }
 
-      .round-pick-info {
-        width: 100%;
-        border-bottom: #00ced1 2px solid;
-        background-color: #0c2c3a;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: center;
-        flex-direction: row;
-        font-family: Georgia, "Times New Roman", Times, serif;
+      .adp-list-container td {
+        text-align: center;
+        padding: 10px;
+        font-size: 1rem;
+        color: #00ced1;
+        height: 40px; /* Ensures player rows have a consistent height */
+      }
+
+      .adp-list-container.open {
+        transform: translateY(0);
+      }
+
+      .adp-list-container table button {
+        background-color: #2d677d;
+        color: #00ced1;
+        font-size: 1rem;
         font-weight: bold;
+        font-family: "Doto", sans-serif;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .adp-list-container table button:hover {
+        background-color: #2d677d;
+        color: #f0a500;
+        transform: scale(1.05);
+      }
+
+      .adp-list-container table button:active {
+        transform: scale(0.95);
+      }
+
+      .adp-list-toggle {
+        font-family: "Doto", sans-serif;
+        align-items: center;
+        align-content: center;
+        background-color: #0c2c3a;
+        color: #00ced1;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 20px 40px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 100;
+      }
+
+      .adp-list-toggle:hover {
+        background-color: #0c2c3a;
+        color: #f0a500;
+        transform: scale(1.05);
+      }
+
+      .adp-list-toggle:active {
+        transform: scale(0.98);
       }
     </style>
   </head>
@@ -153,8 +220,8 @@
           </thead>
           <tbody>
             <tr th:each="player : ${team.roster}">
-              <td th:text="${player.name}"></td>
-              <td th:text="${player.team}"></td>
+              <td th:text="${player.playerName}"></td>
+              <td th:text="${player.position}"></td>
             </tr>
           </tbody>
         </table>
@@ -171,35 +238,31 @@
       <button
         class="adp-list-close"
         onclick="toggleAdpList()"
-        style="font-weight: bold; border-radius: 50%"
+        style="font-weight: bold; border-radius: 50%; text-align: right; align-items: right; justify-content: right; justify-items: right;"
       >
         X
       </button>
       <table>
         <thead>
           <tr>
+            <th>Rank</th>
             <th>Player Name</th>
-            <th>Team</th>
             <th>Position</th>
-            <th>ADP</th>
-            <th>ADP PPR</th>
-            <th>ADP Dynasty</th>
+            <th>Position Rank</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="player : ${adpList}">
-            <td th:text="${player.name}"></td>
-            <td th:text="${player.team}"></td>
+            <td th:text="${player.rank}"></td>
+            <td th:text="${player.playerName}"></td>
             <td th:text="${player.position}"></td>
-            <td th:text="${player.averageDraftPosition}"></td>
-            <td th:text="${player.averageDraftPositionPPR}"></td>
-            <td th:text="${player.averageDraftPositionDynasty}"></td>
+            <td th:text="${player.positionRank}"></td>
             <td>
               <form th:action="@{/draft/select}" method="post">
                 <input
                   type="hidden"
-                  th:value="${player.playerID}"
-                  name="selectedPlayerId"
+                  th:value="${player.playerName}"
+                  name="selectedPlayerName"
                 />
                 <input type="hidden" th:value="${userId}" name="userId" />
                 <input
@@ -242,7 +305,11 @@
       method="post"
       style="display: none"
     >
-      <input type="hidden" id="autoSelectedPlayerId" name="selectedPlayerId" />
+      <input
+        type="hidden"
+        id="autoSelectedPlayerName"
+        name="selectedPlayerName"
+      />
       <input type="hidden" th:value="${isReversed}" name="isReversed" />
       <input type="hidden" th:value="${roundNumber}" name="roundNumber" />
       <input type="hidden" th:value="${userId}" name="userId" />
@@ -258,7 +325,7 @@
       }
 
       function adjustTableWidths() {
-        var numOfTeams = "/*[[${numOfTeams}]]*/"; // Ensure this line is correctly rendered
+        var numOfTeams = "/*[[${numOfTeams}]]*/";
         var container = document.querySelector(".container");
         var containerWidth = container.offsetWidth;
         var tableWidth = Math.floor((containerWidth * 0.95) / numOfTeams);
@@ -282,7 +349,6 @@
         var currentTeamId = "/*[[${currentTeamId}]]*/";
 
         if (userId === currentTeamId.toString()) {
-          // It's the user's turn, so add the text "You're on the clock!"
           var roundPickInfo = document.querySelector(".round-pick-info");
           var clockText = document.createElement("h1");
           clockText.textContent = "You're on the clock!";
@@ -291,24 +357,19 @@
           roundPickInfo.appendChild(clockText);
         }
 
-        // If it's not the user's turn, auto-draft to team at currentTeamId
         if (userId !== currentTeamId) {
           setTimeout(function () {
-            var selectedPlayerId = document.querySelector(
-              'input[name="selectedPlayerId"]'
+            var selectedPlayerName = document.querySelector(
+              'input[name="selectedPlayerName"]'
             ).value;
+            document.getElementById("autoSelectedPlayerName").value =
+              selectedPlayerName;
 
-            // Set the player's ID in the hidden form
-            document.getElementById("autoSelectedPlayerId").value =
-              selectedPlayerId;
-
-            // Submit the form to auto-pick the first player for the CPU
             document.getElementById("autoPickForm").submit();
-          }, 1000); // 1.0 second delay
+          }, 700);
         }
       }
 
-      // Call the function to check if it's the user's turn
       window.onload = checkTurn;
     </script>
   </body>

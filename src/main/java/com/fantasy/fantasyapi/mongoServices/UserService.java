@@ -1,5 +1,6 @@
 package com.fantasy.fantasyapi.mongoServices;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.fantasy.fantasyapi.leagueModels.FantasyTeam;
 import com.fantasy.fantasyapi.leagueModels.User;
 import com.fantasy.fantasyapi.repository.UserRepository;
 
@@ -24,6 +26,36 @@ public class UserService {
     public void deleteUserByUserID(String userID) {
         userRepository.deleteByUserID(userID);
     }
+
+    public void deleteTeamFromMocks(String userID, String teamName) {
+        System.out.println("In deleteTeamFromMocks with userID: " + userID + " and teamName: " + teamName);
+    
+        // Fetch the user by userID
+        Optional<User> userOptional = userRepository.findById(userID);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            System.out.println("Found user for deleteTeamFromMocks");
+    
+            // Iterate through the completedMocks list (which is a List<List<FantasyTeam>>)
+            List<List<FantasyTeam>> completedMocks = user.getCompletedMocks();
+            System.out.println("Found teams");
+    
+            // Remove the entire list containing the team with the matching teamName
+            completedMocks.removeIf(teamList -> {
+                // Check if the teamName exists in this teamList
+                return teamList.stream().anyMatch(team -> team.getTeamName().equals(teamName));
+            });
+    
+            // Update the user with the modified completedMocks list
+            user.setCompletedMocks(completedMocks);
+            userRepository.save(user);
+            System.out.println("Removed the team and its associated mock teams.");
+        } else {
+            System.out.println("User not found for userID: " + userID);
+        }
+    }
+    
+    
 
     /**
      * Checks if the username already exists in the database.
