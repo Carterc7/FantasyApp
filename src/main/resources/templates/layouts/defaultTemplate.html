@@ -51,14 +51,12 @@
         top: 0;
       }
 
-      /* Apply Inconsolata to Mock O' Clock */
       .navbar-brand {
         font-family: "Doto", monospace !important;
         font-weight: 900;
         font-size: 3.2rem !important;
       }
 
-      /* Apply Doto to Nav Items */
       .navbar .nav-link {
         font-family: "Doto", sans-serif !important;
         font-weight: bolder;
@@ -79,17 +77,9 @@
         font-size: 1.6rem;
       }
 
-      .dropdown-item {
-        color: #00ced1;
-      }
-
       .dropdown-item:hover {
         color: #f0a500;
         background-color: #0c2c3a;
-      }
-
-      .navbar .container-fluid {
-        justify-content: space-between;
       }
 
       .dropdown-menu {
@@ -97,115 +87,50 @@
         border-radius: 8px;
         margin-top: 0 !important;
       }
-
-      .logo {
-        margin-bottom: 50px;
-      }
-
-      .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-      }
-
-      .navbar-brand {
-        margin-bottom: 0;
-      }
-
-      .navbar-nav {
-        margin-top: auto;
-      }
     </style>
   </head>
   <body>
-    <!-- Header -->
     <div class="header-section">
       <nav class="navbar navbar-expand-lg">
         <div class="container-fluid d-flex align-items-center">
-          <!-- Logo and Site Name -->
           <div class="d-flex align-items-center">
-            <a href="http://127.0.0.1:8080/">
+            <a th:href="@{/}">
               <img
                 th:src="@{/images/clock2_logo.png}"
                 alt="Mock O' Clock Logo"
                 class="rounded-circle logo"
-                style="
-                  width: 175px;
-                  height: 125px;
-                  padding: 5px;
-                  margin-top: 50px !important;
-                  margin-left: 20px;
-                "
+                style="width: 175px; height: 125px; padding: 5px; margin-top: 50px !important; margin-left: 20px;"
               />
-              <a
-                class="navbar-brand"
-                style="color: #00ced1; font-weight: bolder"
-                href="http://127.0.0.1:8080/"
-              >
+              <a class="navbar-brand" style="color: #00ced1; font-weight: bolder" th:href="@{/}">
                 Mock O' Clock
               </a>
             </a>
           </div>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <!-- ADP and Draft Links -->
               <li class="nav-item">
                 <a class="nav-link" th:href="@{/adp/list}">ADP</a>
               </li>
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  th:href="${authenticatedUser != null ? '/setup' : '/login'}"
-                  >Draft</a
-                >
+                <a class="nav-link" th:href="${authenticatedUser != null ? '/setup' : '/login'}">Draft</a>
               </li>
-
-              <!-- Account Dropdown -->
               <li class="nav-item dropdown" style="padding-right: 15px">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Account
-                </a>
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li th:if="${authenticatedUser == null}">
-                    <a class="dropdown-item" href="http://localhost:8080/login"
-                      >Login</a
-                    >
+                    <a class="dropdown-item" th:href="@{/login}">Login</a>
                   </li>
                   <li th:if="${authenticatedUser == null}">
-                    <a
-                      class="dropdown-item"
-                      href="http://127.0.0.1:8080/register/"
-                      >Register</a
-                    >
+                    <a class="dropdown-item" th:href="@{/register}">Register</a>
                   </li>
                   <li th:if="${authenticatedUser != null}">
-                    <a class="dropdown-item" href="http://127.0.0.1:8080/user/teams"
-                      >My Mocks</a
-                    >
+                    <a class="dropdown-item" th:href="@{/user/teams}">My Mocks</a>
                   </li>
                   <li th:if="${authenticatedUser != null}">
-                    <a class="dropdown-item" href="http://127.0.0.1:8080/logout"
-                      >Logout</a
-                    >
+                    <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                   </li>
                 </ul>
               </li>
@@ -214,12 +139,10 @@
         </div>
       </nav>
     </div>
-
-    <!-- Content -->
     <div class="content">
       <section layout:fragment="content">
-        <!-- Body of the page -->
       </section>
     </div>
   </body>
 </html>
+
