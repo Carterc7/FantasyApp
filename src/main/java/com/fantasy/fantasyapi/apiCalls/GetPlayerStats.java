@@ -53,7 +53,7 @@ public class GetPlayerStats {
         String baseUrl = dotenv.get("API_URL");
 
         // Define the endpoint URL with the playerID as a query parameter
-        String url = baseUrl + "/getNFLGamesForPlayer?playerID=" + playerID;
+        String url = baseUrl + "/getNFLGamesForPlayer?playerID=" + playerID + "&season=2024";
 
         // JSON payload at this request URL is larger than default capacity
         // Create a custom ExchangeStrategies object with an increased buffer limit
@@ -82,7 +82,8 @@ public class GetPlayerStats {
 
 
     // THIS IS WORKING, BUT i should be able to get stats and points for a player given their id at the endpoint 
-    // /getNFLGamesForPlayer?playerID=
+    // /getNFLGamesForPlayer?playerID= (this will show week by week stats and points)
+    // //getNFLPlayerInfo?playerName=keenan_a&getStats=true" (this will get season long points along with basically an espnPlayer object, we can just fetch all needed player info and stats from it, along with weekly stats from other endpoints, and show player details with that)
     public List<StatsPlayer> getPlayerStatsForSeason(String playerName, String teamAbv, String seasonYear) {
         List<StatsPlayer> seasonStats = new ArrayList<>();
 

@@ -26,20 +26,21 @@
       href="/web-app-manifest-512x512.png"
       sizes="512x512"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        min-height: 100vh;
         box-sizing: border-box;
-        background-color: #121212;
+        background-color: #1e1e1e;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        font-family: "Doto", sans-serif;
       }
 
       .container {
@@ -50,7 +51,8 @@
       }
 
       .form-container {
-        background-color: rgba(0, 0, 0, 0.8);
+        background-color: #121212;
+        border: 1px solid #f0a500;
         width: 500px;
         padding: 40px;
         border-radius: 20px;
@@ -89,7 +91,7 @@
         width: 100%;
         background-color: #2d677d;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
+        font-family: "Doto", sans-serif;
         padding: 12px;
         font-size: 1.2rem;
         font-weight: bold;
@@ -105,8 +107,19 @@
       }
 
       @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      label {
+        font-family: "VT323", monospace;
+        font-size: 1.3rem;
       }
     </style>
   </head>
@@ -114,7 +127,7 @@
     <div layout:fragment="content" class="container">
       <div class="form-container">
         <h1>Draft Options</h1>
-        <form th:action="@{/draft}" method="post">
+        <form id="draftForm" th:action="@{/draft}" method="post">
           <div class="form-group">
             <label for="numOfTeams">Number of Teams:</label>
             <input
@@ -122,6 +135,7 @@
               id="numOfTeams"
               name="numOfTeams"
               min="2"
+              max="20"
               class="form-control"
               required
             />
@@ -134,17 +148,7 @@
               id="numOfRounds"
               name="numOfRounds"
               min="1"
-              class="form-control"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="mockTeamName">Team Name:</label>
-            <input
-              type="text"
-              id="mockTeamName"
-              name="mockTeamName"
+              max="25"
               class="form-control"
               required
             />
@@ -162,9 +166,53 @@
             />
           </div>
 
+          <div class="form-group">
+            <label for="mockTeamName">Team Name:</label>
+            <input
+              type="text"
+              id="mockTeamName"
+              name="mockTeamName"
+              class="form-control"
+              maxlength="15"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="format">Draft Format:</label>
+            <select id="format" name="format" class="form-control" required>
+              <option value="ppr">PPR</option>
+              <option value="standard">Standard</option>
+              <option value="half-ppr">Half-PPR</option>
+              <option value="dynasty">Dynasty</option>
+              <option value="2qb-dynasty">2QB Dynasty</option>
+            </select>
+          </div>
+
           <button type="submit">Start Draft</button>
         </form>
       </div>
+      <script>
+        document
+          .getElementById("draftForm")
+          .addEventListener("submit", function (e) {
+            const numOfTeams = parseInt(
+              document.getElementById("numOfTeams").value,
+              10
+            );
+            const draftPosition = parseInt(
+              document.getElementById("draftPosition").value,
+              10
+            );
+
+            if (draftPosition > numOfTeams) {
+              e.preventDefault(); // Prevent form submission
+              alert(
+                "Starting draft position cannot be greater than the number of teams."
+              );
+            }
+          });
+      </script>
     </div>
   </body>
 </html>

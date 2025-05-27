@@ -1,5 +1,9 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
   <head>
     <title>Login</title>
     <!-- Favicon -->
@@ -22,26 +26,35 @@
       href="/web-app-manifest-512x512.png"
       sizes="512x512"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         width: 100vw;
         height: 100vh;
         box-sizing: border-box;
-        background-color: #121212;
+        background-color: #1e1e1e;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
+        font-family: "Doto", sans-serif;
+      }
+
+      .center-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100%;
+        width: 100%;
       }
 
       .login-container {
         width: 500px;
         padding: 40px;
-        background: rgba(0, 0, 0, 0.8);
+        background-color: #121212;
         border-radius: 20px;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
@@ -78,7 +91,7 @@
         width: 100%;
         background-color: #2d677d;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
+        font-family: "Doto", sans-serif;
         padding: 12px;
         font-size: 1.2rem;
         font-weight: bold;
@@ -100,30 +113,51 @@
       }
 
       @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <div class="login-container">
-        <h1>Login</h1>
-        <form th:action="@{/login}" method="post">
-          <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" class="form-control" required />
+      <div class="center-wrapper">
+        <div class="login-container">
+          <h1>Login</h1>
+          <form th:action="@{/login}" method="post">
+            <div class="form-group">
+              <label for="username">Username:</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+          <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
           </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" class="form-control" required />
-          </div>
-          <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        <div th:if="${error}" class="error-message">
-          <p th:text="${error}"></p>
         </div>
       </div>
     </div>
   </body>
 </html>
+

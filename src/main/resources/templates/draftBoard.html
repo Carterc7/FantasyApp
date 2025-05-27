@@ -4,373 +4,748 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Draft Board</title>
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- For web app manifest -->
     <link
-      rel="icon"
-      type="image/png"
-      href="/web-app-manifest-192x192.png"
-      sizes="192x192"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/web-app-manifest-512x512.png"
-      sizes="512x512"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=VT323&display=swap"
       rel="stylesheet"
     />
     <style>
+      html,
       body {
-        background-color: #121212;
-        color: #00ced1;
+        margin: 0;
+        padding: 0;
+        background-color: #1e1e1e;
         font-family: "Doto", sans-serif;
-        height: auto;
-        padding-bottom: 60px;
-      }
-
-      .container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        width: 100%;
-        margin: 0 auto;
-        border-radius: 15px;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-
-      .team-table-container {
-        flex: 1;
-        box-sizing: border-box;
-      }
-
-      table {
-        background-color: #0c2c3a;
-        border-radius: 3px;
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        table-layout: fixed; /* Ensures rows have consistent height */
-      }
-
-      th {
-        background-color: #2d677d;
-        color: #010b0f;
-        font-size: 1.1rem;
-        font-weight: bolder;
-        padding: 10px;
-        height: 110px; /* Ensures the team name row has a consistent height */
-      }
-
-      td {
-        text-align: center;
-        padding: 10px;
-        font-size: 0.8rem;
         color: #00ced1;
-        height: 90px; /* Ensures player rows have a consistent height */
+        height: 100vh;
+        overflow-x: hidden;
+        overscroll-behavior: none;
+        overscroll-behavior-x: none;
+        touch-action: pan-y;
       }
 
-      tr:nth-child(even) {
-        background-color: #1a1a1a;
-      }
-
-      tr:hover {
-        background-color: #333;
+      .draft-container {
+        width: 67%;
+        padding: 20px 20px 60px 20px;
       }
 
       .round-pick-info {
-        width: 100%;
-        border-bottom: 2px solid #00ced1;
-        background-color: #0c2c3a;
-        border-radius: 8px;
-        margin-bottom: 10px;
         display: flex;
         justify-content: space-between;
-        flex-direction: row;
-        font-weight: bold;
-        font-size: 2rem;
-        text-align: center;
+        width: 97%;
+        align-items: center;
         padding: 15px;
-      }
-
-      .round-pick-info h1 {
-        margin: 0;
-        padding-right: 30px;
-      }
-
-      .on-the-clock {
-        font-size: 1.8rem;
-        color: green;
+        background-color: #0c2c3a;
+        box-shadow: 0 0 3px #90ee90, 0 0 6px #90ee90c8;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        color: #f0a500;
+        font-weight: bold;
+        font-size: 1.4rem;
+        gap: 10px;
         text-align: center;
-        margin-top: 10px;
+      }
+
+      .round-pick-info > div {
+        flex: 1; /* Evenly distribute width */
+      }
+
+      .clock-message {
+        font-size: 1.2rem;
+        color: #77dd77;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .team-columns {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .team-columns::-webkit-scrollbar {
+        display: none;
+      }
+
+      .team-column {
+        flex: 0 0 auto;
+        background-color: #1e1e1e;
+        border-radius: 0px;
+        padding: 0px;
+        margin-right: 20px;
+        min-width: 200px;
+      }
+
+      .team-column thead {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        background-color: #1a1a1a;
+      }
+
+      .team-column table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .team-column th {
+        background-color: #0c2c3a;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        color: #f0a500;
+        font-size: 0.9rem;
+        padding: 2px;
+        text-align: center;
+        width: 100%;
+        height: 35px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .team-column td {
+        font-family: "VT323", monospace;
+        text-align: center;
+        font-size: 1.7rem;
+        color: black;
+        font-weight: 400;
+        height: 100px;
+        width: 150px;
       }
 
       .adp-list-container {
-        font-family: "Doto", sans-serif;
         position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+        top: 0;
+        right: 0;
+        width: 30%;
+        height: 100%;
         background-color: #0c2c3a;
-        border-top: 1px solid #00ffff;
-        max-height: 400px;
+        border-left: 2px solid #f0a500;
         overflow-y: auto;
-        transition: transform 0.3s ease-in-out;
-        transform: translateY(100%);
-        z-index: 200;
+      }
+
+      .adp-list-container table {
+        width: 100%;
+        border-collapse: collapse;
+        animation: fadeIn 0.6s ease-in;
+        table-layout: fixed;
       }
 
       .adp-list-container th {
-        background-color: #2d677d;
-        color: #010b0f;
-        font-size: 1.8rem;
-        font-weight: bolder;
-        height: 60px; /* Ensures the team name row has a consistent height */
+        background-color: #1e1e1e;
+        color: #f0a500;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        font-size: 1.2rem;
+        height: 35px;
+        margin-top: 0px;
+        padding: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .adp-list-container td {
+        font-family: "VT323", monospace;
         text-align: center;
+        height: 80px;
+        padding: 8px;
+        color: #00ced1;
+        border-bottom: 3px solid #1e1e1e;
+      }
+
+      .adp-list-container button {
+        font-family: "Doto", monospace;
+        background-color: #1e1e1e;
+        color: #00ced1;
+        font-size: 0.8rem;
+        width: 60px;
+        font-weight: bolder;
         padding: 10px;
-        font-size: 1rem;
-        color: #00ced1;
-        height: 40px; /* Ensures player rows have a consistent height */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
       }
 
-      .adp-list-container.open {
-        transform: translateY(0);
-      }
-
-      .adp-list-container table button {
+      .adp-list-container button:hover {
         background-color: #2d677d;
-        color: #00ced1;
-        font-size: 1rem;
-        font-weight: bold;
+        color: #f0a500;
+        transform: scale(1.05);
+      }
+
+      .leave-draft-button {
+        color: #f0a500;
         font-family: "Doto", sans-serif;
+        font-size: 0.8rem;
+        margin: 15px;
+        font-weight: bold;
         padding: 10px 15px;
         border: none;
         border-radius: 8px;
         cursor: pointer;
+        background-color: #0c2c3a;
         transition: background-color 0.3s ease, transform 0.2s ease;
       }
 
-      .adp-list-container table button:hover {
-        background-color: #2d677d;
-        color: #f0a500;
+      .leave-draft-button:hover {
         transform: scale(1.05);
       }
 
-      .adp-list-container table button:active {
-        transform: scale(0.95);
-      }
-
-      .adp-list-toggle {
-        font-family: "Doto", sans-serif;
+      .position-filter {
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        align-content: center;
-        background-color: #0c2c3a;
-        color: #00ced1;
-        font-size: 1.2rem;
+        margin: 2rem 0;
+      }
+
+      .position-filter-label {
+        font-size: 1.6rem;
         font-weight: bold;
-        padding: 20px 40px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        z-index: 100;
-      }
-
-      .adp-list-toggle:hover {
-        background-color: #0c2c3a;
         color: #f0a500;
-        transform: scale(1.05);
+        margin-bottom: 25px;
+        text-align: center;
       }
 
-      .adp-list-toggle:active {
-        transform: scale(0.98);
+      .position-filter-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
   <body>
-    <div class="round-pick-info">
-      <h1 style="padding-right: 30px !important">
-        Round: <span th:text="${roundNumber}"></span>
-      </h1>
-      <h1>Pick: <span th:text="${currentPick}"></span></h1>
+    <div>
+      <form
+        th:action="@{/leave-draft}"
+        method="get"
+        onsubmit="return confirmLeaveDraft();"
+      >
+        <button type="submit" class="leave-draft-button">Leave Draft</button>
+      </form>
     </div>
-    <div class="container">
-      <!-- Loop through each FantasyTeam and display their players in a table -->
-      <div th:each="team : ${mockTeams}" class="team-table-container">
-        <table>
-          <thead>
-            <tr>
-              <th th:text="${team.teamName}"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="player : ${team.roster}">
-              <td th:text="${player.playerName}"></td>
-              <td th:text="${player.position}"></td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="draft-container">
+      <div class="round-pick-info">
+        <div>
+          Round: <span id="roundNumberSpan" th:text="${roundNumber}"></span>
+        </div>
+        <div>
+          Pick: <span id="currentPickSpan" th:text="${currentPick}"></span>
+        </div>
+        <div class="clock-message" id="clockMessage">&nbsp;</div>
+      </div>
+
+      <div class="team-columns">
+        <div th:each="team : ${session.mockTeams}" class="team-column">
+          <table>
+            <thead>
+              <tr>
+                <th th:text="${team.teamName}"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="player : ${team.roster}">
+                <td>
+                  <img
+                    th:src="${player.espnHeadshot}"
+                    alt="headshot"
+                    style="width: 40px; height: 40px; border-radius: 50%"
+                  />
+                </td>
+                <td th:text="${player.adpPlayer.name}"></td>
+                <td th:text="${player.adpPlayer.position}"></td>
+                <td th:text="${player.team}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <!-- ADP List Toggle Button -->
-    <button class="adp-list-toggle" onclick="toggleAdpList()">
-      Toggle ADP List
-    </button>
-
-    <!-- ADP List Container -->
     <div class="adp-list-container">
-      <button
-        class="adp-list-close"
-        onclick="toggleAdpList()"
-        style="font-weight: bold; border-radius: 50%; text-align: right; align-items: right; justify-content: right; justify-items: right;"
-      >
-        X
-      </button>
       <table>
         <thead>
           <tr>
             <th>Rank</th>
-            <th>Player Name</th>
-            <th>Position</th>
-            <th>Position Rank</th>
+            <th>Player</th>
+            <th>Pos</th>
+            <th>PRank</th>
+            <th></th>
+          </tr>
+          <tr>
+            <!-- 🔍 POSITION FILTER CONTROLS -->
+            <div class="position-filter">
+              <div class="position-filter-label">
+                <span th:text="${format.toUpperCase()} + ' ADP'"></span>
+              </div>
+              <div class="position-filter-buttons">
+                <button type="button" data-pos="ALL">ALL</button>
+                <button type="button" data-pos="QB">QB</button>
+                <button type="button" data-pos="WR">WR</button>
+                <button type="button" data-pos="RB">RB</button>
+                <button type="button" data-pos="TE">TE</button>
+              </div>
+            </div>
           </tr>
         </thead>
-        <tbody>
-          <tr th:each="player : ${adpList}">
-            <td th:text="${player.rank}"></td>
-            <td th:text="${player.playerName}"></td>
-            <td th:text="${player.position}"></td>
-            <td th:text="${player.positionRank}"></td>
+        <tbody id="adpTableBody">
+          <tr
+            th:each="player : ${session.adpList}"
+            th:attr="data-position=${player.adpPlayer.position}"
+            th:attrappend="data-espn-headshot=${player.espnHeadshot}, data-team=${player.team}"
+          >
+            <td
+              style="font-size: 1.6rem"
+              th:text="${#numbers.formatDecimal(player.adpPlayer.overallRank, 0, 0)}"
+            ></td>
+            <td
+              style="font-size: 1.1rem"
+              th:text="${player.adpPlayer.name}"
+            ></td>
+            <td
+              style="font-size: 1.6rem"
+              th:text="${player.adpPlayer.position}"
+            ></td>
+            <td
+              style="font-size: 1.6rem"
+              th:text="${#numbers.formatDecimal(player.adpPlayer.positionalRank, 0, 0)}"
+            ></td>
             <td>
-              <form th:action="@{/draft/select}" method="post">
-                <input
-                  type="hidden"
-                  th:value="${player.playerName}"
-                  name="selectedPlayerName"
-                />
-                <input type="hidden" th:value="${userId}" name="userId" />
-                <input
-                  type="hidden"
-                  th:value="${currentPick}"
-                  name="currentPick"
-                />
-                <input
-                  type="hidden"
-                  th:value="${isReversed}"
-                  name="isReversed"
-                />
-                <input
-                  type="hidden"
-                  th:value="${roundNumber}"
-                  name="roundNumber"
-                />
-                <input
-                  type="hidden"
-                  th:value="${numSelections}"
-                  name="numSelections"
-                />
-                <input
-                  type="hidden"
-                  th:value="${numOfTeams}"
-                  name="numOfTeams"
-                />
-                <button type="submit">Select</button>
-              </form>
+              <button
+                type="button"
+                class="select-btn"
+                th:attr="
+    data-name=${player.adpPlayer.name},
+    data-position=${player.adpPlayer.position},
+    data-espn-headshot=${player.espnHeadshot},
+    data-team=${player.team}
+  "
+              >
+                DRAFT
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Hidden form for auto-picking when it's not the user's turn -->
-    <form
-      id="autoPickForm"
-      th:action="@{/draft/select}"
-      method="post"
-      style="display: none"
-    >
-      <input
-        type="hidden"
-        id="autoSelectedPlayerName"
-        name="selectedPlayerName"
-      />
-      <input type="hidden" th:value="${isReversed}" name="isReversed" />
-      <input type="hidden" th:value="${roundNumber}" name="roundNumber" />
-      <input type="hidden" th:value="${userId}" name="userId" />
-      <input type="hidden" th:value="${numSelections}" name="numSelections" />
-      <input type="hidden" th:value="${currentPick}" name="currentPick" />
-      <input type="hidden" th:value="${numOfTeams}" name="numOfTeams" />
-    </form>
+    <!-- Hidden fields for JS -->
+    <input type="hidden" id="userId" th:value="${userId}" />
+    <input type="hidden" id="currentTeamId" th:value="${currentTeamId}" />
+    <input type="hidden" id="currentPick" th:value="${currentPick}" />
+    <input type="hidden" id="isReversed" th:value="${isReversed}" />
+    <input type="hidden" id="roundNumber" th:value="${roundNumber}" />
+    <input type="hidden" id="numOfSelections" th:value="${numOfSelections}" />
+    <input type="hidden" id="numOfTeams" th:value="${numOfTeams}" />
+    <input type="hidden" id="numOfRounds" th:value="${numOfRounds}" />
 
     <script>
-      function toggleAdpList() {
-        var adpListContainer = document.querySelector(".adp-list-container");
-        adpListContainer.classList.toggle("open");
-      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const buttons = document.querySelectorAll(
+          ".position-filter-buttons button"
+        );
 
-      function adjustTableWidths() {
-        var numOfTeams = "/*[[${numOfTeams}]]*/";
-        var container = document.querySelector(".container");
-        var containerWidth = container.offsetWidth;
-        var tableWidth = Math.floor((containerWidth * 0.95) / numOfTeams);
-
-        var tables = document.querySelectorAll(".team-table-container table");
-        tables.forEach(function (table) {
-          table.style.width = tableWidth + "px";
+        buttons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const position = button.getAttribute("data-pos");
+            filterByPosition(position);
+          });
         });
-      }
+
+        function filterByPosition(position) {
+          const rows = document.querySelectorAll("#adpTableBody tr");
+          rows.forEach((row) => {
+            const playerPos = row.getAttribute("data-position");
+            if (position === "ALL" || playerPos === position) {
+              row.style.display = "";
+            } else {
+              row.style.display = "none";
+            }
+          });
+        }
+      });
 
       document.addEventListener("DOMContentLoaded", function () {
         adjustTableWidths();
+        checkTurn();
       });
 
-      window.addEventListener("resize", function () {
-        adjustTableWidths();
-      });
+      window.addEventListener("resize", adjustTableWidths);
+
+      function confirmLeaveDraft() {
+        return confirm(
+          "Are you sure you want to leave the draft? Your progress will be lost."
+        );
+      }
+
+      function adjustTableWidths() {
+        const fixedWidth = 200;
+        document.querySelectorAll(".team-column table").forEach((table) => {
+          table.style.width = fixedWidth + "px";
+        });
+      }
 
       function checkTurn() {
-        var userId = "/*[[${userId}]]*/";
-        var currentTeamId = "/*[[${currentTeamId}]]*/";
+        const userId = document.getElementById("userId").value;
+        const currentTeamId = document.getElementById("currentTeamId").value;
+        const draftButtons = document.querySelectorAll(".select-btn");
 
-        if (userId === currentTeamId.toString()) {
-          var roundPickInfo = document.querySelector(".round-pick-info");
-          var clockText = document.createElement("h1");
-          clockText.textContent = "You're on the clock!";
-          clockText.style.color = "green";
-          clockText.style.marginLeft = "20px";
-          roundPickInfo.appendChild(clockText);
-        }
+        if (userId === currentTeamId) {
+          document.getElementById("clockMessage").textContent =
+            "YOU ARE ON THE CLOCK!";
+          draftButtons.forEach((btn) => (btn.disabled = false));
+        } else {
+          document.getElementById("clockMessage").textContent =
+            "AUTO DRAFTING...";
+          draftButtons.forEach((btn) => (btn.disabled = true));
 
-        if (userId !== currentTeamId) {
-          setTimeout(function () {
-            var selectedPlayerName = document.querySelector(
-              'input[name="selectedPlayerName"]'
-            ).value;
-            document.getElementById("autoSelectedPlayerName").value =
-              selectedPlayerName;
+          setTimeout(() => {
+            // Get the first available button to use for player name lookup
+            const firstAvailableBtn =
+              document.querySelector(".select-btn:not([disabled])") ||
+              document.querySelector(".select-btn");
+            if (!firstAvailableBtn) return;
 
-            document.getElementById("autoPickForm").submit();
-          }, 700);
+            // Build payload
+            const payload = new URLSearchParams({
+              selectedPlayerName: firstAvailableBtn.getAttribute("data-name"), // Use name from button to send
+              userId: userId,
+              currentPick: document.getElementById("currentPick").value,
+              isReversed: document.getElementById("isReversed").value,
+              roundNumber: document.getElementById("roundNumber").value,
+              numOfSelections: document.getElementById("numOfSelections").value,
+              numOfTeams: document.getElementById("numOfTeams").value,
+              numOfRounds: document.getElementById("numOfRounds").value,
+              currentTeamId: currentTeamId,
+            });
+
+            fetch("/draft/select", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: payload.toString(),
+            })
+              .then((res) => {
+                if (!res.ok) throw new Error("Draft selection failed.");
+                return res.json();
+              })
+              .then((data) => {
+                if (data.draftEnded) {
+                  window.location.href = "/draft-over";
+                  return;
+                }
+
+                // Update draft state values
+                document.getElementById("currentPick").value = data.currentPick;
+                document.getElementById("currentTeamId").value =
+                  data.currentTeamId;
+                document.getElementById("numOfSelections").value =
+                  data.numSelections;
+                document.getElementById("isReversed").value = data.isReversed;
+                document.getElementById("roundNumber").value = data.roundNumber;
+                document.getElementById("roundNumberSpan").textContent =
+                  data.roundNumber;
+                document.getElementById("currentPickSpan").textContent =
+                  data.currentPick;
+
+                // Get the selected player from the response
+                const player = data.selectedPlayer;
+                if (!player) {
+                  console.error("No selectedPlayer in response");
+                  return;
+                }
+
+                // Remove the player row from available players table by matching player name
+                // Find the button row with the same player name and remove its <tr>
+                const btnToRemove = [
+                  ...document.querySelectorAll(".select-btn"),
+                ].find(
+                  (btn) =>
+                    btn.getAttribute("data-name").toLowerCase() ===
+                    player.adpPlayer.name.toLowerCase()
+                );
+                if (btnToRemove) {
+                  btnToRemove.closest("tr").remove();
+                }
+
+                // Create player cell in drafted team roster table
+                const teamColumns = document.querySelectorAll(".team-column");
+                const teamId = parseInt(currentTeamId);
+                const targetTable = teamColumns[teamId]?.querySelector("tbody");
+
+                if (targetTable) {
+                  const newRow = document.createElement("tr");
+                  newRow.style.backgroundColor = "#1e1e1e";
+                  newRow.style.width = "200px";
+
+                  const cell = document.createElement("td");
+                  cell.style.position = "relative";
+                  cell.style.backgroundColor = getBackgroundColor(
+                    player.adpPlayer.position
+                  );
+                  cell.style.borderRadius = "8px";
+                  cell.style.display = "flex";
+                  cell.style.alignItems = "center";
+                  cell.style.overflow = "hidden";
+                  cell.style.height = "100px"; // fixed height to help align things
+                  cell.style.width = "200px";
+
+                  // Team logo background image (faded behind headshot)
+                  const logoImg = document.createElement("img");
+                  logoImg.src = `/images/${player.team}.png`; // Assuming player.team contains team string (like "NE")
+                  logoImg.alt = "team logo";
+                  logoImg.style.position = "absolute";
+                  logoImg.style.top = "0";
+                  logoImg.style.left = "20px";
+                  logoImg.style.width = "60px";
+                  logoImg.style.opacity = "0.4";
+                  logoImg.style.zIndex = "0";
+                  cell.appendChild(logoImg);
+
+                  // Headshot image (flat at bottom)
+                  const img = document.createElement("img");
+                  img.src = player.espnHeadshot; // Use headshot from selectedPlayer response
+                  img.alt = "headshot";
+                  img.style.width = "60px";
+                  img.style.height = "80px";
+                  img.style.objectFit = "cover";
+                  img.style.alignSelf = "flex-end";
+                  img.style.zIndex = "1";
+                  img.style.marginLeft = "5px";
+                  img.style.marginRight = "20px";
+                  cell.appendChild(img);
+
+                  // Name block (to the left of image/logo, vertically centered)
+                  const nameDiv = document.createElement("div");
+                  nameDiv.style.display = "flex";
+                  nameDiv.style.flexDirection = "column";
+                  nameDiv.style.justifyContent = "center";
+                  nameDiv.style.alignItems = "flex-start";
+                  nameDiv.style.zIndex = "1";
+                  nameDiv.style.flex = "1";
+
+                  const [firstName, ...lastNameParts] =
+                    player.adpPlayer.name.split(" ");
+                  const lastName = lastNameParts.join(" ");
+
+                  const firstNameSpan = document.createElement("span");
+                  firstNameSpan.textContent = firstName;
+                  firstNameSpan.style.fontSize = "1.2rem";
+
+                  const lastNameSpan = document.createElement("span");
+                  lastNameSpan.textContent = lastName;
+                  lastNameSpan.style.fontWeight = "bolder";
+                  lastNameSpan.style.fontSize = "1.8rem";
+                  lastNameSpan.style.lineHeight = "1";
+
+                  nameDiv.appendChild(firstNameSpan);
+                  nameDiv.appendChild(lastNameSpan);
+                  cell.appendChild(nameDiv);
+
+                  // Position (top right corner)
+                  const positionSpan = document.createElement("span");
+                  positionSpan.textContent = player.adpPlayer.position;
+                  positionSpan.style.position = "absolute";
+                  positionSpan.style.top = "5px";
+                  positionSpan.style.right = "10px";
+                  positionSpan.style.fontSize = "1em";
+                  positionSpan.style.fontWeight = "bold";
+                  positionSpan.style.padding = "2px 6px";
+                  positionSpan.style.borderRadius = "6px";
+                  positionSpan.style.zIndex = "2";
+                  cell.appendChild(positionSpan);
+
+                  newRow.appendChild(cell);
+                  targetTable.appendChild(newRow);
+                }
+
+                // Continue to next turn
+                checkTurn();
+              })
+              .catch((err) => console.error("CPU pick error:", err.message));
+          }, 1000);
         }
       }
 
-      window.onload = checkTurn;
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("select-btn")) {
+          const button = e.target;
+          const playerName = button.getAttribute("data-name");
+          const playerPosition = button.getAttribute("data-position");
+          const espnHeadshot = button.getAttribute("data-espn-headshot");
+          const team = button.getAttribute("data-team");
+          button.disabled = true;
+
+          const currentTeamId = document.getElementById("currentTeamId").value;
+
+          const payload = new URLSearchParams({
+            selectedPlayerName: playerName,
+            userId: document.getElementById("userId").value,
+            currentPick: document.getElementById("currentPick").value,
+            isReversed: document.getElementById("isReversed").value,
+            roundNumber: document.getElementById("roundNumber").value,
+            numOfSelections: document.getElementById("numOfSelections").value,
+            numOfTeams: document.getElementById("numOfTeams").value,
+            numOfRounds: document.getElementById("numOfRounds").value,
+            currentTeamId: currentTeamId,
+          });
+
+          fetch("/draft/select", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: payload.toString(),
+          })
+            .then((res) => {
+              if (!res.ok) throw new Error("Draft selection failed.");
+              return res.json();
+            })
+            .then((data) => {
+              if (data.draftEnded) {
+                window.location.href = "/draft-over";
+                return;
+              }
+
+              document.getElementById("currentPick").value = data.currentPick;
+              document.getElementById("currentTeamId").value =
+                data.currentTeamId;
+              document.getElementById("numOfSelections").value =
+                data.numSelections;
+              document.getElementById("isReversed").value = data.isReversed;
+              document.getElementById("roundNumber").value = data.roundNumber;
+              document.getElementById("roundNumberSpan").textContent =
+                data.roundNumber;
+              document.getElementById("currentPickSpan").textContent =
+                data.currentPick;
+
+              button.closest("tr").remove();
+
+              const teamColumns = document.querySelectorAll(".team-column");
+              const teamId = parseInt(currentTeamId);
+              const targetTable = teamColumns[teamId]?.querySelector("tbody");
+
+              if (targetTable) {
+                const newRow = document.createElement("tr");
+                newRow.style.backgroundColor = "#1e1e1e";
+                newRow.style.width = "200px";
+
+                const cell = document.createElement("td");
+                cell.style.position = "relative";
+                cell.style.backgroundColor = getBackgroundColor(playerPosition);
+                cell.style.borderRadius = "8px";
+                cell.style.display = "flex";
+                cell.style.alignItems = "center";
+                cell.style.overflow = "hidden";
+                cell.style.height = "100px"; // fixed height to help align things
+                cell.style.width = "200px";
+
+                // Team logo background image (faded behind headshot)
+                const logoImg = document.createElement("img");
+                logoImg.src = `/images/${team}.png`;
+                logoImg.alt = "team logo";
+                logoImg.style.position = "absolute";
+                logoImg.style.top = "0";
+                logoImg.style.left = "20px";
+                logoImg.style.width = "60px";
+                logoImg.style.opacity = "0.4";
+                logoImg.style.zIndex = "0";
+                cell.appendChild(logoImg);
+
+                // Headshot image (flat at bottom)
+                const img = document.createElement("img");
+                img.src = espnHeadshot;
+                img.alt = "headshot";
+                img.style.width = "60px";
+                img.style.height = "80px";
+                img.style.objectFit = "cover";
+                img.style.alignSelf = "flex-end";
+                img.style.zIndex = "1";
+                img.style.marginLeft = "5px";
+                img.style.marginRight = "20px";
+                cell.appendChild(img);
+
+                // Name block (to the left of image/logo, vertically centered)
+                const nameDiv = document.createElement("div");
+                nameDiv.style.display = "flex";
+                nameDiv.style.flexDirection = "column";
+                nameDiv.style.justifyContent = "center";
+                nameDiv.style.alignItems = "flex-start";
+                nameDiv.style.zIndex = "1";
+                nameDiv.style.flex = "1";
+
+                const [firstName, ...lastNameParts] = playerName.split(" ");
+                const lastName = lastNameParts.join(" ");
+
+                const firstNameSpan = document.createElement("span");
+                firstNameSpan.textContent = firstName;
+                firstNameSpan.style.fontSize = "1.2rem";
+
+                const lastNameSpan = document.createElement("span");
+                lastNameSpan.textContent = lastName;
+                lastNameSpan.style.fontWeight = "bolder";
+                lastNameSpan.style.fontSize = "1.8rem";
+                lastNameSpan.style.lineHeight = "1";
+
+                nameDiv.appendChild(firstNameSpan);
+                nameDiv.appendChild(lastNameSpan);
+                cell.appendChild(nameDiv);
+
+                // Position (top right corner)
+                const positionSpan = document.createElement("span");
+                positionSpan.textContent = playerPosition;
+                positionSpan.style.position = "absolute";
+                positionSpan.style.top = "5px";
+                positionSpan.style.right = "10px";
+                positionSpan.style.fontSize = "1em";
+                positionSpan.style.fontWeight = "bold";
+                positionSpan.style.padding = "2px 6px";
+                positionSpan.style.borderRadius = "6px";
+                positionSpan.style.zIndex = "2";
+                cell.appendChild(positionSpan);
+
+                newRow.appendChild(cell);
+                targetTable.appendChild(newRow);
+              }
+
+              checkTurn();
+            })
+            .catch((err) => console.error("User pick error:", err.message));
+        }
+      });
+
+      // Function to determine background color based on player position
+      function getBackgroundColor(position) {
+        switch (position) {
+          case "QB":
+            return "#ff6961";
+          case "WR":
+            return "orange";
+          case "TE":
+            return "yellow";
+          case "RB":
+            return "#77dd77";
+          default:
+            return "#222"; // Default background for other positions
+        }
+      }
     </script>
   </body>
 </html>

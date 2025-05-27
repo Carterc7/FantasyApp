@@ -1,157 +1,449 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/defaultTemplate}">
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
   <head>
     <title>Player Details</title>
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- For web app manifest -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="icon"
-      type="image/png"
-      href="/web-app-manifest-192x192.png"
-      sizes="192x192"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      rel="stylesheet"
     />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/web-app-manifest-512x512.png"
-      sizes="512x512"
-    />
-    <!-- Import Doto font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
     <style>
       body {
-        background-color: #121212;
+        background-color: #1e1e1e;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
+        font-family: "VT323", monospace;
+        font-size: 1.5rem;
       }
-
       .player-container {
-        background-color: #0c2c3a;
-        border-radius: 10px;
+        width: 90%;
+        margin: 20px auto;
         padding: 20px;
-        margin: 20px;
+        background-color: #0c2c3a;
+        border-radius: 25px;
+        border: 2px solid #121212;
+        overflow: hidden;
+        color: #00ced1;
+        animation: fadeIn 1s ease-out;
       }
-
       .player-header {
         background-color: #1a1a1a;
         width: 100%;
-        padding: 10px;
+        padding: 20px;
         border-radius: 8px;
         display: flex;
-        text-align: center;
         align-items: center;
-        justify-content: center;
-        margin-top: 10px;
+        justify-content: space-between;
         margin-bottom: 30px;
       }
-
       .player-image {
-        width: 120px;
-        height: 120px;
-        margin-right: 80px;
-        margin-bottom: 20px;
+        width: 160px;
+        height: 140px;
+        margin-bottom: 0px !important;
+        margin-right: 25px;
+        align-self: flex-end !important;
+        object-fit: cover;
+        border-radius: 50%;
+        background-color: #0c2c3a;
+        padding: 3px;
+        box-sizing: border-box;
       }
-
-      .player-name h1 {
-        font-size: 4rem;
-        font-weight: bolder;
-        display: inline;
-        margin-right: 5px;
+      .player-name-and-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
-
-      .player-name .jersey-number {
+      .name-info-container {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .name-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .details-column {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+      }
+      .separator {
+        font-size: 5rem;
+        color: #f0a500;
+        font-weight: 100;
+      }
+      .first-name {
+        font-family: "Doto", sans-serif;
         font-size: 2rem;
-        display: inline;
+        font-weight: 500 !important;
+        color: #f0a500;
+        margin: 0;
       }
-
-      .player-details p {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 5px 0;
+      .last-name {
+        font-family: "Doto", sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #f0a500;
+        margin: 0;
       }
-
-      .schedule-container {
+      .player-details-inline {
+        margin-top: 10px;
+      }
+      .player-details-inline p {
+        margin: 2px 0;
+      }
+      .stats-section {
         margin-top: 30px;
-        text-align: left;
-        font-size: 1.2rem;
       }
-
-      .schedule-container h2 {
+      h2 {
+        font-family: "Doto", sans-serif;
+        color: #f0a500;
         text-align: center;
-        font-weight: bold;
+        font-weight: 600;
         margin-bottom: 20px;
-        font-size: 2rem;
+        font-size: 1.8rem;
+        padding: 5px;
       }
 
-      .schedule-container li {
-        background-color: #1a1a1a;
+      .game-row {
+        display: flex;
+        justify-content: center; /* Center all elements horizontally */
+        justify-content: space-between;
+        padding: 3px;
+        border-bottom: 1px solid #333;
+      }
+      .game-row span {
+        flex: 1;
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: bolder;
+      }
+      .game-row.header {
+        font-size: 1.3rem;
         font-weight: bold;
+        background-color: #222;
+        border-bottom: 2px solid #f0a500;
+        color: #f0a500;
+      }
+
+      .stat-row {
+        background-color: #1a1a1a;
+        font-size: 0.7rem;
+        padding-bottom: 5px;
+        padding-left: 0px;
         margin: 5px 0;
-        padding: 10px;
         border-radius: 8px;
       }
-
-      .back-button {
-        display: block;
-        width: fit-content;
-        margin: 20px;
-        padding: 10px 20px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        background-color: #2d677d;
-        color: #00ced1;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        text-align: center;
-        cursor: pointer;
+      .game-row span.divider {
+        border-left: 2px solid #f0a500;
+        margin-left: 10px;
+        padding-left: 10px;
       }
 
-      .back-button:hover {
-        background-color: #2d677d;
+      .section-header-row {
+        display: flex;
+        justify-content: space-between;
+        background-color: transparent;
+        font-size: 1.3rem;
+        font-weight: bold;
         color: #f0a500;
+        padding: 5px 0;
+        text-align: center;
+        width: 100%;
+      }
+
+      .section-header-row span {
+        flex: 1;
+      }
+
+      .section-header-row .spacer {
+        flex: 1;
+      }
+
+      .section-header-row .section {
+        flex: 4;
+      }
+
+      /* Aligning separator columns */
+      .game-row span {
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      .game-row span.divider {
+        padding-left: 0px;
+      }
+
+      h3 {
+        padding-left: 15px;
+      }
+
+      .team-logo {
+        height: 4.5rem;
+        width: 4.5rem;
+        object-fit: contain;
+      }
+
+      hr {
+        border: none;
+        height: 5px;
+        width: 100%;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #f0a500,
+          #f0a500,
+          transparent
+        );
+        box-shadow: 0 0 10px #f0a500;
+        border-radius: 3px;
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <a th:href="@{/adp/list}" class="back-button">&larr; Back to Players</a>
       <div class="player-container">
         <div class="player-header">
-          <img th:src="${espnPlayer.espnHeadshot}" alt="Player Headshot" class="player-image" />
-          <div class="player-name">
-            <h1 th:text="${espnPlayer.espnName}"></h1>
-            <span class="jersey-number" th:text="'#' + ${espnPlayer.jerseyNum}"></span>
+          <img
+            th:src="${playerDetails.espnHeadshot}"
+            alt="Player Headshot"
+            class="player-image"
+          />
+          <div class="player-name-and-info">
+            <div class="name-info-container">
+              <div class="name-column">
+                <h1
+                  class="first-name"
+                  th:text="${firstName.toUpperCase()}"
+                ></h1>
+                <h1 class="last-name" th:text="${lastName.toUpperCase()}"></h1>
+              </div>
+              <div class="separator">|</div>
+              <img
+                th:src="@{'/images/' + ${playerDetails.team} + '.png'}"
+                alt="Team Logo"
+                class="team-logo"
+              />
+              <div class="details-column">
+                <div class="player-details-inline">
+                  <p>
+                    <span th:text="${playerDetails.team}"></span> &bull;
+                    <span th:text="'#' + ${playerDetails.jerseyNum}"></span>
+                    &bull;
+                    <span th:text="${playerDetails.pos}"></span>
+                  </p>
+                  <p>
+                    <span
+                      th:text="'Birthdate: ' + ${playerDetails.bDay} + ' (' + ${playerDetails.age} + ')'"
+                    ></span>
+                    &bull;
+                    <span th:text="'Seasons: ' + ${playerDetails.exp}"></span>
+                    &bull;
+                    <span
+                      th:text="'Ht/Wt: ' + ${playerDetails.height} + ', ' + ${playerDetails.weight} + ' lbs'"
+                    ></span>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="player-details">
-          <p>Team: <span th:text="${espnPlayer.team}"></span></p>
-          <p>Position: <span th:text="${espnPlayer.pos}"></span></p>
-          <p>Age: <span th:text="${espnPlayer.age}"></span></p>
-          <p>Experience: <span th:text="${espnPlayer.exp}"></span></p>
-          <p>Birthday: <span th:text="${espnPlayer.bDay}"></span></p>
-        </div>
-        <div class="schedule-container">
-          <h2>Team Schedule</h2>
-          <div th:if="${teamSchedule}">
-            <ul>
-              <li th:each="schedule : ${teamSchedule}">
-                <p><strong>Game Week:</strong> <span th:text="${schedule.gameWeek}"></span></p>
-                <p><strong>Opponent:</strong> <span th:text="${schedule.away}"></span> (Home: <span th:text="${schedule.home}"></span>)</p>
-                <p><strong>Game Time:</strong> <span th:text="${schedule.gameTime}"></span></p>
-                <p><strong>Home Points:</strong> <span th:text="${schedule.homePts}"></span></p>
-                <p><strong>Away Points:</strong> <span th:text="${schedule.awayPts}"></span></p>
-                <p><strong>Home Result:</strong> <span th:text="${schedule.homeResult}"></span></p>
-              </li>
-            </ul>
+
+        <!-- 2024 SEASON STATS -->
+        <div
+          class="stat-row stats-section"
+          th:if="${playerDetails.stats != null}"
+        >
+          <h2>Season Stats (2024)</h2>
+          <hr/>
+          <h3 style="text-align: center; margin: 0px; padding: 0px;">Fantasy Points (PPR): <span th:text="${seasonFantasyPoints}"></span></h3>
+
+          <!-- Passing Stats -->
+          <div th:if="${playerDetails.stats.Passing != null}" class="stat-row">
+            <h3>Passing</h3>
+            <div class="game-row header">
+              <span>PASS ATT</span>
+              <span>PASS CMP</span>
+              <span>PASS YDS</span>
+              <span>PASS TDs</span>
+            </div>
+            <div class="game-row">
+              <span
+                th:text="${playerDetails.stats.Passing.passAttempts != null ? playerDetails.stats.Passing.passAttempts.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Passing.passCompletions != null ? playerDetails.stats.Passing.passCompletions.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Passing.passYds != null ? playerDetails.stats.Passing.passYds.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Passing.passTD != null ? playerDetails.stats.Passing.passTD.split('\\.')[0] : '0'}"
+              ></span>
+            </div>
           </div>
-          <div th:if="${teamSchedule == null}">
-            <p>No schedule available for this team.</p>
+
+          <!-- Rushing Stats -->
+          <div th:if="${playerDetails.stats.Rushing != null}" class="stat-row">
+            <h3>Rushing</h3>
+            <div class="game-row header">
+              <span>RUSH ATT</span>
+              <span>RUSH AVG</span>
+              <span>RUSH YDS</span>
+              <span>RUSH TDs</span>
+            </div>
+            <div class="game-row">
+              <span
+                th:text="${playerDetails.stats.Rushing.carries != null ? playerDetails.stats.Rushing.carries.split('\\.')[0] : '0'}"
+              ></span>
+              <span th:text="${rushAvg != null ? rushAvg : '0'}"></span>
+              <span
+                th:text="${playerDetails.stats.Rushing.rushYds != null ? playerDetails.stats.Rushing.rushYds.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Rushing.rushTD != null ? playerDetails.stats.Rushing.rushTD.split('\\.')[0] : '0'}"
+              ></span>
+            </div>
+          </div>
+
+          <!-- Receiving Stats -->
+          <div
+            th:if="${playerDetails.stats.Receiving != null}"
+            class="stat-row"
+          >
+            <h3>Receiving</h3>
+            <div class="game-row header">
+              <span>TGT</span>
+              <span>REC</span>
+              <span>REC YDS</span>
+              <span>REC TDs</span>
+            </div>
+            <div class="game-row">
+              <span
+                th:text="${playerDetails.stats.Receiving.targets != null ? playerDetails.stats.Receiving.targets.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Receiving.receptions != null ? playerDetails.stats.Receiving.receptions.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Receiving.recYds != null ? playerDetails.stats.Receiving.recYds.split('\\.')[0] : '0'}"
+              ></span>
+              <span
+                th:text="${playerDetails.stats.Receiving.recTD != null ? playerDetails.stats.Receiving.recTD.split('\\.')[0] : '0'}"
+              ></span>
+            </div>
+          </div>
+        </div>
+        <br />
+
+        <!-- COMBINED GAME-BY-GAME STATS -->
+        <div
+          th:if="${gameStatsList != null}"
+          class="stat-row game-by-game-section"
+        >
+          <h2>Game Log (2024)</h2>
+          <hr/>
+          <div class="game-row header">
+            <span>DATE</span>
+            <span>VS</span>
+            <span
+              style="
+                border-left: 2px solid #f0a500;
+                border-right: 2px solid #f0a500;
+              "
+              >PTS</span
+            >
+            <span>TAR</span>
+            <span>REC</span>
+            <span>YDS</span>
+            <span>TDs</span>
+            <span style="border-left: 2px solid #f0a500">CAR</span>
+            <span>AVG</span>
+            <span>YDS</span>
+            <span>TDs</span>
+            <span style="border-left: 2px solid #f0a500">ATT</span>
+            <span>CMP</span>
+            <span>YDS</span>
+            <span>TDs</span>
+            <span>INT</span>
+          </div>
+          <div th:each="entry : ${gameStatsList}" class="game-row">
+            <!-- DATE -->
+            <span
+              th:text="${#strings.substring(entry.key, 4, 6)} + '/' + ${#strings.substring(entry.key, 6, 8)} + '/' + ${#strings.substring(entry.key, 0, 4)}"
+            ></span>
+
+            <!-- VS -->
+            <span th:text="${#strings.substring(entry.key, 9)}"></span>
+
+            <!-- PTS -->
+            <span
+              th:text="${entry.value.fantasyPointsDefault?.PPR ?: '0'}"
+              style="
+                border-left: 2px solid #f0a500;
+                border-right: 2px solid #f0a500;
+              "
+            ></span>
+
+            <!-- TAR -->
+            <span th:text="${entry.value.receiving?.targets ?: '0'}"></span>
+
+            <!-- REC -->
+            <span th:text="${entry.value.receiving?.receptions ?: '0'}"></span>
+
+            <!-- REC YDS -->
+            <span th:text="${entry.value.receiving?.recYds ?: '0'}"></span>
+
+            <!-- REC TDs -->
+            <span th:text="${entry.value.receiving?.recTD ?: '0'}"></span>
+
+            <!-- CAR -->
+            <span
+              th:text="${entry.value.rushing?.carries ?: '0'}"
+              style="border-left: 2px solid #f0a500"
+            ></span>
+
+            <!-- RUSH AVG -->
+            <span th:text="${entry.value.rushing?.rushAvg ?: '0'}"></span>
+
+            <!-- RUSH YDS -->
+            <span th:text="${entry.value.rushing?.rushYds ?: '0'}"></span>
+
+            <!-- RUSH TDs -->
+            <span th:text="${entry.value.rushing?.rushTD ?: '0'}"></span>
+
+            <!-- ATT -->
+            <span
+              th:text="${entry.value.passing?.passAttempts ?: '0'}"
+              style="border-left: 2px solid #f0a500"
+            ></span>
+
+            <!-- CMP -->
+            <span
+              th:text="${entry.value.passing?.passCompletions ?: '0'}"
+            ></span>
+
+            <!-- PASS YDS -->
+            <span th:text="${entry.value.passing?.passYds ?: '0'}"></span>
+
+            <!-- PASS TDs -->
+            <span th:text="${entry.value.passing?.passTD ?: '0'}"></span>
+
+            <!-- INT -->
+            <span th:text="${entry.value.passing?.interceptions ?: '0'}"></span>
           </div>
         </div>
       </div>

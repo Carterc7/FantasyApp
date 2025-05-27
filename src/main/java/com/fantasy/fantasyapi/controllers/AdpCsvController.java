@@ -32,7 +32,9 @@ public class AdpCsvController {
     public String showAdpList(
             HttpSession session,
             Model model,
-            @RequestParam(name = "position", required = false, defaultValue = "all") String position) {
+            @RequestParam(name = "position", required = false, defaultValue = "all") String position,
+            @RequestParam(name = "format", required = false, defaultValue = "ppr") String format,
+            @RequestParam(name = "searchText", required = false, defaultValue = "") String searchText) {
 
         User authenticatedUser = (User) session.getAttribute("authenticatedUser");
         if (authenticatedUser == null) {
@@ -40,20 +42,49 @@ public class AdpCsvController {
         }
         model.addAttribute("authenticatedUser", authenticatedUser);
 
-        // Fetch the full list from CSV
-        List<AdpPlayerCSV> players = csvParser.parseCsv();
+        String csvToParse;
+        switch (format.toLowerCase()) {
+            case "standard":
+                csvToParse = "no-ppr.csv";
+                break;
+            case "half-ppr":
+                csvToParse = "half-ppr.csv";
+                break;
+            case "dynasty":
+                csvToParse = "dynasty.csv";
+                break;
+            case "2qb-dynasty":
+                csvToParse = "2qb-dynasty.csv";
+                break;
+            case "ppr":
+                csvToParse = "ppr.csv";
+                break;
+            default:
+                csvToParse = "ppr.csv";
+                break;
+        }
+        System.out.println("csv to parse is: " + csvToParse);
+        List<AdpPlayerCSV> players = csvParser.parseCsv(csvToParse);
 
-        // Filter players based on position
         if (!"all".equalsIgnoreCase(position)) {
             players = players.stream()
                     .filter(player -> position.equalsIgnoreCase(player.getPosition()))
                     .collect(Collectors.toList());
         }
 
+        if (!searchText.isBlank()) {
+            String loweredSearch = searchText.toLowerCase();
+            players = players.stream()
+                    .filter(player -> player.getName().toLowerCase().contains(loweredSearch))
+                    .collect(Collectors.toList());
+        }
+
         model.addAttribute("players", players);
-        model.addAttribute("selectedPosition", position); // Keep track of selected position
+        model.addAttribute("selectedPosition", position);
+        model.addAttribute("selectedFormat", format);
+        model.addAttribute("searchText", searchText);
+
         return "players.html";
     }
+
 }
-
-

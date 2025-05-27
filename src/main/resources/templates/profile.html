@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
+  <head>
+    <title>Profile</title>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #1e1e1e;
+        color: #00ced1;
+        font-family: "VT323", monospace;
+        font-size: 1.5rem;
+      }
+
+      .profile-container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #0c2c3a;
+        border-radius: 25px;
+        border: 2px solid #121212;
+        overflow: hidden;
+        animation: fadeIn 1s ease-out;
+      }
+
+      .profile-header {
+        background-color: #1a1a1a;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+
+      .profile-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .profile-label {
+        font-family: "Doto", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #00ced1;
+        margin-right: 10px;
+      }
+
+      .profile-value {
+        font-family: "Doto", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #f0a500;
+      }
+
+      .delete-button-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      /* Delete button styling */
+      .delete-button {
+        background-color: #f44336; /* red */
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-family: "Doto", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-self: center;
+      }
+
+      .delete-button:hover {
+        background-color: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <div layout:fragment="content">
+      <div class="profile-container">
+        <div class="profile-header">
+          <div class="profile-row">
+            <span class="profile-label">Username:</span>
+            <span class="profile-value" th:text="${authenticatedUser.username}"
+              >JohnDoe</span
+            >
+          </div>
+          <div class="profile-row">
+            <span class="profile-label">Password:</span>
+            <span class="profile-value">********</span>
+          </div>
+          <div class="profile-row">
+            <span class="profile-label">Completed Mocks:</span>
+            <span
+              class="profile-value"
+              th:text="${#lists.size(authenticatedUser.completedMocks)}"
+              >0</span
+            >
+          </div>
+        </div>
+        <div class="delete-button-wrapper">
+          <!-- Delete Account Button -->
+          <button
+            class="delete-button"
+            type="button"
+            th:attr="data-userid=${authenticatedUser.userID}"
+            onclick="deleteAccount(this)"
+          >
+            Delete Account
+          </button>
+        </div>
+      </div>
+      <script>
+        async function deleteAccount(button) {
+          const userId = button.getAttribute("data-userid");
+          if (!userId) {
+            alert("User ID not found!");
+            return;
+          }
+
+          if (
+            !confirm(
+              "Are you sure you want to delete your account? This action cannot be undone."
+            )
+          ) {
+            return;
+          }
+
+          try {
+            const response = await fetch("/users/delete/" + userId, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+
+            if (response.ok) {
+              alert("Account deleted successfully.");
+              // Optionally redirect user after deletion:
+              window.location.href = "/login";
+            } else {
+              const errorText = await response.text();
+              alert("Failed to delete account: " + errorText);
+            }
+          } catch (error) {
+            alert("Error deleting account: " + error.message);
+          }
+        }
+      </script>
+    </div>
+  </body>
+</html>

@@ -12,10 +12,15 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
       rel="stylesheet"
     />
+
     <style>
       html,
       body {
@@ -24,7 +29,7 @@
         width: 100vw;
         height: 100vh;
         box-sizing: border-box;
-        background-color: #121212;
+        background-color: #1e1e1e;
         color: #00ced1;
         font-family: "Doto", sans-serif;
         overflow-x: hidden;
@@ -32,20 +37,21 @@
       }
 
       table {
-        width: 90%;
+        width: 80%;
         margin: 20px auto;
         background-color: #0c2c3a;
-        border-radius: 20px;
+        border-radius: 25px;
+        box-shadow: 0 0 15px rgba(240, 165, 0, 0.3);
+        overflow: hidden;
         color: #00ced1;
-        border-collapse: separate;
-        border-spacing: 0;
+        animation: fadeIn 1s ease-out;
       }
 
       th {
-        background-color: #2d677d;
+        background-color: #0c2c3a;
         text-align: center;
-        color: #010b0f;
-        font-size: 1.8rem;
+        color: #f0a500;
+        font-size: 1.6rem;
         font-weight: bolder;
         padding: 15px;
       }
@@ -53,19 +59,24 @@
       td {
         text-align: center;
         padding: 10px;
-        font-size: 1.2rem;
+        font-size: 1.9rem;
+        font-weight: 200;
+        font-family: "VT323", monospace !important;
       }
 
       tr:nth-child(even) {
-        background-color: #1a1a1a;
-      }
-
-      tr:nth-child(odd) {
         background-color: #0c2c3a;
       }
 
-      tr:hover {
+      tr:nth-child(odd) {
+        background-color: #1a1a1a;
+      }
+
+      .player-row:hover {
         background-color: #333;
+        cursor: pointer;
+        transform: scale(1.05);
+        color: #f0a500;
       }
 
       h1 {
@@ -76,93 +87,182 @@
         color: #f0a500;
       }
 
-      .details-btn {
-        background-color: #2d677d;
-        color: #00ced1;
-        font-size: 1rem;
-        font-weight: bold;
-        padding: 8px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-
-      .details-btn:hover {
-        background-color: #2d677d;
-        color: #f0a500;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      table {
-        animation: fadeIn 1s ease-out;
-      }
-
       .filter-container {
         text-align: center;
         margin: 20px auto;
       }
 
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .filter-group {
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
       .filter-label {
-        color: #f0a500;
-        font-size: 1.2rem;
+        color: #00ced1;
+        font-family: "VT323", monospace;
+        font-size: 1.6rem;
         font-weight: bold;
       }
 
       .filter-select {
         padding: 10px;
-        font-size: 1rem;
+        font-size: 1.4rem;
         border-radius: 5px;
         background-color: #0c2c3a;
-        color: #00ced1;
-        border: 2px solid #2d677d;
+        font-family: "VT323", monospace;
+        color: #f0a500;
+        font-weight: lighter;
+        border: 1px solid #f0a500;
         cursor: pointer;
+        transition: transform 0.2s ease;
       }
 
       .filter-select:hover {
-        border-color: #f0a500;
+        transform: scale(1.1);
       }
 
-      .filter-container form {
-        display: inline-block;
+      .search-wrapper {
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+        overflow: hidden;
+        border: 1px solid #f0a500;
+        background-color: #0c2c3a;
+        transition: transform 0.2s ease;
+      }
+
+      .search-wrapper:hover {
+        transform: scale(1.1);
+      }
+
+      .search-input {
+        padding: 10px;
+        font-size: 1.4rem;
+        border: none;
+        background-color: transparent;
+        font-family: "VT323", monospace;
+        color: #f0a500;
+        outline: none;
+        width: 200px;
+      }
+
+      .search-button {
+        padding: 10px 20px;
+        font-size: 1.4rem;
+        font-family: "VT323", monospace;
+        background-color: #f0a500;
+        color: #0c2c3a;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .search-button:hover {
+        background-color: #ffbb33;
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <h1>Player ADP</h1>
-      <!-- Filter Form -->
+      <h1>Fantasy Football Rankings (2025)</h1>
+
       <div class="filter-container">
-        <form method="get" action="/adp/list">
-          <label for="positionFilter" class="filter-label">Filter by Position:</label>
-          <select id="positionFilter" name="position" class="filter-select" onchange="this.form.submit()">
-            <option value="all" th:selected="${selectedPosition == 'all'}">All</option>
-            <option value="QB" th:selected="${selectedPosition == 'QB'}">QB</option>
-            <option value="RB" th:selected="${selectedPosition == 'RB'}">RB</option>
-            <option value="WR" th:selected="${selectedPosition == 'WR'}">WR</option>
-            <option value="TE" th:selected="${selectedPosition == 'TE'}">TE</option>
-          </select>
+        <form method="get" th:action="@{/adp/list}">
+          <div class="filter-group">
+            <label for="positionFilter" class="filter-label">Position:</label>
+            <select id="positionFilter" name="position" class="filter-select">
+              <option value="all" th:selected="${selectedPosition == 'all'}">
+                All
+              </option>
+              <option value="QB" th:selected="${selectedPosition == 'QB'}">
+                QB
+              </option>
+              <option value="RB" th:selected="${selectedPosition == 'RB'}">
+                RB
+              </option>
+              <option value="WR" th:selected="${selectedPosition == 'WR'}">
+                WR
+              </option>
+              <option value="TE" th:selected="${selectedPosition == 'TE'}">
+                TE
+              </option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="formatFilter" class="filter-label">Format:</label>
+            <select id="formatFilter" name="format" class="filter-select">
+              <option value="ppr" th:selected="${selectedFormat == 'ppr'}">
+                PPR
+              </option>
+              <option
+                value="half-ppr"
+                th:selected="${selectedFormat == 'half-ppr'}"
+              >
+                Half-PPR
+              </option>
+              <option
+                value="standard"
+                th:selected="${selectedFormat == 'standard'}"
+              >
+                Standard
+              </option>
+              <option
+                value="dynasty"
+                th:selected="${selectedFormat == 'dynasty'}"
+              >
+                Dynasty
+              </option>
+              <option
+                value="2qb-dynasty"
+                th:selected="${selectedFormat == '2qb-dynasty'}"
+              >
+                Dynasty SF
+              </option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="searchBar" class="filter-label">Search:</label>
+            <div class="search-wrapper">
+              <input
+                type="text"
+                id="searchBar"
+                name="searchText"
+                class="search-input"
+                placeholder="Enter player name..."
+                th:value="${searchText}"
+              />
+              <button type="submit" class="search-button">Go</button>
+            </div>
+          </div>
         </form>
       </div>
+
       <p
         style="
-          opacity: 60;
+          opacity: 80%;
+          font-size: 1.1rem;
           color: #00ced1;
-          font-family: 'Doto';
+          font-family: 'VT323', monospace;
           text-align: right;
-          margin-right: 70px;
+          margin-right: 140px;
         "
       >
-        Last Updated: March 2025
+        Last Updated:
+        <span style="color: #f0a500; font-size: 1.2rem; opacity: 95%"
+          >May 2025</span
+        >
       </p>
 
       <table id="playerTable">
@@ -171,28 +271,51 @@
             <th>Rank</th>
             <th>Player Name</th>
             <th>Position</th>
-            <th>Position Rank</th>
-            <th>Recent ADP Change</th>
-            <th>Details</th>
+            <th>Positional Rank</th>
           </tr>
         </thead>
         <tbody>
-          <tr th:each="player : ${players}">
-            <td th:text="${player.rank}"></td>
-            <td th:text="${player.playerName}"></td>
+          <tr
+            class="player-row"
+            th:each="player : ${players}"
+            th:attr="data-name=${player.name}"
+            onclick="submitPlayer(this.getAttribute('data-name'))"
+          >
+            <td th:text="${T(java.lang.Math).round(player.overallRank)}"></td>
+            <td th:text="${player.name}"></td>
             <td th:text="${player.position}"></td>
-            <td th:text="${player.positionRank}"></td>
-            <td th:text="${player.adpChange}"></td>
-            <td>
-              <form th:action="@{/player-details}" method="post">
-                <input type="hidden" th:value="${player.playerName}" name="espnName" />
-                <button type="submit" class="details-btn">View</button>
-              </form>
-            </td>
+            <td
+              th:text="${player.position + T(java.lang.Math).round(player.positionalRank)}"
+            ></td>
           </tr>
         </tbody>
       </table>
+
+      <!-- Hidden form for player details -->
+      <form
+        id="hiddenPlayerForm"
+        th:action="@{/player-details}"
+        method="post"
+        style="display: none"
+      >
+        <input type="hidden" id="hiddenEspnName" name="espnName" />
+      </form>
+
+      <script>
+        function submitPlayer(name) {
+          const form = document.getElementById("hiddenPlayerForm");
+          const input = document.getElementById("hiddenEspnName");
+          input.value = name;
+          form.submit();
+        }
+
+        // Auto-submit form when a select element is changed
+        document.querySelectorAll(".filter-select").forEach((select) => {
+          select.addEventListener("change", () => {
+            select.form.submit();
+          });
+        });
+      </script>
     </div>
   </body>
 </html>
-

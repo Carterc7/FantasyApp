@@ -1,39 +1,31 @@
 package com.fantasy.fantasyapi.objectModels;
 
 public class AdpPlayerCSV {
-    private int rank;
-    private String playerName;
+    private String name;
     private String position;
-    private String positionRank;
-    private double adpFeb4;
-    private double adpMar11;
-    private double adpChange;
+    private double overallRank;
+    private double positionalRank;
+    private double tier;
+    private String attribute;
+    private double auctionValue;
 
-    public AdpPlayerCSV(int rank, String playerName, String position, String positionRank, 
-                        double adpFeb4, double adpMar11, double adpChange) {
-        this.rank = rank;
-        this.playerName = playerName;
+    public AdpPlayerCSV(String name, String position, double overallRank, double positionalRank,
+                        double tier, String attribute, double auctionValue) {
+        this.name = name;
         this.position = position;
-        this.positionRank = positionRank;
-        this.adpFeb4 = adpFeb4;
-        this.adpMar11 = adpMar11;
-        this.adpChange = adpChange;
+        this.overallRank = overallRank;
+        this.positionalRank = positionalRank;
+        this.tier = tier;
+        this.attribute = attribute;
+        this.auctionValue = auctionValue;
     }
 
-    public int getRank() {
-        return rank;
+    public String getName() {
+        return name;
     }
 
-    public void setRank(int rank) {
-        this.rank = rank;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPosition() {
@@ -44,50 +36,56 @@ public class AdpPlayerCSV {
         this.position = position;
     }
 
-    public String getPositionRank() {
-        return positionRank;
+    public double getOverallRank() {
+        return overallRank;
     }
 
-    public void setPositionRank(String positionRank) {
-        this.positionRank = positionRank;
+    public void setOverallRank(double overallRank) {
+        this.overallRank = overallRank;
     }
 
-    public double getAdpFeb4() {
-        return adpFeb4;
+    public double getPositionalRank() {
+        return positionalRank;
     }
 
-    public void setAdpFeb4(double adpFeb4) {
-        this.adpFeb4 = adpFeb4;
+    public void setPositionalRank(double positionalRank) {
+        this.positionalRank = positionalRank;
     }
 
-    public double getAdpMar11() {
-        return adpMar11;
+    public double getTier() {
+        return tier;
     }
 
-    public void setAdpMar11(double adpMar11) {
-        this.adpMar11 = adpMar11;
+    public void setTier(double tier) {
+        this.tier = tier;
     }
 
-    public double getAdpChange() {
-        return adpChange;
+    public String getAttribute() {
+        return attribute;
     }
 
-    public void setAdpChange(double adpChange) {
-        this.adpChange = adpChange;
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
+
+    public double getAuctionValue() {
+        return auctionValue;
+    }
+
+    public void setAuctionValue(double auctionValue) {
+        this.auctionValue = auctionValue;
     }
 
     @Override
     public String toString() {
         return "AdpPlayerCSV{" +
-                "rank=" + rank +
-                ", playerName='" + playerName + '\'' +
+                "name='" + name + '\'' +
                 ", position='" + position + '\'' +
-                ", positionRank='" + positionRank + '\'' +
-                ", adpFeb4=" + adpFeb4 +
-                ", adpMar11=" + adpMar11 +
-                ", adpChange=" + adpChange +
+                ", overallRank=" + overallRank +
+                ", positionalRank=" + positionalRank +
+                ", tier=" + tier +
+                ", attribute='" + attribute + '\'' +
+                ", auctionValue=" + auctionValue +
                 '}';
     }
 }
-
-

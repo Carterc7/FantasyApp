@@ -27,13 +27,27 @@
       href="/web-app-manifest-512x512.png"
       sizes="512x512"
     />
-
-    <!-- Import Doto font from Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap" rel="stylesheet">
     <style>
+      /* Welcome message styling */
+      .welcome-message {
+        width: 70%;
+        padding: 15px;
+        margin: 20px auto;
+        background: rgba(30, 30, 30, 0.8);
+        border-radius: 20px;
+        text-align: center;
+        color: #f0a500;
+        font-weight: bolder;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+        animation: fadeIn 1s ease-out;
+        border: 1px solid #f0a500;
+      }
+
+      .welcome-message h1, span {
+        font-size: 1.8rem;
+      }
+
       html,
       body {
         margin: 0;
@@ -41,26 +55,15 @@
         width: 100vw;
         height: 100vh;
         box-sizing: border-box;
-        background-color: #121212; /* Dark background to match the ADP page */
-        color: #00ced1; /* Text color from ADP page */
         font-family: "Doto", sans-serif;
         overflow-x: hidden;
         overflow-y: auto;
-      }
-
-      /* Welcome message styling */
-      .welcome-message {
-        width: 70%; /* Similar width to the modal */
-        padding: 20px;
-        margin: 20px auto;
-        background: rgba(0, 0, 0, 0.8); /* Dark background like modal */
-        border-radius: 20px;
-        text-align: center;
         color: #00ced1;
-        font-size: 1.5rem;
-        font-weight: bolder;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-        animation: fadeIn 1s ease-out;
+
+        background-image: url("/images/fieldbackground.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       /* Centered content */
@@ -73,23 +76,23 @@
         position: relative;
       }
 
-      /* Info modal styling */
       .info-modal {
-        width: 70%; /* Modal width set to 70% of the screen */
-        height: 60%;
-        padding: 80px;
+        width: 70%;
+        padding: 60px;
         text-align: center;
-        margin-top: 10px;
+        margin-top: 0px;
         color: #00ced1;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(30, 30, 30, 0.8); /* light dark grey */
         border-radius: 20px;
+        border: 1px solid #f0a500;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
         font-size: 1.2rem;
+        animation: fadeIn 1s ease-out;
       }
 
       .info-modal h1 {
         font-size: 2.5rem;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 1px;
@@ -97,14 +100,50 @@
       }
 
       .info-modal ul {
-        list-style-type: none;
-        padding: 0;
-        text-align: center;
-        margin: 20px 0;
+        list-style: none;
+        padding-left: 0;
+        margin: 20px auto;
+        max-width: 600px;
+        text-align: left; /* Align text while keeping modal centered */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
       }
 
       .info-modal ul li {
+        position: relative;
+        padding-left: 100px;
         margin-bottom: 15px;
+        font-size: 1.3rem;
+        font-family: 'VT323', monospace;
+        display: flex;
+        align-items: center;
+      }
+
+      .info-modal ul li::before {
+        content: "✦";
+        position: absolute;
+        left: 0;
+        color: #f0a500;
+        font-size: 1.2rem;
+      }
+
+      .button-link {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #121212;
+        color: #00ced1; /* Text color from ADP page */
+        text-decoration: none;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+        border: 1px solid #f0a500;
+        transition: background-color 0.3s ease;
+      }
+
+      .button-link:hover {
+        color: #f0a500;
+        transform: scale(1.1);
       }
 
       /* Adding some subtle animations */
@@ -150,6 +189,19 @@
           width: 100%; /* Full width for very small screens */
         }
       }
+
+      hr {
+        border: none;
+        height: 2px;
+        background: #f0a500;
+        margin: 10px auto 30px auto;
+        width: 80%;
+        opacity: 0.7;
+      }
+      h4 {
+        font-size: 1.5rem;
+        font-family: 'VT323', monospace;
+      }
     </style>
   </head>
   <body>
@@ -163,12 +215,18 @@
       <div class="content-container">
         <div class="info-modal">
           <h1>Mock Draft Simulator</h1>
+          <hr />
+          <h4>
+            The ultimate mock draft experience for those looking to dominate
+            their leagues!
+          </h4>
           <ul>
             <li>Choose your league settings and number of teams.</li>
             <li>Select your draft position before the simulation starts.</li>
-            <li>Take turns selecting players from available lists.</li>
+            <li>Take turns selecting players.</li>
             <li>Fill your roster by drafting players for each position.</li>
           </ul>
+          <a class="button-link" th:href="@{/setup}">Draft</a>
         </div>
       </div>
     </div>

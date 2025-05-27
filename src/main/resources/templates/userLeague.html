@@ -1,18 +1,17 @@
+<!DOCTYPE html>
 <html
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
     <title>User League</title>
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
-    <!-- For web app manifest -->
     <link
       rel="icon"
       type="image/png"
@@ -25,245 +24,314 @@
       href="/web-app-manifest-512x512.png"
       sizes="512x512"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        background-color: #121212;
+        background-color: #1e1e1e;
         color: #00ced1;
         font-family: "Doto", sans-serif;
         padding-bottom: 60px;
       }
 
-      .team-container {
-        background-color: #0c2c3a;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 20px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        color: #f0a500 !important;
-      }
-
-      .team-name:hover {
-        color: #00ced1 !important;
-        font-size: 2.2rem !important;
-      }
-
-      .team-container h2 {
-        font-family: "Doto", sans-serif;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 10px;
-      }
-
-      .team-container h3 {
-        font-family: "Doto", sans-serif;
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-        color: #00ced1;
-      }
-
-      .team-container ul {
-        list-style-type: none;
-        padding-left: 0;
-      }
-
-      .team-container li {
-        background-color: #0e3d4e;
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        color: white;
-      }
-
-      .team-container li:hover {
-        background-color: #1f5d7a;
-      }
-
       h1 {
-        font-family: "Doto", sans-serif;
-        font-weight: bolder;
         font-size: 2rem;
+        font-weight: bolder;
         text-align: center;
         margin-top: 20px;
         color: #f0a500 !important;
       }
 
-      span:hover {
-        color: white;
+      .team-header {
+        background-color: #0c2c3a;
+        border-radius: 15px;
+        padding: 15px 25px;
+        margin: 20px 20px 0px 20px;
+        border: 2px solid #121212;
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         cursor: pointer;
+        transition: all 0.2s ease-in-out;
       }
 
-      .team-container a {
-        color: #00ced1 !important;
-        text-decoration: none;
-        font-weight: bolder !important;
-        font-size: 2rem !important;
+      .team-name:hover {
+        transform: scale(1.1);
+        color: #00ced1;
+      }
+
+      .team-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #f0a500;
+        transition: color 0.2s ease-in-out;
+      }
+
+      .team-header:hover .team-name {
+        color: #00ced1;
+      }
+
+      .triangle {
+        transition: transform 0.3s ease-in-out;
+        font-size: 1.3rem;
+      }
+
+      .team-roster {
+        background-color: #0c2c3a;
+        margin: 0 20px 10px 20px;
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid #121212;
+      }
+
+      h3 {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #f0a500;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .team-roster ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      .player-row {
+        background-color: #1e1e1e;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        color: #00ced1;
+        transition: all 0.2s ease-in-out;
+        border-radius: 8px;
+        padding-right: 10px;
+      }
+
+      .player-row:hover {
+        background-color: #1f5d7a;
+        color: #f0a500;
+      }
+
+      .player-name-text {
+        font-family: "VT323", monospace;
+        font-size: 2rem;
+        font-weight: 500;
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      .player-team-text {
+        font-family: "VT323", monospace;
+        font-size: 1.5rem;
+        font-weight: 200;
+        white-space: nowrap;
+      }
+
+      .player-rank-text {
+        font-family: "VT323", monospace;
+        font-size: 1.5rem;
+        font-weight: 200;
+        white-space: nowrap;
+      }
+
+      .headshot {
+        margin: 5px;
+        width: 100px;
+        height: 70px;
+        padding: 5px 10px 0 10px;
+        z-index: 10;
+        user-select: none;
+        flex-shrink: 0;
+        border-radius: 20px;
+      }
+
+      .bullet-sep {
+        color: #f0a500;
+        font-weight: bold;
+        user-select: none;
+      }
+
+      .submit-btn {
+        display: none;
+      }
+
+      .team-roster form {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+
+      .team-logo {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        margin-left: auto;
+        padding: 3px;
       }
 
       .back-button {
         display: block;
         width: fit-content;
-        margin: 20px;
-        padding: 10px 20px;
-        font-size: 1.2rem;
+        margin: 12px 20px;
+        padding: 15px;
+        font-size: 1rem;
         font-weight: bold;
-        background-color: #2d677d;
+        background-color: #0c2c3a;
         color: #00ced1;
         border: none;
-        border-radius: 5px;
+        border-radius: 20px;
         text-decoration: none;
         text-align: center;
         cursor: pointer;
+        border: 2px solid #121212;
       }
 
       .back-button:hover {
-        background-color: #2d677d;
         color: #f0a500;
+        transform: scale(1.1);
+      }
+
+      hr {
+        border: none;
+        height: 5px;
+        width: 100%;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #f0a500,
+          #f0a500,
+          transparent
+        );
+        box-shadow: 0 0 10px #f0a500;
+        border-radius: 3px;
       }
     </style>
+    <script>
+      function toggleRoster(id) {
+        const roster = document.getElementById(id);
+        const displayStyle = window.getComputedStyle(roster).display;
+        const triangle = document.getElementById("triangle-" + id.split("-")[1]);
+        if (displayStyle === "none") {
+          roster.style.display = "block";
+          if (triangle) triangle.textContent = "▼";
+        } else {
+          roster.style.display = "none";
+          if (triangle) triangle.textContent = "▶";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const total = document.querySelectorAll(".team-roster").length;
+        for (let i = 0; i < total; i++) {
+          const triangle = document.getElementById("triangle-" + i);
+          if (triangle) {
+            triangle.textContent = i === 0 ? "▼" : "▶";
+          }
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".player-form").forEach((form) => {
+          const li = form.querySelector("li");
+          if (li) {
+            li.addEventListener("click", () => {
+              form.submit();
+            });
+          }
+        });
+      });
+    </script>
   </head>
   <body>
     <div layout:fragment="content">
       <a th:href="@{/user/teams}" class="back-button">&larr; Back to Teams</a>
       <h1>League Results</h1>
 
-      <!-- Iterate over each completed mock (list of teams) -->
-      <div th:each="teamList : ${completedMocks}">
-        <!-- Iterate over each team -->
-        <div th:each="team : ${teamList}" class="team-container">
-          <h2 style="color: #f0a500">
-            <a
-              style="color: #f0a500"
-              th:href="@{/league/teams(teamName=${team.teamName})}"
-            >
-              <span
-                class="team-name"
-                style="color: #f0a500"
-                th:text="${team.teamName}"
-              ></span>
-            </a>
-          </h2>
-
-          <!-- Roster is initially hidden -->
-          <div class="team-roster">
-            <!-- Group players by position -->
-            <div>
-              <h3>Quarterbacks (QB)</h3>
-              <ul>
-                <li
-                  th:each="player : ${team.roster}"
-                  th:if="${player.position} == 'QB'"
-                >
-                  <form th:action="@{/team/player-details}" method="post">
-                    <input
-                      type="hidden"
-                      th:value="${player.playerName}"
-                      name="espnName"
-                    />
-                    <button
-                      type="submit"
-                      style="
-                        background: none;
-                        border: none;
-                        color: white;
-                        cursor: pointer;
-                      "
-                    >
-                      <span th:text="${player.playerName}"></span>
-                    </button>
-                  </form>
-                </li>
-              </ul>
+      <div th:if="${completedMocks != null}">
+        <div th:each="team, teamStat : ${completedMocks}">
+          <div
+            class="team-header"
+            th:onclick="'toggleRoster(\'roster-' + ${teamStat.index} + '\')'"
+          >
+            <div class="team-name">
+              <span th:text="${team.teamName}">Team Name</span>
+              <span th:id="'triangle-' + ${teamStat.index}" class="triangle">▶</span>
             </div>
+          </div>
 
-            <div>
-              <h3>Running Backs (RB)</h3>
+          <div
+            class="team-roster"
+            th:id="'roster-' + ${teamStat.index}"
+            th:style="${teamStat.index == 0} ? 'display: block;' : 'display: none;'"
+          >
+            <div th:each="pos : ${positions}">
+              <hr />
+              <h3
+                th:text="${pos == 'QB' ? 'Quarterbacks (QB)' 
+                            : pos == 'RB' ? 'Running Backs (RB)' 
+                            : pos == 'WR' ? 'Wide Receivers (WR)' 
+                            : pos == 'TE' ? 'Tight Ends (TE)' 
+                            : pos}"
+              >
+                Position Label
+              </h3>
               <ul>
-                <li
+                <form
                   th:each="player : ${team.roster}"
-                  th:if="${player.position} == 'RB'"
+                  th:if="${player.adpPlayer.position.equalsIgnoreCase(pos)}"
+                  th:action="@{/team/player-details}"
+                  method="post"
+                  class="player-form"
                 >
-                  <form th:action="@{/team/player-details}" method="post">
-                    <input
-                      type="hidden"
-                      th:value="${player.playerName}"
-                      name="espnName"
+                  <input
+                    class="player-name"
+                    type="hidden"
+                    name="espnName"
+                    th:value="${player.adpPlayer.name}"
+                  />
+                  <li class="player-row">
+                    <img
+                      class="headshot"
+                      th:src="${player.espnHeadshot}"
+                      alt="Headshot"
+                      draggable="false"
                     />
-                    <button
-                      type="submit"
-                      style="
-                        background: none;
-                        border: none;
-                        color: white;
-                        cursor: pointer;
-                      "
+                    <span class="player-name-text" th:text="${player.adpPlayer.name}">Player Name</span>
+                    <span class="bullet-sep">&bull;</span>
+                    <span class="player-team-text" th:text="'(' + ${player.team} + ')'">Player Team</span>
+                    <span class="bullet-sep">&bull;</span>
+                    <span
+                      class="player-rank-text"
+                      th:text="${player.adpPlayer.position} + ' ' + ${player.adpPlayer.positionalRank.intValue()}"
                     >
-                      <span th:text="${player.playerName}"></span>
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3>Wide Receivers (WR)</h3>
-              <ul>
-                <li
-                  th:each="player : ${team.roster}"
-                  th:if="${player.position} == 'WR'"
-                >
-                  <form th:action="@{/team/player-details}" method="post">
-                    <input
-                      type="hidden"
-                      th:value="${player.playerName}"
-                      name="espnName"
+                      Positional Rank
+                    </span>
+                    <img
+                      class="team-logo"
+                      th:src="@{'/images/' + ${player.team} + '.png'}"
+                      alt="Team Logo"
                     />
-                    <button
-                      type="submit"
-                      style="
-                        background: none;
-                        border: none;
-                        color: white;
-                        cursor: pointer;
-                      "
-                    >
-                      <span th:text="${player.playerName}"></span>
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3>Tight Ends (TE)</h3>
-              <ul>
-                <li
-                  th:each="player : ${team.roster}"
-                  th:if="${player.position} == 'TE'"
-                >
-                  <form th:action="@{/team/player-details}" method="post">
-                    <input
-                      type="hidden"
-                      th:value="${player.playerName}"
-                      name="espnName"
-                    />
-                    <button
-                      type="submit"
-                      style="
-                        background: none;
-                        border: none;
-                        color: white;
-                        cursor: pointer;
-                      "
-                    >
-                      <span th:text="${player.playerName}"></span>
-                    </button>
-                  </form>
-                </li>
+                    <button type="submit" class="submit-btn">Submit</button>
+                  </li>
+                </form>
               </ul>
             </div>
           </div>
         </div>
       </div>
+
+      <div th:if="${completedMocks == null || #lists.isEmpty(completedMocks)}">
+        <p>No teams found for the given team name.</p>
+      </div>
     </div>
   </body>
 </html>
+
+

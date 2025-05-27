@@ -3,11 +3,13 @@ package com.fantasy.fantasyapi.controllers;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.fantasy.fantasyapi.leagueModels.User;
@@ -19,6 +21,9 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     /**
      * Method to show login
      * 
@@ -27,6 +32,15 @@ public class LoginController {
     @GetMapping("/login")
     public String loginForm() {
         return "login.html";
+    }
+
+    @GetMapping("/test-password")
+    @ResponseBody
+    public String testMatch() {
+        String raw = "Password!";
+        String stored = "$2a$10$mlczSinzIWkfiout8pu0veGhAoHOfoKnc29jkb8gwWLOWn3oyG1Zy";
+        boolean matches = passwordEncoder.matches(raw, stored);
+        return "Password match? " + matches;
     }
 
     /**
@@ -76,6 +90,6 @@ public class LoginController {
         // Invalidate the current session to clear all session attributes
         httpSession.invalidate();
         sessionStatus.setComplete(); // clear the session
-        return "redirect:/login";
+        return "redirect:/";
     }
 }

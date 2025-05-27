@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.fantasy.fantasyapi.leagueModels.User;
 import com.fantasy.fantasyapi.mongoServices.UserService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -42,7 +43,7 @@ public class RegistrationController {
     public String processRegister(
             @Valid User user,
             BindingResult result,
-            Model model) {
+            Model model, HttpSession session) {
 
         if (userService.usernameExists(user.getUsername())) {
             result.rejectValue("username", "error.user", "Username is already taken");
@@ -54,6 +55,7 @@ public class RegistrationController {
         }
 
         userService.addUser(user);
-        return "registrationSuccess.html";
+        session.setAttribute("authenticatedUser", user);
+        return "redirect:/"; // redirect to home
     }
 }

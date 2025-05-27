@@ -21,6 +21,10 @@ public class EspnPlayerService {
         return espnRepository.findPlayerByPlayerID(playerID);
     }
 
+    public List<EspnPlayer> findAllPlayers() {
+        return espnRepository.findAll();
+    }
+
     public Optional<EspnPlayer> findPlayerByEspnName(String espnName) {
         List<EspnPlayer> players = espnRepository.findPlayersByEspnName(espnName);
         if (players.size() == 1) {
