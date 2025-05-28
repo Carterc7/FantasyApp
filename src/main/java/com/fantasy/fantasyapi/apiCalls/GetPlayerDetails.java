@@ -25,11 +25,31 @@ public class GetPlayerDetails {
     private final ObjectMapper mapper;
 
     public GetPlayerDetails() {
-        Dotenv dotenv = Dotenv.load();
-        this.apiKey = dotenv.get("API_KEY");
-        this.baseUrl = dotenv.get("API_URL");
+        // Try to load from .env (for local dev), then fallback to system env (Heroku)
+        Dotenv dotenv = null;
+        try {
+            dotenv = Dotenv.load();
+        } catch (Exception e) {
+            logger.warning(".env file not found or failed to load, falling back to system environment variables.");
+        }
+
+        this.apiKey = getEnvVar("API_KEY", dotenv);
+        this.baseUrl = getEnvVar("API_URL", dotenv);
+
         this.client = HttpClient.newHttpClient();
         this.mapper = new ObjectMapper();
+    }
+
+    private String getEnvVar(String key, Dotenv dotenv) {
+        if (dotenv != null && dotenv.get(key) != null) {
+            return dotenv.get(key);
+        } else {
+            String systemValue = System.getenv(key);
+            if (systemValue == null) {
+                logger.warning("Environment variable '" + key + "' is not set.");
+            }
+            return systemValue;
+        }
     }
 
     public PlayerDetails getPlayerDetails(int playerId) throws IOException, InterruptedException {
@@ -37,7 +57,7 @@ public class GetPlayerDetails {
         Map<String, PlayerGameStats.GameData> gameStats = fetchPlayerGameStats(playerId);
 
         if (details != null && gameStats != null) {
-            details.setGameStats(gameStats); // You will need to add this property in PlayerDetails class
+            details.setGameStats(gameStats); // Ensure this method exists in PlayerDetails
         }
         return details;
     }
@@ -59,7 +79,7 @@ public class GetPlayerDetails {
         JsonNode root = mapper.readTree(response.body());
         JsonNode playerDataNode = root.path("body");
 
-        if (playerDataNode.isNull()) {
+        if (playerDataNode.isNull() || playerDataNode.isMissingNode()) {
             logger.warning("No player data found.");
             return null;
         }
@@ -101,4 +121,5 @@ public class GetPlayerDetails {
         return gameStatsMap;
     }
 }
+
 
