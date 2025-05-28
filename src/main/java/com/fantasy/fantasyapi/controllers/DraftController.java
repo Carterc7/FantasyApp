@@ -22,6 +22,7 @@ import com.fantasy.fantasyapi.objectModels.PlayerDetails;
 import com.fantasy.fantasyapi.objectModels.PlayerGameStats;
 import com.fantasy.fantasyapi.repository.UserRepository;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
@@ -66,7 +67,23 @@ public class DraftController {
             @RequestParam("numOfRounds") int numOfRounds,
             @RequestParam("format") String format,
             HttpSession session,
+            HttpServletResponse response,
             Model model) {
+
+        // === Add cache control headers to prevent browser back-button caching ===
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+        response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+        response.setDateHeader("Expires", 0); // Proxies
+
+        // Clear any previous draft session attributes first
+        try {
+            session.removeAttribute("mockTeams");
+            session.removeAttribute("adpList");
+            session.removeAttribute("pickedPlayers");
+            System.out.println("Previous draft session attributes cleared.");
+        } catch (Exception e) {
+            System.err.println("Error clearing draft session attributes: " + e.getMessage());
+        }
         // Debugging
         System.out.println("== GET /draft ==");
         int numOfSelections = numOfRounds * numOfTeams;
@@ -91,8 +108,9 @@ public class DraftController {
                 csvToParse = "ppr.csv";
                 break;
         }
-
-        List<AdpPlayerCSV> adpList = parser.parseCsv(csvToParse);
+        List<AdpPlayerCSV> adpList = new ArrayList<>();
+        adpList.clear();
+        adpList = parser.parseCsv(csvToParse);
         List<EspnPlayer> allEspnPlayers = espnPlayerService.findAllPlayers();
 
         // Normalize all ESPNs names as keys
@@ -117,6 +135,7 @@ public class DraftController {
 
         String userId = "";
         List<FantasyTeam> mockTeams = new ArrayList<>();
+        mockTeams.clear();
 
         for (int i = 0; i < numOfTeams; i++) {
             String teamID = String.valueOf(i);
@@ -133,6 +152,7 @@ public class DraftController {
 
         // Initialize picked players list in session
         List<DraftPlayer> pickedPlayers = new ArrayList<>();
+        pickedPlayers.clear();
         session.setAttribute("pickedPlayers", pickedPlayers);
 
         session.setAttribute("adpList", draftPlayers);
@@ -431,6 +451,27 @@ public class DraftController {
 
         status.setComplete();
         return "redirect:/";
+    }
+
+    @PostMapping("/leave-draft")
+    @ResponseBody
+    public void leaveDraftOnUnload(HttpSession session, SessionStatus status, Model model) {
+        User authenticatedUser = (User) session.getAttribute("authenticatedUser");
+        model.addAttribute("authenticatedUser", authenticatedUser);
+        System.out.println("User " + authenticatedUser.getUsername() + " has left the draft...");
+        System.out.println("Attempting to clean up draft session attributes...");
+
+        try {
+            session.removeAttribute("mockTeams");
+            session.removeAttribute("adpList");
+            session.removeAttribute("pickedPlayers");
+            System.out.println("Removed session attributes.");
+        } catch (Exception e) {
+            System.err.println("Error while removing draft attributes from session: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        status.setComplete();
     }
 
     @PostMapping("/player-details")
@@ -844,6 +885,9 @@ public class DraftController {
         if (authenticatedUser == null) {
             System.out.println("User not found in session");
         }
+        session.removeAttribute("pickedPlayers");
+        session.removeAttribute("adpList");
+        session.removeAttribute("mockTeams");
         // Add the user to the model
         model.addAttribute("authenticatedUser", authenticatedUser);
 

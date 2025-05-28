@@ -66,6 +66,9 @@
         flex-wrap: nowrap;
         overflow-x: auto;
         scrollbar-width: none;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
       }
 
       .team-columns::-webkit-scrollbar {
@@ -129,6 +132,9 @@
         background-color: #0c2c3a;
         border-left: 2px solid #f0a500;
         overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
       }
 
       .adp-list-container table {
@@ -360,6 +366,10 @@
     <input type="hidden" id="numOfRounds" th:value="${numOfRounds}" />
 
     <script>
+      window.addEventListener("unload", function () {
+        navigator.sendBeacon("/leave-draft");
+      });
+
       document.addEventListener("DOMContentLoaded", function () {
         const buttons = document.querySelectorAll(
           ".position-filter-buttons button"
