@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -244,106 +243,171 @@ public class DraftController {
 
             long qbCount = positionCounts.getOrDefault("QB", 0L);
             long teCount = positionCounts.getOrDefault("TE", 0L);
+            long wrCount = positionCounts.getOrDefault("WR", 0L);
+            long rbCount = positionCounts.getOrDefault("RB", 0L);
 
             selectedPlayer = null;
 
-            // Check if any position has fewer than 2 players on the CPU roster
-            boolean needsPosition = positionCounts.values().stream().anyMatch(count -> count < 2);
+            // Position max limits if round < 10
+            Map<String, Integer> positionLimits = Map.of(
+                    "QB", 3,
+                    "TE", 3,
+                    "WR", 5,
+                    "RB", 5);
 
-            if (roundNumber > 4 && needsPosition) {
-                int topN = Math.min(8, adpList.size());
-                List<DraftPlayer> topPlayers = adpList.subList(0, topN);
+            boolean forcePositionPick = false;
 
-                int[] weights = new int[topPlayers.size()];
-
-                for (int i = 0; i < topPlayers.size(); i++) {
-                    DraftPlayer dp = topPlayers.get(i);
-                    String pos = dp.getAdpPlayer().getPosition();
-
-                    int rankFactor = topPlayers.size() - i;
-                    // Cubed weighting to more heavily favor top ADP players
-                    int baseWeight = rankFactor * rankFactor * rankFactor;
-
-                    // Boost weight if position is a need (less than 2 players at that position)
-                    if (positionCounts.getOrDefault(pos, 0L) < 2) {
-                        baseWeight *= 7; // Big boost for position of need
+            // After round 10, force pick missing positions if any
+            if (roundNumber >= 10) {
+                // Find positions missing from roster
+                List<String> neededPositions = new ArrayList<>();
+                for (String pos : positionLimits.keySet()) {
+                    if (positionCounts.getOrDefault(pos, 0L) == 0) {
+                        neededPositions.add(pos);
                     }
-
-                    // Penalize duplicate QBs/TEs early as before
-                    if (roundNumber <= 8) {
-                        if ("QB".equalsIgnoreCase(pos) && qbCount > 0) {
-                            baseWeight /= 5;
-                        } else if ("TE".equalsIgnoreCase(pos) && teCount > 0) {
-                            baseWeight /= 2;
-                        }
-                    }
-
-                    weights[i] = Math.max(baseWeight, 1);
                 }
 
-                int totalWeight = IntStream.of(weights).sum();
-                int rand = new Random().nextInt(totalWeight);
+                if (!neededPositions.isEmpty()) {
+                    // Filter adpList for players at needed positions
+                    List<DraftPlayer> neededPlayers = adpList.stream()
+                            .filter(p -> neededPositions.contains(p.getAdpPlayer().getPosition()))
+                            .collect(Collectors.toList());
 
-                int cumulative = 0;
-                for (int i = 0; i < weights.length; i++) {
-                    cumulative += weights[i];
-                    if (rand < cumulative) {
-                        selectedPlayer = topPlayers.get(i);
-                        System.out.println("CPU selected with position of need boost: " +
-                                selectedPlayer.getAdpPlayer().getName() + " (" +
-                                selectedPlayer.getAdpPlayer().getPosition() + ")");
-                        break;
+                    if (!neededPlayers.isEmpty()) {
+                        // Pick top player from neededPlayers (could randomize if you want)
+                        selectedPlayer = neededPlayers.get(0);
+                        System.out.println(
+                                "CPU forced to pick missing position " + selectedPlayer.getAdpPlayer().getPosition() +
+                                        ": " + selectedPlayer.getAdpPlayer().getName());
+                        forcePositionPick = true;
                     }
                 }
             }
 
-            if (selectedPlayer == null) {
-                int topN = Math.min(8, adpList.size());
-                List<DraftPlayer> topPlayers = adpList.subList(0, topN);
-
-                if (roundNumber <= 4 && qbCount > 0) {
-                    List<DraftPlayer> filtered = topPlayers.stream()
-                            .filter(p -> !"QB".equalsIgnoreCase(p.getAdpPlayer().getPosition()))
+            // If not forced to pick a missing position, proceed with normal weighted pick
+            // logic
+            if (!forcePositionPick) {
+                // Filter adpList to respect position limits for rounds < 10
+                List<DraftPlayer> filteredAdpList = adpList;
+                if (roundNumber < 10) {
+                    filteredAdpList = adpList.stream()
+                            .filter(p -> {
+                                String pos = p.getAdpPlayer().getPosition();
+                                Integer limit = positionLimits.get(pos);
+                                if (limit == null) {
+                                    return true; // positions without limits allowed always
+                                }
+                                long count = positionCounts.getOrDefault(pos, 0L);
+                                return count < limit;
+                            })
                             .collect(Collectors.toList());
-                    if (!filtered.isEmpty()) {
-                        topPlayers = filtered;
+
+                    if (filteredAdpList.isEmpty()) {
+                        // All limits reached, fallback to original adpList (allow any position)
+                        filteredAdpList = adpList;
                     }
                 }
 
-                int weightedCount = topPlayers.size();
-                int[] weights = new int[weightedCount];
+                // Check if any position has fewer than 2 players on the CPU roster (position of
+                // need)
+                boolean needsPosition = positionCounts.values().stream().anyMatch(count -> count < 2);
 
-                for (int i = 0; i < weightedCount; i++) {
-                    DraftPlayer dp = topPlayers.get(i);
-                    String pos = dp.getAdpPlayer().getPosition();
+                if (roundNumber > 4 && needsPosition) {
+                    int topN = Math.min(8, filteredAdpList.size());
+                    List<DraftPlayer> topPlayers = filteredAdpList.subList(0, topN);
 
-                    int rankFactor = weightedCount - i;
-                    // Cubed weighting here too
-                    int weight = rankFactor * rankFactor * rankFactor;
+                    int[] weights = new int[topPlayers.size()];
 
-                    if (roundNumber <= 6) {
-                        if ("QB".equalsIgnoreCase(pos) && qbCount > 0) {
-                            weight = (int) (weight * 0.2);
-                        } else if ("TE".equalsIgnoreCase(pos) && teCount > 0) {
-                            weight = (int) (weight * 0.5);
+                    for (int i = 0; i < topPlayers.size(); i++) {
+                        DraftPlayer dp = topPlayers.get(i);
+                        String pos = dp.getAdpPlayer().getPosition();
+
+                        int rankFactor = topPlayers.size() - i;
+                        // Cubed weighting to more heavily favor top ADP players
+                        int baseWeight = rankFactor * rankFactor * rankFactor;
+
+                        // Boost weight if position is a need (less than 2 players at that position)
+                        if (positionCounts.getOrDefault(pos, 0L) < 2) {
+                            baseWeight *= 7; // Big boost for position of need
+                        }
+
+                        // Penalize duplicate QBs/TEs early as before
+                        if (roundNumber <= 8) {
+                            if ("QB".equalsIgnoreCase(pos) && qbCount > 0) {
+                                baseWeight /= 2;
+                            } else if ("TE".equalsIgnoreCase(pos) && teCount > 0) {
+                                baseWeight /= 2;
+                            }
+                        }
+
+                        weights[i] = Math.max(baseWeight, 1);
+                    }
+
+                    int totalWeight = IntStream.of(weights).sum();
+                    int rand = new Random().nextInt(totalWeight);
+
+                    int cumulative = 0;
+                    for (int i = 0; i < weights.length; i++) {
+                        cumulative += weights[i];
+                        if (rand < cumulative) {
+                            selectedPlayer = topPlayers.get(i);
+                            System.out.println("CPU selected with position of need boost: " +
+                                    selectedPlayer.getAdpPlayer().getName() + " (" +
+                                    selectedPlayer.getAdpPlayer().getPosition() + ")");
+                            break;
+                        }
+                    }
+                }
+
+                // If still no player selected
+                if (selectedPlayer == null) {
+                    int topN = Math.min(8, filteredAdpList.size());
+                    List<DraftPlayer> topPlayers = filteredAdpList.subList(0, topN);
+
+                    if (roundNumber <= 4 && qbCount > 0) {
+                        List<DraftPlayer> filtered = topPlayers.stream()
+                                .filter(p -> !"QB".equalsIgnoreCase(p.getAdpPlayer().getPosition()))
+                                .collect(Collectors.toList());
+                        if (!filtered.isEmpty()) {
+                            topPlayers = filtered;
                         }
                     }
 
-                    weights[i] = Math.max(weight, 1);
-                }
+                    int weightedCount = topPlayers.size();
+                    int[] weights = new int[weightedCount];
 
-                int totalWeight = IntStream.of(weights).sum();
-                int rand = new Random().nextInt(totalWeight);
+                    for (int i = 0; i < weightedCount; i++) {
+                        DraftPlayer dp = topPlayers.get(i);
+                        String pos = dp.getAdpPlayer().getPosition();
 
-                int cumulative = 0;
-                for (int i = 0; i < weights.length; i++) {
-                    cumulative += weights[i];
-                    if (rand < cumulative) {
-                        selectedPlayer = topPlayers.get(i);
-                        System.out.println("CPU selected (ADP-weighted) " +
-                                selectedPlayer.getAdpPlayer().getName() + " (" +
-                                selectedPlayer.getAdpPlayer().getPosition() + ")");
-                        break;
+                        int rankFactor = weightedCount - i;
+                        // Cubed weighting here too
+                        int weight = rankFactor * rankFactor * rankFactor;
+
+                        if (roundNumber <= 6) {
+                            if ("QB".equalsIgnoreCase(pos) && qbCount > 0) {
+                                weight = (int) (weight * 0.2);
+                            } else if ("TE".equalsIgnoreCase(pos) && teCount > 0) {
+                                weight = (int) (weight * 0.5);
+                            }
+                        }
+
+                        weights[i] = Math.max(weight, 1);
+                    }
+
+                    int totalWeight = IntStream.of(weights).sum();
+                    int rand = new Random().nextInt(totalWeight);
+
+                    int cumulative = 0;
+                    for (int i = 0; i < weights.length; i++) {
+                        cumulative += weights[i];
+                        if (rand < cumulative) {
+                            selectedPlayer = topPlayers.get(i);
+                            System.out.println("CPU selected (ADP-weighted) " +
+                                    selectedPlayer.getAdpPlayer().getName() + " (" +
+                                    selectedPlayer.getAdpPlayer().getPosition() + ")");
+                            break;
+                        }
                     }
                 }
             }
