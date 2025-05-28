@@ -48,12 +48,6 @@
         background-position: center;
         background-repeat: no-repeat;
         background-color: #1e1e1e;
-        visibility: hidden;
-      }
-
-      body.loaded {
-        visibility: visible;
-        transition: visibility 0.3s ease-in;
       }
 
       /* Centered content */
@@ -215,13 +209,6 @@
           <a class="button-link" href="http://127.0.0.1:8080/login">Login</a>
         </div>
       </div>
-      <script>
-        const bg = new Image();
-        bg.src = "/images/fieldbackground.jpg";
-        bg.onload = () => {
-          document.body.classList.add("loaded");
-        };
-      </script>
     </div>
   </body>
 </html>
