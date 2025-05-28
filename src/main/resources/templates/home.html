@@ -27,7 +27,10 @@
       href="/web-app-manifest-512x512.png"
       sizes="512x512"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      rel="stylesheet"
+    />
     <style>
       /* Welcome message styling */
       .welcome-message {
@@ -44,7 +47,8 @@
         border: 1px solid #f0a500;
       }
 
-      .welcome-message h1, span {
+      .welcome-message h1,
+      span {
         font-size: 1.8rem;
       }
 
@@ -65,6 +69,12 @@
         background-position: center;
         background-repeat: no-repeat;
         background-color: #1e1e1e;
+        visibility: hidden;
+      }
+
+      body.loaded {
+        visibility: visible;
+        transition: visibility 0.3s ease-in;
       }
 
       /* Centered content */
@@ -116,7 +126,7 @@
         padding-left: 100px;
         margin-bottom: 15px;
         font-size: 1.3rem;
-        font-family: 'VT323', monospace;
+        font-family: "VT323", monospace;
         display: flex;
         align-items: center;
       }
@@ -201,7 +211,7 @@
       }
       h4 {
         font-size: 1.5rem;
-        font-family: 'VT323', monospace;
+        font-family: "VT323", monospace;
       }
     </style>
   </head>
@@ -230,6 +240,13 @@
           <a class="button-link" th:href="@{/setup}">Draft</a>
         </div>
       </div>
+      <script>
+        const bg = new Image();
+        bg.src = "/images/fieldbackground.jpg";
+        bg.onload = () => {
+          document.body.classList.add("loaded");
+        };
+      </script>
     </div>
   </body>
 </html>
