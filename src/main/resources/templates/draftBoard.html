@@ -530,19 +530,21 @@
 
                   // Team logo background image (faded behind headshot)
                   const logoImg = document.createElement("img");
-                  logoImg.src = `/images/${player.team}.png`; // Assuming player.team contains team string (like "NE")
-                  logoImg.alt = "team logo";
+                  logoImg.src = `/images/${player.team}.png`;
                   logoImg.style.position = "absolute";
                   logoImg.style.top = "0";
                   logoImg.style.left = "20px";
                   logoImg.style.width = "60px";
                   logoImg.style.opacity = "0.4";
                   logoImg.style.zIndex = "0";
+                  if(!player.team) {
+                    logoImg.style.visibility = "hidden";
+                  }
                   cell.appendChild(logoImg);
 
                   // Headshot image (flat at bottom)
                   const img = document.createElement("img");
-                  img.src = player.espnHeadshot; // Use headshot from selectedPlayer response
+                  img.src = player.espnHeadshot || `/images/stockplayer.png`; 
                   img.alt = "headshot";
                   img.style.width = "60px";
                   img.style.height = "80px";
@@ -679,18 +681,20 @@
                 // Team logo background image (faded behind headshot)
                 const logoImg = document.createElement("img");
                 logoImg.src = `/images/${team}.png`;
-                logoImg.alt = "team logo";
                 logoImg.style.position = "absolute";
                 logoImg.style.top = "0";
                 logoImg.style.left = "20px";
                 logoImg.style.width = "60px";
                 logoImg.style.opacity = "0.4";
                 logoImg.style.zIndex = "0";
+                if(!team) {
+                  logoImg.style.visibility = "hidden";
+                }
                 cell.appendChild(logoImg);
 
                 // Headshot image (flat at bottom)
                 const img = document.createElement("img");
-                img.src = espnHeadshot;
+                img.src = espnHeadshot || `/images/stockplayer.png`; 
                 img.alt = "headshot";
                 img.style.width = "60px";
                 img.style.height = "80px";

@@ -1,6 +1,7 @@
 package com.fantasy.fantasyapi.mongoServices;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,25 @@ public class EspnPlayerService {
         return espnRepository.findAll();
     }
 
+    private static final Map<String, String> NICKNAME_MAP = Map.of(
+            "Cam", "Cameron",
+            "Mike", "Michael",
+            "Tony", "Anthony"
+    // Add more as needed
+    );
+
     public Optional<EspnPlayer> findPlayerByEspnName(String espnName) {
+        // Split name into parts
+        String[] parts = espnName.split(" ");
+        if (parts.length == 2 && NICKNAME_MAP.containsKey(parts[0])) {
+            espnName = NICKNAME_MAP.get(parts[0]) + " " + parts[1];
+        }
+
         List<EspnPlayer> players = espnRepository.findPlayersByEspnName(espnName);
         if (players.size() == 1) {
             return Optional.of(players.get(0));
         } else if (players.size() > 1) {
-            // Handle case where there are multiple results, choose the best match (e.g.,
-            // based on more data)
-            return Optional.of(players.get(0)); // Or apply more logic here to decide
+            return Optional.of(players.get(0)); // Or add logic here
         } else {
             return Optional.empty();
         }

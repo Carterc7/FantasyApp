@@ -36,6 +36,9 @@ public class GetAllPlayers {
         this.baseUrl = dotenv != null && dotenv.get("API_URL") != null
                 ? dotenv.get("API_URL")
                 : System.getenv("API_URL");
+
+        System.out.println("API Key: " + apiKey);
+        System.out.println("Base URL: " + baseUrl);
     }
 
     /**
@@ -49,11 +52,15 @@ public class GetAllPlayers {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        for(int i = 0; i < players.size(); i++) {
+            System.out.println(players.get(i).getEspnName());
+        }
         return players;
     }
 
     /**
-     * Parse jsonString returned from sendRequestGetAllPlayers() into EspnPlayer objects
+     * Parse jsonString returned from sendRequestGetAllPlayers() into EspnPlayer
+     * objects
      */
     public List<EspnPlayer> mapJsonToPlayerObject(String jsonString) throws IOException {
         JsonNode jsonNode = objectMapper.readTree(jsonString);
@@ -92,4 +99,3 @@ public class GetAllPlayers {
         return roster;
     }
 }
-
