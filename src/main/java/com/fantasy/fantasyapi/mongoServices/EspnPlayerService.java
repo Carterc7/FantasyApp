@@ -27,10 +27,6 @@ public class EspnPlayerService {
     }
 
     private static final Map<String, String> NICKNAME_MAP = Map.of(
-            "Cam", "Cameron",
-            "Mike", "Michael",
-            "Tony", "Anthony"
-    // Add more as needed
     );
 
     public Optional<EspnPlayer> findPlayerByEspnName(String espnName) {

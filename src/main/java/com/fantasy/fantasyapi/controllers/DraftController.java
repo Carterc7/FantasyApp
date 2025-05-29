@@ -174,11 +174,6 @@ public class DraftController {
     }
 
     private static final Map<String, String> nicknameMap = Map.ofEntries(
-            Map.entry("cam", "cameron"),
-            Map.entry("aj", "anthony"),
-            Map.entry("mike", "michael"),
-            Map.entry("dj", "david")
-    // Add more nickname mappings as needed
     );
 
     private String normalizeName(String name) {
