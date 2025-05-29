@@ -22,8 +22,14 @@
         overflow-x: hidden;
         overflow-y: auto;
         overscroll-behavior: none;
-        overscroll-behavior-x: none;
         touch-action: pan-y;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar {
+        display: none;
       }
 
       .draft-container {
@@ -49,7 +55,7 @@
       }
 
       .round-pick-info > div {
-        flex: 1; /* Evenly distribute width */
+        flex: 1;
       }
 
       .clock-message {
@@ -66,9 +72,9 @@
         flex-wrap: nowrap;
         overflow-x: auto;
         overflow-y: auto;
-        max-height: 80vh; 
+        max-height: 80vh;
         scrollbar-width: none;
-        overscroll-behavior: contain;
+        -ms-overflow-style: none;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
       }
@@ -84,7 +90,7 @@
         padding: 0px;
         margin-right: 20px;
         min-width: 200px;
-        overflow-y: auto;
+        overflow: visible;
       }
 
       .team-column thead {
@@ -99,8 +105,6 @@
         border-collapse: collapse;
         table-layout: fixed;
         animation: fadeIn 0.5s ease-in;
-        overflow-y: auto;
-        overflow-x: hidden;
       }
 
       .team-column th {
