@@ -173,13 +173,40 @@ public class DraftController {
         return "draftBoard";
     }
 
+    private static final Map<String, String> nicknameMap = Map.ofEntries(
+            Map.entry("cam", "cameron"),
+            Map.entry("aj", "anthony"),
+            Map.entry("mike", "michael"),
+            Map.entry("dj", "david")
+    // Add more nickname mappings as needed
+    );
+
     private String normalizeName(String name) {
-        return name
+        if (name == null || name.isEmpty())
+            return "";
+
+        // Lowercase and clean up the name
+        String cleaned = name
                 .toLowerCase()
                 .replaceAll("\\b(jr|sr|ii|iii|iv|v)\\b", "") // remove suffixes
                 .replaceAll("[^a-z ]", "") // remove punctuation
                 .replaceAll("\\s+", " ") // normalize whitespace
                 .trim();
+
+        String[] parts = cleaned.split(" ");
+        if (parts.length == 0)
+            return "";
+
+        // Replace the first name with its full version if it's a known nickname
+        String firstName = nicknameMap.getOrDefault(parts[0], parts[0]);
+
+        // Recombine the name
+        StringBuilder normalized = new StringBuilder(firstName);
+        for (int i = 1; i < parts.length; i++) {
+            normalized.append(" ").append(parts[i]);
+        }
+
+        return normalized.toString();
     }
 
     @PostMapping("/draft/select")
