@@ -250,10 +250,10 @@ public class DraftController {
 
             // Position max limits if round < 10
             Map<String, Integer> positionLimits = Map.of(
-                    "QB", 3,
-                    "TE", 3,
-                    "WR", 5,
-                    "RB", 5);
+                    "QB", 2,
+                    "TE", 2,
+                    "WR", 6,
+                    "RB", 6);
 
             boolean forcePositionPick = false;
 
