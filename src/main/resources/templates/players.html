@@ -7,11 +7,13 @@
 >
   <head>
     <title>ADP List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
 
@@ -21,56 +23,16 @@
         margin: 0;
         padding: 0;
         width: 100vw;
-        height: 100vh;
+        height: 100%;
         box-sizing: border-box;
         background-color: #1e1e1e;
-        color: #00ced1;
         font-family: "Doto", sans-serif;
         overflow-x: hidden;
         overflow-y: auto;
       }
 
-      table {
-        width: 80%;
-        margin: 20px auto;
-        background-color: #0c2c3a;
-        border-radius: 25px;
-        box-shadow: 0 0 15px rgba(240, 165, 0, 0.3);
-        overflow: hidden;
-        color: #00ced1;
-        animation: fadeIn 1s ease-out;
-      }
-
-      th {
-        background-color: #0c2c3a;
-        text-align: center;
-        color: #f0a500;
-        font-size: 1.6rem;
-        font-weight: bolder;
-        padding: 15px;
-      }
-
-      td {
-        text-align: center;
-        padding: 10px;
-        font-size: 1.9rem;
-        font-weight: 200;
-        font-family: "VT323", monospace !important;
-      }
-
-      tr:nth-child(even) {
-        background-color: #0c2c3a;
-      }
-
-      tr:nth-child(odd) {
-        background-color: #1a1a1a;
-      }
-
-      .player-row:hover {
-        background-color: #333;
-        cursor: pointer;
-        transform: scale(1.05);
-        color: #f0a500;
+      body {
+        color: #aab6b7;
       }
 
       h1 {
@@ -82,8 +44,14 @@
       }
 
       .filter-container {
-        text-align: center;
-        margin: 20px auto;
+        background-color: #242828;
+        border: 2px solid #f0a500;
+        border-radius: 15px;
+        padding: 20px;
+        width: 90%;
+        max-width: 900px;
+        margin: 0 auto 30px auto;
+        box-sizing: border-box;
       }
 
       form {
@@ -95,34 +63,34 @@
       }
 
       .filter-group {
-        padding: 15px;
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 10px;
+        flex: 1 1 auto;
+        min-width: 120px;
       }
 
       .filter-label {
         color: #00ced1;
         font-family: "VT323", monospace;
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: bold;
       }
 
       .filter-select {
-        padding: 10px;
-        font-size: 1.4rem;
+        padding: 8px;
+        font-size: 1.2rem;
         border-radius: 5px;
         background-color: #0c2c3a;
         font-family: "VT323", monospace;
         color: #f0a500;
-        font-weight: lighter;
         border: 1px solid #f0a500;
         cursor: pointer;
         transition: transform 0.2s ease;
       }
 
       .filter-select:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
 
       .search-wrapper {
@@ -136,23 +104,23 @@
       }
 
       .search-wrapper:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
 
       .search-input {
-        padding: 10px;
-        font-size: 1.4rem;
+        padding: 8px;
+        font-size: 1.2rem;
         border: none;
         background-color: transparent;
         font-family: "VT323", monospace;
         color: #f0a500;
         outline: none;
-        width: 200px;
+        width: 160px;
       }
 
       .search-button {
-        padding: 10px 20px;
-        font-size: 1.4rem;
+        padding: 8px 16px;
+        font-size: 1.2rem;
         font-family: "VT323", monospace;
         background-color: #f0a500;
         color: #0c2c3a;
@@ -163,6 +131,148 @@
 
       .search-button:hover {
         background-color: #ffbb33;
+      }
+
+      .table-scroll-container {
+        width: 100%;
+        overflow-x: auto;
+        padding: 0 1rem;
+        box-sizing: border-box;
+      }
+
+      table {
+        width: 90%;
+        margin: 0 auto 40px auto;
+        background-color: #0c2c3a;
+        border-radius: 25px;
+        border: 1px solid #242828;
+        overflow: hidden;
+        color: #aab6b7;
+        animation: fadeIn 1s ease-out;
+        border-collapse: collapse;
+        min-width: 500px;
+      }
+
+      th {
+        background-color: #0c2c3a;
+        text-align: center;
+        color: #f0a500;
+        font-size: 1.4rem;
+        font-weight: bolder;
+        padding: 12px;
+      }
+
+      td {
+        text-align: center;
+        padding: 10px;
+        font-size: 1.6rem;
+        font-family: "VT323", monospace !important;
+      }
+
+      tr:nth-child(even) {
+        background-color: #242828;
+      }
+
+      tr:nth-child(odd) {
+        background-color: #1a1a1a;
+      }
+
+      .player-row:hover {
+        background-color: #333;
+        cursor: pointer;
+        transform: scale(1.02);
+        color: #f0a500;
+      }
+
+      p.last-updated {
+        font-size: 1rem;
+        color: #00ced1;
+        font-family: "VT323", monospace;
+        text-align: right;
+        margin: 10px 5% 20px 0;
+        opacity: 0.8;
+      }
+
+      p.last-updated span {
+        color: #f0a500;
+        font-size: 1.1rem;
+        opacity: 0.95;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 1.8rem;
+          margin: 15px;
+        }
+
+        .filter-container {
+          padding: 10px;
+        }
+
+        .filter-label,
+        .filter-select,
+        .search-input,
+        .search-button {
+          font-size: 0.9rem;
+        }
+
+        .search-input {
+          width: 100px;
+          padding: 5px;
+        }
+
+        .search-button {
+          padding: 5px 10px;
+        }
+
+        .filter-group {
+          justify-content: center;
+          align-items: center;
+          flex: 1 1 30%;
+          min-width: 100px;
+          gap: 3px;
+        }
+
+        form {
+          flex-wrap: wrap;
+          justify-content: space-between;
+          gap: 8px;
+        }
+
+        td {
+          font-size: 1.2rem;
+          padding: 8px;
+        }
+
+        th {
+          font-size: 1rem;
+          padding: 8px;
+        }
+
+        .table-scroll-container {
+          padding: 0 10px;
+        }
+
+        table {
+          width: 100%;
+          min-width: 480px;
+        }
+
+        p.last-updated {
+          text-align: center;
+          margin: 10px 0 30px 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
@@ -175,54 +285,22 @@
           <div class="filter-group">
             <label for="positionFilter" class="filter-label">Position:</label>
             <select id="positionFilter" name="position" class="filter-select">
-              <option value="all" th:selected="${selectedPosition == 'all'}">
-                All
-              </option>
-              <option value="QB" th:selected="${selectedPosition == 'QB'}">
-                QB
-              </option>
-              <option value="RB" th:selected="${selectedPosition == 'RB'}">
-                RB
-              </option>
-              <option value="WR" th:selected="${selectedPosition == 'WR'}">
-                WR
-              </option>
-              <option value="TE" th:selected="${selectedPosition == 'TE'}">
-                TE
-              </option>
+              <option value="all" th:selected="${selectedPosition == 'all'}">All</option>
+              <option value="QB" th:selected="${selectedPosition == 'QB'}">QB</option>
+              <option value="RB" th:selected="${selectedPosition == 'RB'}">RB</option>
+              <option value="WR" th:selected="${selectedPosition == 'WR'}">WR</option>
+              <option value="TE" th:selected="${selectedPosition == 'TE'}">TE</option>
             </select>
           </div>
 
           <div class="filter-group">
             <label for="formatFilter" class="filter-label">Format:</label>
             <select id="formatFilter" name="format" class="filter-select">
-              <option value="ppr" th:selected="${selectedFormat == 'ppr'}">
-                PPR
-              </option>
-              <option
-                value="half-ppr"
-                th:selected="${selectedFormat == 'half-ppr'}"
-              >
-                Half-PPR
-              </option>
-              <option
-                value="standard"
-                th:selected="${selectedFormat == 'standard'}"
-              >
-                Standard
-              </option>
-              <option
-                value="dynasty"
-                th:selected="${selectedFormat == 'dynasty'}"
-              >
-                Dynasty
-              </option>
-              <option
-                value="2qb-dynasty"
-                th:selected="${selectedFormat == '2qb-dynasty'}"
-              >
-                Dynasty SF
-              </option>
+              <option value="ppr" th:selected="${selectedFormat == 'ppr'}">PPR</option>
+              <option value="half-ppr" th:selected="${selectedFormat == 'half-ppr'}">Half-PPR</option>
+              <option value="standard" th:selected="${selectedFormat == 'standard'}">Standard</option>
+              <option value="dynasty" th:selected="${selectedFormat == 'dynasty'}">Dynasty</option>
+              <option value="2qb-dynasty" th:selected="${selectedFormat == '2qb-dynasty'}">Dynasty SF</option>
             </select>
           </div>
 
@@ -243,49 +321,34 @@
         </form>
       </div>
 
-      <p
-        style="
-          opacity: 80%;
-          font-size: 1.1rem;
-          color: #00ced1;
-          font-family: 'VT323', monospace;
-          text-align: right;
-          margin-right: 140px;
-        "
-      >
-        Last Updated:
-        <span style="color: #f0a500; font-size: 1.2rem; opacity: 95%"
-          >May 2025</span
-        >
-      </p>
+      <p class="last-updated">Last Updated: <span>May 2025</span></p>
 
-      <table id="playerTable">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Player Name</th>
-            <th>Position</th>
-            <th>Positional Rank</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="player-row"
-            th:each="player : ${players}"
-            th:attr="data-name=${player.name}"
-            onclick="submitPlayer(this.getAttribute('data-name'))"
-          >
-            <td th:text="${T(java.lang.Math).round(player.overallRank)}"></td>
-            <td th:text="${player.name}"></td>
-            <td th:text="${player.position}"></td>
-            <td
-              th:text="${player.position + T(java.lang.Math).round(player.positionalRank)}"
-            ></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-scroll-container">
+        <table id="playerTable">
+          <thead>
+            <tr>
+              <th>Overall Rank</th>
+              <th>Player Name</th>
+              <th>Position</th>
+              <th>Positional Rank</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="player-row"
+              th:each="player : ${players}"
+              th:attr="data-name=${player.name}"
+              onclick="submitPlayer(this.getAttribute('data-name'))"
+            >
+              <td th:text="${T(java.lang.Math).round(player.overallRank)}"></td>
+              <td th:text="${player.name}"></td>
+              <td th:text="${player.position}"></td>
+              <td th:text="${player.position + T(java.lang.Math).round(player.positionalRank)}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <!-- Hidden form for player details -->
       <form
         id="hiddenPlayerForm"
         th:action="@{/player-details}"
@@ -303,7 +366,6 @@
           form.submit();
         }
 
-        // Auto-submit form when a select element is changed
         document.querySelectorAll(".filter-select").forEach((select) => {
           select.addEventListener("change", () => {
             select.form.submit();
@@ -313,3 +375,4 @@
     </div>
   </body>
 </html>
+

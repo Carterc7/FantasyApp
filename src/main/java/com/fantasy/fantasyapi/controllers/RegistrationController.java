@@ -56,6 +56,6 @@ public class RegistrationController {
 
         userService.addUser(user);
         session.setAttribute("authenticatedUser", user);
-        return "redirect:/"; // redirect to home
+        return "redirect:/setup"; // redirect to home
     }
 }

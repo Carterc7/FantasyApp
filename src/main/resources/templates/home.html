@@ -7,215 +7,188 @@
 >
   <head>
     <title>Mock Draft Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
+
     <style>
-      /* Welcome message styling */
-      .welcome-message {
-        width: 70%;
-        padding: 15px;
-        margin: 20px auto;
-        background: rgba(30, 30, 30, 0.8);
-        border-radius: 20px;
-        text-align: center;
-        color: #f0a500;
-        font-weight: bolder;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-        animation: fadeIn 1s ease-out;
-        border: 1px solid #f0a500;
-      }
-
-      .welcome-message h1,
-      span {
-        font-size: 1.8rem;
-      }
-
-      html,
       body {
         margin: 0;
         padding: 0;
-        width: 100vw;
-        height: 100vh;
-        box-sizing: border-box;
         font-family: "Doto", sans-serif;
-        overflow-x: hidden;
-        overflow-y: auto;
-        color: #00ced1;
-
-        background-image: url("/images/fieldbackground.jpg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         background-color: #1e1e1e;
+        color: #aab6b7;
       }
 
-      /* Centered content */
-      .content-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        position: relative;
-      }
-
-      .info-modal {
-        width: 70%;
-        padding: 60px;
-        text-align: center;
-        margin-top: 0px;
-        color: #00ced1;
-        background: rgba(30, 30, 30, 0.8); /* light dark grey */
-        border-radius: 20px;
-        border: 1px solid #f0a500;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-        font-size: 1.2rem;
-        animation: fadeIn 1s ease-out;
-      }
-
-      .info-modal h1 {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #f0a500; /* Color from the ADP page */
-      }
-
-      .info-modal ul {
-        list-style: none;
-        padding-left: 0;
-        margin: 20px auto;
-        max-width: 600px;
-        text-align: left; /* Align text while keeping modal centered */
+      .page-wrapper {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .info-modal ul li {
-        position: relative;
-        padding-left: 100px;
-        margin-bottom: 15px;
-        font-size: 1.3rem;
-        font-family: "VT323", monospace;
-        display: flex;
         align-items: center;
+        justify-content: center;
+        padding: 1rem;
       }
 
-      .info-modal ul li::before {
+      /* Welcome message styling preserved */
+      .welcome-message {
+        width: 70%;
+        max-width: 800px;
+        margin-bottom: 2rem;
+        padding: 1rem 2rem;
+        background-color: #121212;
+        border: 1px solid #f0a500;
+        border-radius: 1.5rem;
+        box-shadow: 0 0 20px rgba(240, 165, 0, 0.4);
+        color: #f0a500;
+        font-weight: 700;
+        text-align: center;
+        font-size: 1.5rem;
+        animation: fadeInUp 0.8s ease-out;
+        box-sizing: border-box;
+      }
+
+      .welcome-message span {
+        font-weight: 700;
+      }
+
+      /* Simulator card styling */
+      .simulator-card {
+        background-color: #121212;
+        border: 1px solid #f0a500;
+        border-radius: 1.5rem;
+        box-shadow: 0 0 20px rgba(240, 165, 0, 0.2);
+        padding: 3rem 2.5rem;
+        max-width: 800px;
+        width: 100%;
+        animation: fadeInUp 0.8s ease-out;
+        box-sizing: border-box;
+        color: #aab6b7;
+      }
+
+      /* Title */
+      .simulator-title {
+        font-size: 2.75rem;
+        font-weight: bold;
+        color: #f0a500;
+        text-align: center;
+        margin-bottom: 2rem;
+        letter-spacing: 0.05rem;
+        text-transform: uppercase;
+      }
+
+      /* List */
+      .simulator-list {
+        text-align: center;
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 2rem;
+        font-family: "VT323", monospace;
+      }
+
+      .simulator-list li {
+        position: relative;
+        padding-left: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1.7rem;
+      }
+
+      .simulator-list li::before {
         content: "✦";
         position: absolute;
         left: 0;
         color: #f0a500;
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
 
-      .button-link {
+      /* Button */
+      .simulator-button {
         display: inline-block;
-        padding: 12px 20px;
         background-color: #121212;
-        color: #00ced1; /* Text color from ADP page */
-        text-decoration: none;
-        border-radius: 20px;
-        font-weight: bold;
-        margin-top: 20px;
-        border: 1px solid #f0a500;
-        transition: background-color 0.3s ease;
-      }
-
-      .button-link:hover {
         color: #f0a500;
-        transform: scale(1.1);
+        border: 1px solid #f0a500;
+        border-radius: 2rem;
+        padding: 0.75rem 2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-decoration: none;
+        transition: transform 0.2s ease, color 0.2s ease;
+        text-align: center;
       }
 
-      /* Adding some subtle animations */
-      @keyframes fadeIn {
-        0% {
+      .simulator-button:hover {
+        transform: scale(1.05);
+        color: #f0a500;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
           opacity: 0;
           transform: translateY(20px);
         }
-        100% {
+        to {
           opacity: 1;
           transform: translateY(0);
         }
       }
 
-      .info-modal {
-        animation: fadeIn 1s ease-out;
-      }
+      /* Responsive */
+      @media (max-width: 600px) {
+        .welcome-message {
+          width: 90%;
+          font-size: 1.3rem;
+          padding: 1rem 2rem;
+        }
 
-      /* Responsiveness */
-      @media (max-width: 768px) {
-        .info-modal h1 {
+        .simulator-card {
+          padding: 2rem 1.5rem;
+        }
+
+        .simulator-title {
           font-size: 2rem;
         }
 
-        .info-modal ul li {
-          font-size: 1.3rem;
-          font-weight: bolder;
-          color: #00ced1;
+        .simulator-list li {
+          font-size: 1.5rem;
         }
 
-        .button-link {
-          padding: 10px 18px;
+        .simulator-button {
+          padding: 0.6rem 1.5rem;
           font-size: 1rem;
         }
-
-        .info-modal {
-          width: 90%; /* On smaller screens, make modal a bit narrower */
-        }
-      }
-
-      @media (max-width: 480px) {
-        .info-modal {
-          width: 100%; /* Full width for very small screens */
-        }
-      }
-
-      hr {
-        border: none;
-        height: 2px;
-        background: #f0a500;
-        margin: 10px auto 30px auto;
-        width: 80%;
-        opacity: 0.7;
-      }
-      h4 {
-        font-size: 1.5rem;
-        font-family: "VT323", monospace;
       }
     </style>
   </head>
+
   <body>
     <div layout:fragment="content">
-      <!-- Welcome message (only visible when the user is authenticated) -->
-      <div th:if="${authenticatedUser != null}" class="welcome-message">
-        <h1>Welcome, <span th:text="${authenticatedUser.username}"></span>!</h1>
-      </div>
+      <div class="page-wrapper">
+        <div th:if="${authenticatedUser != null}" class="welcome-message">
+          Welcome, <span th:text="${authenticatedUser.username}"></span>!
+        </div>
 
-      <!-- Centered content -->
-      <div class="content-container">
-        <div class="info-modal">
-          <h1>Mock Draft Simulator</h1>
-          <hr />
-          <h4>
-            The ultimate mock draft experience for those looking to dominate
-            their leagues!
-          </h4>
-          <ul>
+        <div class="simulator-card">
+          <h1 class="simulator-title">Mock Draft Simulator</h1>
+          <ul class="simulator-list">
             <li>Choose your league settings and number of teams.</li>
             <li>Select your draft position before the simulation starts.</li>
             <li>Take turns selecting players.</li>
             <li>Fill your roster by drafting players for each position.</li>
           </ul>
-          <a class="button-link" href="/setup">Draft</a>
+          <div class="text-center">
+            <a class="simulator-button" href="/setup">DRAFT</a>
+          </div>
         </div>
       </div>
     </div>
   </body>
 </html>
+
+
+
+

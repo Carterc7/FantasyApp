@@ -1,12 +1,21 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/defaultTemplate}">
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/defaultTemplate}"
+>
   <head>
     <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         width: 100vw;
@@ -14,7 +23,7 @@
         box-sizing: border-box;
         background-color: #1e1e1e;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
+        font-family: "Doto", sans-serif;
       }
 
       .center-wrapper {
@@ -23,11 +32,13 @@
         align-items: center;
         height: 100%;
         width: 100%;
+        padding: 20px;
       }
 
       .register-container {
-        width: 500px;
-        padding: 40px;
+        width: 100%;
+        max-width: 500px;
+        padding: 30px;
         background-color: #121212;
         border-radius: 20px;
         text-align: center;
@@ -47,6 +58,11 @@
         text-align: left;
       }
 
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
       .form-control {
         background-color: #0e3d4e;
         border: 1px solid #00ced1;
@@ -54,25 +70,28 @@
         padding: 10px;
         border-radius: 8px;
         width: 100%;
+        box-sizing: border-box;
       }
 
       .form-control:focus {
         outline: none;
         border-color: lightblue;
+        background-color: black;
+        color: white;
       }
 
       .btn-primary {
         width: 100%;
         background-color: #2d677d;
         color: #00ced1;
-        font-family: 'Doto', sans-serif;
+        font-family: "Doto", sans-serif;
         padding: 12px;
         font-size: 1.2rem;
         font-weight: bold;
         border-radius: 8px;
         border: none;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       .btn-primary:hover {
@@ -84,30 +103,120 @@
         color: red;
         margin-top: 10px;
         text-align: center;
+        font-size: 0.95rem;
       }
 
       @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive tweaks */
+      @media (max-width: 600px) {
+        .register-container {
+          padding: 20px;
+        }
+
+        .register-container h1 {
+          font-size: 1.5rem;
+        }
+
+        .btn-primary {
+          font-size: 1rem;
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .form-control {
+          padding: 8px;
+        }
+
+        .btn-primary {
+          font-size: 0.95rem;
+          padding: 9px;
+        }
       }
     </style>
+
+    <script>
+      function validatePasswords() {
+        const password = document.getElementById("password").value;
+        const confirm = document.getElementById("confirmPassword").value;
+        const errorMsg = document.getElementById("match-error");
+
+        if (password !== confirm) {
+          errorMsg.textContent = "Passwords do not match.";
+          return false;
+        }
+
+        errorMsg.textContent = "";
+        return true;
+      }
+    </script>
   </head>
   <body>
     <div layout:fragment="content">
       <div class="center-wrapper">
         <div class="register-container">
           <h1>Register</h1>
-          <form th:action="@{/register/process_register}" th:object="${user}" method="post">
+          <form
+            th:action="@{/register/process_register}"
+            th:object="${user}"
+            method="post"
+            onsubmit="return validatePasswords()"
+          >
             <div class="form-group">
               <label for="username">Username:</label>
-              <input type="text" id="username" th:field="*{username}" class="form-control" required />
-              <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"></p>
+              <input
+                type="text"
+                id="username"
+                th:field="*{username}"
+                class="form-control"
+                required
+              />
+              <p
+                th:if="${#fields.hasErrors('username')}"
+                th:errors="*{username}"
+                class="error-message"
+              ></p>
             </div>
+
             <div class="form-group">
               <label for="password">Password:</label>
-              <input type="password" id="password" th:field="*{password}" class="form-control" required minlength="6" maxlength="100" />
-              <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></p>
+              <input
+                type="password"
+                id="password"
+                th:field="*{password}"
+                class="form-control"
+                required
+                minlength="6"
+                maxlength="20"
+              />
+              <p
+                th:if="${#fields.hasErrors('password')}"
+                th:errors="*{password}"
+                class="error-message"
+              ></p>
             </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-control"
+                required
+              />
+              <p id="match-error" class="error-message"></p>
+            </div>
+
             <button type="submit" class="btn btn-primary">Sign Up</button>
           </form>
         </div>
@@ -115,6 +224,5 @@
     </div>
   </body>
 </html>
-
 
 

@@ -33,14 +33,15 @@
       }
 
       .draft-container {
-        width: 67%;
-        padding: 20px 20px 60px 20px;
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
       }
 
       .round-pick-info {
         display: flex;
         justify-content: space-between;
-        width: 97%;
         align-items: center;
         padding: 15px;
         background-color: #0c2c3a;
@@ -52,10 +53,12 @@
         font-size: 1.4rem;
         gap: 10px;
         text-align: center;
+        flex-wrap: wrap;
       }
 
       .round-pick-info > div {
         flex: 1;
+        min-width: 100px;
       }
 
       .clock-message {
@@ -71,7 +74,6 @@
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
-        overflow-y: auto;
         max-height: 80vh;
         scrollbar-width: none;
         -ms-overflow-style: none;
@@ -86,18 +88,8 @@
       .team-column {
         flex: 0 0 auto;
         background-color: #1e1e1e;
-        border-radius: 0px;
-        padding: 0px;
         margin-right: 20px;
         min-width: 200px;
-        overflow: visible;
-      }
-
-      .team-column thead {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-        background-color: #1a1a1a;
       }
 
       .team-column table {
@@ -107,15 +99,15 @@
         animation: fadeIn 0.5s ease-in;
       }
 
+      .team-column thead {
+        background-color: #1a1a1a;
+      }
+
       .team-column th {
         background-color: #0c2c3a;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
         color: #f0a500;
         font-size: 0.9rem;
         padding: 2px;
-        text-align: center;
-        width: 100%;
         height: 35px;
         white-space: nowrap;
         overflow: hidden;
@@ -141,9 +133,8 @@
         background-color: #0c2c3a;
         border-left: 2px solid #f0a500;
         overflow-y: auto;
-        overscroll-behavior: contain;
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
+        z-index: 999;
+        transition: transform 0.3s ease-in-out;
       }
 
       .adp-list-container table {
@@ -161,7 +152,6 @@
         z-index: 10;
         font-size: 1.2rem;
         height: 35px;
-        margin-top: 0px;
         padding: 2px;
         white-space: nowrap;
         overflow: hidden;
@@ -177,7 +167,7 @@
         border-bottom: 3px solid #1e1e1e;
       }
 
-      .adp-list-container button {
+      .adp-list-container button.select-btn {
         font-family: "Doto", monospace;
         background-color: #1e1e1e;
         color: #00ced1;
@@ -191,7 +181,7 @@
         transition: background-color 0.3s ease, transform 0.2s ease;
       }
 
-      .adp-list-container button:hover {
+      .adp-list-container button.select-btn:hover {
         background-color: #2d677d;
         color: #f0a500;
         transform: scale(1.05);
@@ -237,6 +227,132 @@
         flex-wrap: wrap;
       }
 
+      .position-filter-buttons button {
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        padding: 10px 16px;
+        font-size: 1rem;
+        cursor: pointer;
+        color: #1e1e1e;
+        transition: transform 0.2s ease, background-color 0.3s ease;
+      }
+
+      .position-filter-buttons button[data-pos="QB"] {
+        background-color: #ff6961;
+      }
+
+      .position-filter-buttons button[data-pos="WR"] {
+        background-color: orange;
+      }
+
+      .position-filter-buttons button[data-pos="RB"] {
+        background-color: #77dd77;
+      }
+
+      .position-filter-buttons button[data-pos="TE"] {
+        background-color: yellow;
+      }
+
+      .position-filter-buttons button[data-pos="ALL"] {
+        background-color: #dddddd;
+      }
+
+      .position-filter-buttons button:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+
+      .adp-toggle-button {
+        position: fixed;
+        top: 15px;
+        right: 10px;
+        z-index: 1000;
+        color: #f0a500;
+        font-family: "Doto", sans-serif;
+        font-size: 0.8rem;
+        font-weight: bold;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background-color: #0c2c3a;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .adp-toggle-button:hover {
+        transform: scale(1.05);
+        background-color: #2d677d;
+        color: #fff;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+
+        .round-pick-info {
+          flex-direction: column;
+          font-size: 1rem;
+          padding: 10px;
+        }
+
+        .team-columns {
+          flex-direction: row;
+          overflow-x: auto;
+        }
+
+        .team-column {
+          min-width: 140px;
+          margin-right: 10px;
+        }
+
+        .team-column td {
+          font-size: 1.1rem;
+          height: 60px;
+          width: auto;
+        }
+
+        .team-column th {
+          font-size: 0.8rem;
+        }
+
+        .adp-list-container {
+          width: 100%;
+          transform: translateX(100%);
+          position: fixed;
+          left: 0;
+          transition: transform 0.3s ease-in-out;
+        }
+
+        .adp-list-container.open {
+          transform: translateX(0);
+        }
+
+        .position-filter-label {
+          font-size: 1.2rem;
+        }
+
+        .position-filter-buttons button {
+          font-size: 0.8rem;
+          padding: 8px 10px;
+        }
+
+        .adp-list-container th,
+        .adp-list-container td {
+          font-size: 1rem;
+        }
+
+        .adp-list-container button.select-btn {
+          width: 50px;
+          font-size: 0.7rem;
+        }
+      }
+
+      @media (min-width: 769px) {
+        .adp-toggle-button {
+          display: none;
+        }
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -269,6 +385,10 @@
         </div>
         <div class="clock-message" id="clockMessage">&nbsp;</div>
       </div>
+
+      <button class="adp-toggle-button" onclick="toggleAdpList()">
+        Toggle ADP List
+      </button>
 
       <div class="team-columns">
         <div th:each="team : ${session.mockTeams}" class="team-column">
@@ -375,6 +495,10 @@
     <input type="hidden" id="numOfRounds" th:value="${numOfRounds}" />
 
     <script>
+      function toggleAdpList() {
+        document.querySelector(".adp-list-container").classList.toggle("open");
+      }
+
       window.addEventListener("unload", function () {
         navigator.sendBeacon("/leave-draft");
       });
@@ -439,23 +563,21 @@
           draftButtons.forEach((btn) => (btn.disabled = true));
 
           setTimeout(() => {
-            // Get the first available button to use for player name lookup
             const firstAvailableBtn =
               document.querySelector(".select-btn:not([disabled])") ||
               document.querySelector(".select-btn");
             if (!firstAvailableBtn) return;
 
-            // Build payload
             const payload = new URLSearchParams({
-              selectedPlayerName: firstAvailableBtn.getAttribute("data-name"), // Use name from button to send
-              userId: userId,
+              selectedPlayerName: firstAvailableBtn.getAttribute("data-name"),
+              userId,
               currentPick: document.getElementById("currentPick").value,
               isReversed: document.getElementById("isReversed").value,
               roundNumber: document.getElementById("roundNumber").value,
               numOfSelections: document.getElementById("numOfSelections").value,
               numOfTeams: document.getElementById("numOfTeams").value,
               numOfRounds: document.getElementById("numOfRounds").value,
-              currentTeamId: currentTeamId,
+              currentTeamId,
             });
 
             fetch("/draft/select", {
@@ -463,17 +585,13 @@
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
               body: payload.toString(),
             })
-              .then((res) => {
-                if (!res.ok) throw new Error("Draft selection failed.");
-                return res.json();
-              })
+              .then((res) => res.json())
               .then((data) => {
                 if (data.draftEnded) {
                   window.location.href = "/draft-over";
                   return;
                 }
 
-                // Update draft state values
                 document.getElementById("currentPick").value = data.currentPick;
                 document.getElementById("currentTeamId").value =
                   data.currentTeamId;
@@ -486,15 +604,9 @@
                 document.getElementById("currentPickSpan").textContent =
                   data.currentPick;
 
-                // Get the selected player from the response
                 const player = data.selectedPlayer;
-                if (!player) {
-                  console.error("No selectedPlayer in response");
-                  return;
-                }
+                if (!player) return;
 
-                // Remove the player row from available players table by matching player name
-                // Find the button row with the same player name and remove its <tr>
                 const btnToRemove = [
                   ...document.querySelectorAll(".select-btn"),
                 ].find(
@@ -506,7 +618,6 @@
                   btnToRemove.closest("tr").remove();
                 }
 
-                // Create player cell in drafted team roster table
                 const teamColumns = document.querySelectorAll(".team-column");
                 const teamId = parseInt(currentTeamId);
                 const targetTable = teamColumns[teamId]?.querySelector("tbody");
@@ -514,7 +625,6 @@
                 if (targetTable) {
                   const newRow = document.createElement("tr");
                   newRow.style.backgroundColor = "#1e1e1e";
-                  newRow.style.width = "200px";
 
                   const cell = document.createElement("td");
                   cell.style.position = "relative";
@@ -525,10 +635,9 @@
                   cell.style.display = "flex";
                   cell.style.alignItems = "center";
                   cell.style.overflow = "hidden";
-                  cell.style.height = "100px"; // fixed height to help align things
+                  cell.style.height = "100px";
                   cell.style.width = "200px";
 
-                  // Team logo background image (faded behind headshot)
                   const logoImg = document.createElement("img");
                   logoImg.src = `/images/${player.team}.png`;
                   logoImg.style.position = "absolute";
@@ -537,14 +646,11 @@
                   logoImg.style.width = "60px";
                   logoImg.style.opacity = "0.4";
                   logoImg.style.zIndex = "0";
-                  if(!player.team) {
-                    logoImg.style.visibility = "hidden";
-                  }
+                  if (!player.team) logoImg.style.visibility = "hidden";
                   cell.appendChild(logoImg);
 
-                  // Headshot image (flat at bottom)
                   const img = document.createElement("img");
-                  img.src = player.espnHeadshot || `/images/stockplayer.png`; 
+                  img.src = player.espnHeadshot || `/images/stockplayer.png`;
                   img.alt = "headshot";
                   img.style.width = "60px";
                   img.style.height = "80px";
@@ -555,7 +661,6 @@
                   img.style.marginRight = "20px";
                   cell.appendChild(img);
 
-                  // Name block (to the left of image/logo, vertically centered)
                   const nameDiv = document.createElement("div");
                   nameDiv.style.display = "flex";
                   nameDiv.style.flexDirection = "column";
@@ -582,7 +687,6 @@
                   nameDiv.appendChild(lastNameSpan);
                   cell.appendChild(nameDiv);
 
-                  // Position (top right corner)
                   const positionSpan = document.createElement("span");
                   positionSpan.textContent = player.adpPlayer.position;
                   positionSpan.style.position = "absolute";
@@ -599,7 +703,6 @@
                   targetTable.appendChild(newRow);
                 }
 
-                // Continue to next turn
                 checkTurn();
               })
               .catch((err) => console.error("CPU pick error:", err.message));
@@ -627,7 +730,7 @@
             numOfSelections: document.getElementById("numOfSelections").value,
             numOfTeams: document.getElementById("numOfTeams").value,
             numOfRounds: document.getElementById("numOfRounds").value,
-            currentTeamId: currentTeamId,
+            currentTeamId,
           });
 
           fetch("/draft/select", {
@@ -635,10 +738,7 @@
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: payload.toString(),
           })
-            .then((res) => {
-              if (!res.ok) throw new Error("Draft selection failed.");
-              return res.json();
-            })
+            .then((res) => res.json())
             .then((data) => {
               if (data.draftEnded) {
                 window.location.href = "/draft-over";
@@ -666,7 +766,6 @@
               if (targetTable) {
                 const newRow = document.createElement("tr");
                 newRow.style.backgroundColor = "#1e1e1e";
-                newRow.style.width = "200px";
 
                 const cell = document.createElement("td");
                 cell.style.position = "relative";
@@ -675,10 +774,9 @@
                 cell.style.display = "flex";
                 cell.style.alignItems = "center";
                 cell.style.overflow = "hidden";
-                cell.style.height = "100px"; // fixed height to help align things
+                cell.style.height = "100px";
                 cell.style.width = "200px";
 
-                // Team logo background image (faded behind headshot)
                 const logoImg = document.createElement("img");
                 logoImg.src = `/images/${team}.png`;
                 logoImg.style.position = "absolute";
@@ -687,14 +785,11 @@
                 logoImg.style.width = "60px";
                 logoImg.style.opacity = "0.4";
                 logoImg.style.zIndex = "0";
-                if(!team) {
-                  logoImg.style.visibility = "hidden";
-                }
+                if (!team) logoImg.style.visibility = "hidden";
                 cell.appendChild(logoImg);
 
-                // Headshot image (flat at bottom)
                 const img = document.createElement("img");
-                img.src = espnHeadshot || `/images/stockplayer.png`; 
+                img.src = espnHeadshot || `/images/stockplayer.png`;
                 img.alt = "headshot";
                 img.style.width = "60px";
                 img.style.height = "80px";
@@ -705,7 +800,6 @@
                 img.style.marginRight = "20px";
                 cell.appendChild(img);
 
-                // Name block (to the left of image/logo, vertically centered)
                 const nameDiv = document.createElement("div");
                 nameDiv.style.display = "flex";
                 nameDiv.style.flexDirection = "column";
@@ -731,7 +825,6 @@
                 nameDiv.appendChild(lastNameSpan);
                 cell.appendChild(nameDiv);
 
-                // Position (top right corner)
                 const positionSpan = document.createElement("span");
                 positionSpan.textContent = playerPosition;
                 positionSpan.style.position = "absolute";

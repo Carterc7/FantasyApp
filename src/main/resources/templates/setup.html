@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html
   lang="en"
   xmlns:th="http://www.thymeleaf.org"
@@ -6,62 +7,61 @@
 >
   <head>
     <title>Draft Options</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
+
     <style>
-      html,
       body {
+        background-color: #1e1e1e;
+        color: #aab6b7;
         margin: 0;
         padding: 0;
-        width: 100%;
-        min-height: 100vh;
-        box-sizing: border-box;
-        background-color: #1e1e1e;
-        color: #00ced1;
+      }
+
+      .draft-form {
         font-family: "Doto", sans-serif;
-      }
-
-      .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: auto;
-      }
-
-      .form-container {
+        max-width: 500px;
+        margin: 1rem auto;
+        padding: 2rem;
         background-color: #121212;
         border: 1px solid #f0a500;
-        width: 500px;
-        padding: 40px;
         border-radius: 20px;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
         animation: fadeIn 1s ease-out;
       }
 
-      .form-container h1 {
+      .draft-form h1 {
         font-size: 2rem;
-        font-weight: bold;
         color: #f0a500;
-        margin-bottom: 20px;
+        margin-bottom: 1.5rem;
       }
 
       .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 1rem;
         text-align: left;
       }
 
+      label {
+        font-family: "VT323", monospace;
+        font-size: 1.3rem;
+      }
+
       .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        color: white;
         background-color: #0e3d4e;
         border: 1px solid #00ced1;
-        color: white;
-        padding: 10px;
         border-radius: 8px;
-        width: 100%;
       }
 
       .form-control:focus {
@@ -71,43 +71,59 @@
 
       button {
         width: 100%;
-        background-color: #2d677d;
-        color: #00ced1;
-        font-family: "Doto", sans-serif;
         padding: 12px;
         font-size: 1.2rem;
         font-weight: bold;
-        border-radius: 8px;
+        font-family: "Doto", sans-serif;
+        background-color: #2d677d;
+        color: #00ced1;
         border: none;
+        border-radius: 8px;
         cursor: pointer;
         transition: background-color 0.3s ease;
       }
 
       button:hover {
-        background-color: #2d677d;
         color: #f0a500;
       }
 
       @keyframes fadeIn {
-        0% {
+        from {
           opacity: 0;
           transform: translateY(20px);
         }
-        100% {
+        to {
           opacity: 1;
           transform: translateY(0);
         }
       }
 
-      label {
-        font-family: "VT323", monospace;
-        font-size: 1.3rem;
+      /* Responsive Styles */
+      @media (max-width: 600px) {
+        .draft-form {
+          padding: 1.5rem;
+          margin: 1rem;
+        }
+
+        .draft-form h1 {
+          font-size: 1.5rem;
+        }
+
+        label {
+          font-size: 1.1rem;
+        }
+
+        .form-control,
+        button {
+          font-size: 1rem;
+        }
       }
     </style>
   </head>
+
   <body>
-    <div layout:fragment="content" class="container">
-      <div class="form-container">
+    <div layout:fragment="content">
+      <section class="draft-form">
         <h1>Draft Options</h1>
         <form id="draftForm" th:action="@{/draft}" method="post">
           <div class="form-group">
@@ -173,7 +189,8 @@
 
           <button type="submit">Start Draft</button>
         </form>
-      </div>
+      </section>
+
       <script>
         document
           .getElementById("draftForm")
@@ -188,7 +205,7 @@
             );
 
             if (draftPosition > numOfTeams) {
-              e.preventDefault(); // Prevent form submission
+              e.preventDefault();
               alert(
                 "Starting draft position cannot be greater than the number of teams."
               );
@@ -198,3 +215,4 @@
     </div>
   </body>
 </html>
+

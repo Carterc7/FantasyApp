@@ -7,6 +7,7 @@
 >
   <head>
     <title>User Teams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,6 +20,7 @@
         color: #00ced1;
         font-family: "Doto", sans-serif;
         padding-bottom: 60px;
+        margin: 0;
       }
 
       h1 {
@@ -32,23 +34,27 @@
       .team-header {
         background-color: #0c2c3a;
         border-radius: 15px;
-        padding: 15px 25px 15px 25px;
+        padding: 15px 20px;
         margin: 20px;
         border: 2px solid #121212;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         font-weight: bold;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
       }
 
       .team-header a {
         color: #f0a500;
         text-decoration: none;
+        font-size: 1.5rem;
+        transition: transform 0.2s ease, color 0.2s ease;
       }
 
       .team-header a:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
         color: #00ced1;
       }
 
@@ -57,15 +63,16 @@
         border: none;
         color: #00ced1;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-family: "Doto", sans-serif;
+        padding: 5px 10px;
+        transition: transform 0.2s ease, color 0.2s ease;
       }
 
       .delete-team:hover {
         color: #f0a500 !important;
         font-weight: bolder;
-        transform: scale(1.1);
-        transition: color 0.3s ease-in-out;
+        transform: scale(1.05);
       }
 
       .welcome-container {
@@ -74,10 +81,12 @@
         align-items: center;
         width: 100%;
         margin-top: 10px;
+        padding: 0 10px;
       }
 
       .welcome-message {
-        width: 50%;
+        width: 100%;
+        max-width: 600px;
         padding: 15px;
         border-radius: 20px;
         text-align: center;
@@ -87,9 +96,29 @@
       .welcome-message h1 {
         font-size: 2rem;
         font-weight: bolder;
-        text-align: center;
         margin-top: 5px;
         color: #f0a500 !important;
+      }
+
+      @media screen and (max-width: 600px) {
+        .team-header {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 15px;
+        }
+
+        .team-header a {
+          font-size: 0.95rem;
+        }
+
+        .delete-team {
+          align-self: flex-end;
+          font-size: 0.85rem;
+        }
+
+        .welcome-message h1 {
+          font-size: 1.5rem;
+        }
       }
     </style>
   </head>
@@ -131,3 +160,4 @@
     </div>
   </body>
 </html>
+

@@ -69,7 +69,7 @@ public class LoginController {
                 System.out.print("User logged in: UserID: " + user.getUserID());
                 System.out.print(" Username: " + user.getUsername());
                 session.setAttribute("authenticatedUser", user);
-                return "redirect:/"; // redirect to home
+                return "redirect:/setup"; // redirect to home
             } else {
                 model.addAttribute("errorMessage", "Login failed: Non-unique result found for username.");
                 return "error"; // return the error page

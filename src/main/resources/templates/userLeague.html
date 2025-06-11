@@ -7,6 +7,7 @@
 >
   <head>
     <title>User League</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,6 +20,7 @@
         color: #00ced1;
         font-family: "Doto", sans-serif;
         padding-bottom: 60px;
+        margin: 0;
       }
 
       h1 {
@@ -45,7 +47,7 @@
       }
 
       .team-name:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
         color: #00ced1;
       }
 
@@ -85,18 +87,22 @@
       .team-roster ul {
         list-style-type: none;
         padding-left: 0;
+        margin: 0;
       }
 
       .player-row {
         background-color: #1e1e1e;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 12px;
+        text-align: center;
+        gap: 4px;
         cursor: pointer;
-        color: #00ced1;
+        color: #aab6b7;
         transition: all 0.2s ease-in-out;
         border-radius: 8px;
-        padding-right: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
       }
 
       .player-row:hover {
@@ -105,36 +111,26 @@
       }
 
       .player-name-text {
+        margin-left: 20px;
         font-family: "VT323", monospace;
         font-size: 2rem;
         font-weight: 500;
-        user-select: none;
-        white-space: nowrap;
       }
 
-      .player-team-text {
-        font-family: "VT323", monospace;
-        font-size: 1.5rem;
-        font-weight: 200;
-        white-space: nowrap;
-      }
-
+      .player-team-text,
       .player-rank-text {
         font-family: "VT323", monospace;
         font-size: 1.5rem;
         font-weight: 200;
-        white-space: nowrap;
       }
 
       .headshot {
-        margin: 5px;
-        width: 100px;
+        width: 70px;
         height: 70px;
-        padding: 5px 10px 0 10px;
-        z-index: 10;
+        object-fit: cover;
+        border-radius: 20px;
         user-select: none;
         flex-shrink: 0;
-        border-radius: 20px;
       }
 
       .bullet-sep {
@@ -154,28 +150,27 @@
       }
 
       .team-logo {
-        width: 60px;
-        height: 60px;
+        width: 40px;
+        height: 40px;
         object-fit: contain;
         margin-left: auto;
-        padding: 3px;
       }
 
       .back-button {
+        font-family: "Doto", monospace;
         display: block;
         width: fit-content;
-        margin: 12px 20px;
+        margin: 0 auto;
         padding: 15px;
         font-size: 1rem;
         font-weight: bold;
-        background-color: #0c2c3a;
-        color: #00ced1;
-        border: none;
+        background-color: #242828;
+        color: #f0a500;
         border-radius: 20px;
         text-decoration: none;
         text-align: center;
         cursor: pointer;
-        border: 2px solid #121212;
+        border: 2px solid #121212 !important;
       }
 
       .back-button:hover {
@@ -197,12 +192,70 @@
         box-shadow: 0 0 10px #f0a500;
         border-radius: 3px;
       }
+
+      @media (max-width: 768px) {
+        .team-header {
+          flex-direction: column;
+          align-items: flex-start;
+          font-size: 1.2rem;
+        }
+
+        .team-name {
+          flex-direction: row;
+        }
+
+        .player-row {
+          width: 100%;
+          flex-direction: row;
+          align-items: flex-start;
+          text-align: center;
+          padding: 6px;
+          gap: 2px;
+          padding: auto;
+          margin: auto;
+        }
+
+        .headshot {
+          width: 40px;
+          height: 40px;
+        }
+
+        .team-logo {
+          margin-top: 5px;
+          width: 20px;
+          height: 20px;
+          position: relative;
+          right: 0;
+        }
+
+        .player-name-text {
+          margin-top: 4px;
+          margin-left: 2px;
+          font-size: 0.9rem;
+        }
+
+        .player-team-text,
+        .player-rank-text {
+          margin-top: 6px;
+          font-size: 0.8rem;
+        }
+
+        .position-label {
+          font-size: 1.2rem;
+        }
+
+        .bullet-sep {
+          margin-top: 3px;
+        }
+      }
     </style>
     <script>
       function toggleRoster(id) {
         const roster = document.getElementById(id);
         const displayStyle = window.getComputedStyle(roster).display;
-        const triangle = document.getElementById("triangle-" + id.split("-")[1]);
+        const triangle = document.getElementById(
+          "triangle-" + id.split("-")[1]
+        );
         if (displayStyle === "none") {
           roster.style.display = "block";
           if (triangle) triangle.textContent = "▼";
@@ -247,7 +300,9 @@
           >
             <div class="team-name">
               <span th:text="${team.teamName}">Team Name</span>
-              <span th:id="'triangle-' + ${teamStat.index}" class="triangle">▶</span>
+              <span th:id="'triangle-' + ${teamStat.index}" class="triangle"
+                >▶</span
+              >
             </div>
           </div>
 
@@ -259,6 +314,7 @@
             <div th:each="pos : ${positions}">
               <hr />
               <h3
+                class="position-label"
                 th:text="${pos == 'QB' ? 'Quarterbacks (QB)' 
                             : pos == 'RB' ? 'Running Backs (RB)' 
                             : pos == 'WR' ? 'Wide Receivers (WR)' 
@@ -288,9 +344,17 @@
                       alt="Headshot"
                       draggable="false"
                     />
-                    <span class="player-name-text" th:text="${player.adpPlayer.name}">Player Name</span>
+                    <span
+                      class="player-name-text"
+                      th:text="${player.adpPlayer.name}"
+                      >Player Name</span
+                    >
                     <span class="bullet-sep">&bull;</span>
-                    <span class="player-team-text" th:text="'(' + ${player.team} + ')'">Player Team</span>
+                    <span
+                      class="player-team-text"
+                      th:text="'(' + ${player.team} + ')'"
+                      >Player Team</span
+                    >
                     <span class="bullet-sep">&bull;</span>
                     <span
                       class="player-rank-text"
@@ -318,5 +382,3 @@
     </div>
   </body>
 </html>
-
-

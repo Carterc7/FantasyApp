@@ -7,154 +7,235 @@
 >
   <head>
     <title>Player Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
     <style>
-      body {
-        background-color: #1e1e1e;
-        color: #00ced1;
-        font-family: "VT323", monospace;
-        font-size: 1.5rem;
+      html {
+        font-size: 16px;
       }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #1e1e1e;
+        color: #aab6b7;
+      }
+
       .player-container {
+        font-family: "VT323", monospace;
         width: 90%;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #0c2c3a;
-        border-radius: 25px;
-        border: 2px solid #121212;
+        margin: 1.25rem auto;
+        font-size: 1.5rem;
+        font-weight: 600;
+        padding: 1.25rem;
+        background-color: #242828;
+        border-radius: 1.5625rem;
+        border: 1px solid #f0a500;
         overflow: hidden;
-        color: #00ced1;
         animation: fadeIn 1s ease-out;
       }
+
       .player-header {
         background-color: #1a1a1a;
         width: 100%;
-        padding: 20px;
-        border-radius: 8px;
+        padding: 1.25rem;
+        border-radius: 0.5rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 30px;
+        margin-bottom: 1.875rem;
+        flex-wrap: wrap;
       }
+
       .player-image {
-        width: 160px;
-        height: 140px;
-        margin-bottom: 0px !important;
-        margin-right: 25px;
-        align-self: flex-end !important;
+        width: 8.75rem;
+        height: 7.5rem;
+        margin-bottom: 0 !important;
+        margin-right: 1.5625rem;
         object-fit: cover;
         border-radius: 50%;
-        background-color: #0c2c3a;
-        padding: 3px;
+        background-color: rgba(200, 200, 200, 0.2);
+        padding: 0.1875rem;
         box-sizing: border-box;
       }
+
       .player-name-and-info {
         flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
+
       .name-info-container {
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 1.25rem;
+        flex-wrap: wrap;
       }
-      .name-column {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
+
+      .name-column,
       .details-column {
         display: flex;
         flex-direction: column;
         justify-content: center;
+      }
+
+      .details-column {
         flex: 1;
       }
+
+      .top-row-details {
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
       .separator {
         font-size: 5rem;
         color: #f0a500;
         font-weight: 100;
       }
+
       .first-name {
         font-family: "Doto", sans-serif;
-        font-size: 2rem;
-        font-weight: 500 !important;
+        font-size: 2.2rem;
+        font-weight: 600 !important;
         color: #f0a500;
         margin: 0;
       }
+
       .last-name {
         font-family: "Doto", sans-serif;
-        font-size: 2.2rem;
-        font-weight: 800;
+        font-size: 2.4rem;
+        font-weight: 900;
         color: #f0a500;
         margin: 0;
       }
+
       .player-details-inline {
-        margin-top: 10px;
+        margin-top: 0.625rem;
       }
+
       .player-details-inline p {
-        margin: 2px 0;
+        margin: 0.125rem 0;
       }
+
       .stats-section {
-        margin-top: 30px;
+        margin-top: 1.875rem;
+        width: 100%;
       }
+
       h2 {
         font-family: "Doto", sans-serif;
         color: #f0a500;
         text-align: center;
-        font-weight: 600;
-        margin-bottom: 20px;
-        font-size: 1.8rem;
-        padding: 5px;
+        font-weight: 700;
+        margin: 0.625rem 0;
+        font-size: 2rem;
+        padding: 0.3125rem;
+      }
+
+      .game-log-scroll-wrapper {
+        overflow-x: auto;
+        width: 100%;
+      }
+
+      .game-log-row {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        min-width: max-content;
+        padding: 0.75rem 0;
+      }
+
+      .game-log-section {
+        background-color: #242828;
+        border-radius: 0.75rem;
+        padding: 0.5rem;
+        min-width: 300px;
+        box-shadow: 0 0 5px #f0a50033;
+      }
+
+      .game-log-section h3 {
+        color: #f0a500;
+        text-align: center;
+      }
+
+      .game-log-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
       }
 
       .game-row {
         display: flex;
-        justify-content: center; /* Center all elements horizontally */
-        justify-content: space-between;
-        padding: 5px;
+        flex-wrap: nowrap;
         border-bottom: 1px solid #333;
+        box-sizing: border-box;
       }
+
       .game-row span {
         flex: 1;
+        min-width: 70px;
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: bolder;
+        padding: 0.25rem;
+        box-sizing: border-box;
+        border-left: none !important;
+        border-right: none !important;
       }
+
       .game-row.header {
+        font-size: 1.3rem;
         font-weight: bold;
         background-color: #222;
         border-bottom: 2px solid #f0a500;
         color: #f0a500;
       }
 
+      .game-row span.separator {
+        border-left: 2px solid #f0a500;
+        border-right: 2px solid #f0a500;
+      }
+
       .stat-row {
         background-color: #1a1a1a;
-        font-size: 0.8rem;
-        padding-bottom: 5px;
-        padding-left: 0px;
-        margin: 5px 0;
-        border-radius: 8px;
+        font-size: 0.7rem;
+        margin: 0.3125rem 0;
+        border-radius: 0.5rem;
+        padding-bottom: 0.3125rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        box-sizing: border-box;
       }
-      .game-row span.divider {
-        border-left: 2px solid #f0a500;
-        margin-left: 10px;
-        padding-left: 10px;
+
+      .no-stats-message {
+        text-align: center;
+        color: #cccccc;
+        font-size: 1.8rem;
+        margin: 1rem auto;
+        padding: 1rem;
+        border: 1px dashed #666;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 0.75rem;
+        max-width: 37.5rem;
+        box-shadow: 0 0 5px #555;
       }
 
       .section-header-row {
         display: flex;
         justify-content: space-between;
-        background-color: transparent;
         font-size: 1.3rem;
         font-weight: bold;
         color: #f0a500;
-        padding: 5px 0;
+        padding: 0.3125rem 0;
         text-align: center;
         width: 100%;
       }
@@ -171,45 +252,9 @@
         flex: 4;
       }
 
-      /* Aligning separator columns */
-      .game-row span {
-        padding-left: 0px;
-        padding-right: 0px;
-      }
-
-      .game-row span.divider {
-        padding-left: 0px;
-      }
-
-      h3 {
-        padding-left: 20px;
-      }
-
-      .back-button {
-        font-family: "Doto", monospace;
-        display: block;
-        width: fit-content;
-        margin: 5px 70px;
-        padding: 15px;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: #0c2c3a;
-        color: #00ced1;
-        border-radius: 20px;
-        text-decoration: none;
-        text-align: center;
-        cursor: pointer;
-        border: 2px solid #121212 !important;
-      }
-
-      .back-button:hover {
-        color: #f0a500;
-        transform: scale(1.1);
-      }
-
       .team-logo {
-        height: 4.5rem;
-        width: 4.5rem;
+        height: 5.5rem;
+        width: 5.5rem;
         object-fit: contain;
       }
 
@@ -226,6 +271,134 @@
         );
         box-shadow: 0 0 10px #f0a500;
         border-radius: 3px;
+      }
+
+      .total-points-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #2f2f2f;
+        width: 50%;
+        border-radius: 0.625rem;
+        text-align: center;
+        margin: 1rem auto;
+        box-shadow: 0 0 5px rgba(240, 165, 0, 0.4);
+      }
+
+      .total-points-container h3 {
+        margin: 0;
+        width: 100%;
+        padding: 0.5rem;
+        font-family: "Doto", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #f0a500;
+        background-color: #222;
+        border-top-left-radius: 0.625rem;
+        border-top-right-radius: 0.625rem;
+        height: 3rem;
+      }
+
+      .total-points-value {
+        display: block;
+        font-size: 3rem;
+        color: #aab6b7;
+        margin: 0.4rem;
+      }
+
+      .back-button {
+        font-family: "Doto", monospace;
+        display: block;
+        width: fit-content;
+        margin: 5px 65px;
+        padding: 15px;
+        font-size: 1rem;
+        font-weight: bold;
+        background-color: #242828;
+        color: #f0a500;
+        border-radius: 20px;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid #121212 !important;
+      }
+
+      .back-button:hover {
+        color: #f0a500;
+        transform: scale(1.1);
+      }
+
+      @media (max-width: 768px) {
+        .player-header {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .separator {
+          display: none;
+        }
+
+        .player-details-inline {
+          text-align: center;
+          font-size: 1.5rem;
+        }
+
+        .player-image {
+          margin-right: 0;
+          margin-bottom: 1rem !important;
+        }
+
+        .name-info-container {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .total-points-container {
+          width: 90%;
+        }
+
+        .game-row {
+          min-width: 90%;
+        }
+
+        .game-row span {
+          font-size: 1rem;
+          min-width: 70px;
+          flex: 1;
+        }
+
+        h2 {
+          font-size: 1.6rem;
+        }
+
+        .first-name {
+          font-size: 2.4rem;
+          font-weight: 700;
+          text-align: center;
+        }
+
+        .last-name {
+          font-size: 2.6rem;
+          font-weight: 900;
+          text-align: center;
+        }
+
+        .total-points-container h3 {
+          font-size: 1.2rem;
+        }
+
+        .total-points-value {
+          font-size: 2.2rem;
+        }
+
+        .stats-section {
+          overflow-x: auto;
+        }
+
+        .back-button {
+          margin: auto;
+        }
       }
     </style>
   </head>
@@ -256,7 +429,7 @@
               />
               <div class="details-column">
                 <div class="player-details-inline">
-                  <p>
+                  <p class="top-row-details">
                     <span th:text="${playerDetails.team}"></span> &bull;
                     <span th:text="'#' + ${playerDetails.jerseyNum}"></span>
                     &bull;
@@ -264,13 +437,13 @@
                   </p>
                   <p>
                     <span
-                      th:text="'Birthdate: ' + ${playerDetails.bDay} + ' (' + ${playerDetails.age} + ')'"
+                      th:text="'BDAY: ' + ${playerDetails.bDay} + ' (' + ${playerDetails.age} + ')'"
                     ></span>
                     &bull;
-                    <span th:text="'Seasons: ' + ${playerDetails.exp}"></span>
+                    <span th:text="'EXP: ' + ${playerDetails.exp}"></span>
                     &bull;
                     <span
-                      th:text="'Ht/Wt: ' + ${playerDetails.height} + ', ' + ${playerDetails.weight} + ' lbs'"
+                      th:text="'HT/WT: ' + ${playerDetails.height} + ', ' + ${playerDetails.weight} + ' lbs'"
                     ></span>
                   </p>
                 </div>
@@ -279,19 +452,23 @@
           </div>
         </div>
 
+        <!-- No Stats Message for Rookie (Season Stats) -->
+        <div th:if="${playerDetails.exp == 'R'}" class="no-stats-message">
+          <p>No stats for this player.</p>
+        </div>
+
+        <br />
+
         <!-- 2024 SEASON STATS -->
         <div
+          th:if="${playerDetails.exp != 'R'} and ${playerDetails.stats != null}"
           class="stat-row stats-section"
-          th:if="${playerDetails.stats != null}"
         >
-          <h2>Season Stats (2024)</h2>
-          <hr/>
-          <h3 style="text-align: center; margin: 0px; padding: 0px">
-            Fantasy Points (PPR): <span th:text="${seasonFantasyPoints}"></span>
-          </h3>
+          <h2>SEASON STATS (2024)</h2>
+          <hr />
           <!-- Passing Stats -->
           <div th:if="${playerDetails.stats.Passing != null}" class="stat-row">
-            <h3>Passing</h3>
+            <h3>PASSING</h3>
             <div class="game-row header">
               <span>PASS ATT</span>
               <span>PASS CMP</span>
@@ -316,7 +493,7 @@
 
           <!-- Rushing Stats -->
           <div th:if="${playerDetails.stats.Rushing != null}" class="stat-row">
-            <h3>Rushing</h3>
+            <h3>RUSHING</h3>
             <div class="game-row header">
               <span>RUSH ATT</span>
               <span>RUSH AVG</span>
@@ -342,7 +519,7 @@
             th:if="${playerDetails.stats.Receiving != null}"
             class="stat-row"
           >
-            <h3>Receiving</h3>
+            <h3>RECEIVING</h3>
             <div class="game-row header">
               <span>TGT</span>
               <span>REC</span>
@@ -364,104 +541,111 @@
               ></span>
             </div>
           </div>
+          <div class="total-points-container">
+            <h3>2024 TOTAL PTS (PPR):</h3>
+            <span
+              class="total-points-value"
+              th:text="${seasonFantasyPoints}"
+            ></span>
+          </div>
         </div>
         <br />
 
         <!-- COMBINED GAME-BY-GAME STATS -->
         <div
-          th:if="${gameStatsList != null}"
+          th:if="${playerDetails.exp != 'R'} and ${gameStatsList != null}"
           class="stat-row game-by-game-section"
         >
-          <h2>Game Log (2024)</h2>
-          <hr/>
-          <div class="game-row header">
-            <span>DATE</span>
-            <span>VS</span>
-            <span
-              style="
-                border-left: 2px solid #f0a500;
-                border-right: 2px solid #f0a500;
-              "
-              >PTS</span
-            >
-            <span>TAR</span>
-            <span>REC</span>
-            <span>YDS</span>
-            <span>TDs</span>
-            <span style="border-left: 2px solid #f0a500">CAR</span>
-            <span>AVG</span>
-            <span>YDS</span>
-            <span>TDs</span>
-            <span style="border-left: 2px solid #f0a500">ATT</span>
-            <span>CMP</span>
-            <span>YDS</span>
-            <span>TDs</span>
-            <span>INT</span>
-          </div>
-          <div th:each="entry : ${gameStatsList}" class="game-row">
-            <!-- DATE -->
-            <span
-              th:text="${#strings.substring(entry.key, 4, 6)} + '/' + ${#strings.substring(entry.key, 6, 8)} + '/' + ${#strings.substring(entry.key, 0, 4)}"
-            ></span>
+          <h2>GAME LOG (2024)</h2>
+          <hr />
 
-            <!-- VS -->
-            <span th:text="${#strings.substring(entry.key, 9)}"></span>
+          <!-- Scrollable wrapper for horizontally laid out tables -->
+          <div class="game-log-scroll-wrapper">
+            <div class="game-log-row">
+              <!-- Match Info & Points -->
+              <div class="game-log-section">
+                <h3>MATCHUP | POINTS</h3>
+                <div class="game-row header">
+                  <span>DATE</span>
+                  <span>VS</span>
+                  <span>PTS</span>
+                </div>
+                <div th:each="entry : ${gameStatsList}" class="game-row">
+                  <span
+                    th:text="${#strings.substring(entry.key, 4, 6)} + '/' + ${#strings.substring(entry.key, 6, 8)} + '/' + ${#strings.substring(entry.key, 0, 4)}"
+                  ></span>
+                  <span th:text="${#strings.substring(entry.key, 9)}"></span>
+                  <span
+                    th:text="${entry.value.fantasyPointsDefault?.PPR ?: '0'}"
+                  ></span>
+                </div>
+              </div>
 
-            <!-- PTS -->
-            <span
-              th:text="${entry.value.fantasyPointsDefault?.PPR ?: '0'}"
-              style="
-                border-left: 2px solid #f0a500;
-                border-right: 2px solid #f0a500;
-              "
-            ></span>
+              <!-- Receiving Stats -->
+              <div class="game-log-section">
+                <h3>RECEIVING</h3>
+                <div class="game-row header">
+                  <span>TAR</span>
+                  <span>REC</span>
+                  <span>YDS</span>
+                  <span>TDs</span>
+                </div>
+                <div th:each="entry : ${gameStatsList}" class="game-row">
+                  <span
+                    th:text="${entry.value.receiving?.targets ?: '0'}"
+                  ></span>
+                  <span
+                    th:text="${entry.value.receiving?.receptions ?: '0'}"
+                  ></span>
+                  <span
+                    th:text="${entry.value.receiving?.recYds ?: '0'}"
+                  ></span>
+                  <span th:text="${entry.value.receiving?.recTD ?: '0'}"></span>
+                </div>
+              </div>
 
-            <!-- TAR -->
-            <span th:text="${entry.value.receiving?.targets ?: '0'}"></span>
+              <!-- Rushing Stats -->
+              <div class="game-log-section">
+                <h3>RUSHING</h3>
+                <div class="game-row header">
+                  <span>CAR</span>
+                  <span>AVG</span>
+                  <span>YDS</span>
+                  <span>TDs</span>
+                </div>
+                <div th:each="entry : ${gameStatsList}" class="game-row">
+                  <span th:text="${entry.value.rushing?.carries ?: '0'}"></span>
+                  <span th:text="${entry.value.rushing?.rushAvg ?: '0'}"></span>
+                  <span th:text="${entry.value.rushing?.rushYds ?: '0'}"></span>
+                  <span th:text="${entry.value.rushing?.rushTD ?: '0'}"></span>
+                </div>
+              </div>
 
-            <!-- REC -->
-            <span th:text="${entry.value.receiving?.receptions ?: '0'}"></span>
-
-            <!-- REC YDS -->
-            <span th:text="${entry.value.receiving?.recYds ?: '0'}"></span>
-
-            <!-- REC TDs -->
-            <span th:text="${entry.value.receiving?.recTD ?: '0'}"></span>
-
-            <!-- CAR -->
-            <span
-              th:text="${entry.value.rushing?.carries ?: '0'}"
-              style="border-left: 2px solid #f0a500"
-            ></span>
-
-            <!-- RUSH AVG -->
-            <span th:text="${entry.value.rushing?.rushAvg ?: '0'}"></span>
-
-            <!-- RUSH YDS -->
-            <span th:text="${entry.value.rushing?.rushYds ?: '0'}"></span>
-
-            <!-- RUSH TDs -->
-            <span th:text="${entry.value.rushing?.rushTD ?: '0'}"></span>
-
-            <!-- ATT -->
-            <span
-              th:text="${entry.value.passing?.passAttempts ?: '0'}"
-              style="border-left: 2px solid #f0a500"
-            ></span>
-
-            <!-- CMP -->
-            <span
-              th:text="${entry.value.passing?.passCompletions ?: '0'}"
-            ></span>
-
-            <!-- PASS YDS -->
-            <span th:text="${entry.value.passing?.passYds ?: '0'}"></span>
-
-            <!-- PASS TDs -->
-            <span th:text="${entry.value.passing?.passTD ?: '0'}"></span>
-
-            <!-- INT -->
-            <span th:text="${entry.value.passing?.interceptions ?: '0'}"></span>
+              <!-- Passing Stats -->
+              <div class="game-log-section">
+                <h3>PASSING</h3>
+                <div class="game-row header">
+                  <span>ATT</span>
+                  <span>CMP</span>
+                  <span>YDS</span>
+                  <span>TDs</span>
+                  <span>INT</span>
+                </div>
+                <div th:each="entry : ${gameStatsList}" class="game-row">
+                  <span
+                    th:text="${entry.value.passing?.passAttempts ?: '0'}"
+                  ></span>
+                  <span
+                    th:text="${entry.value.passing?.passCompletions ?: '0'}"
+                  ></span>
+                  <span th:text="${entry.value.passing?.passYds ?: '0'}"></span>
+                  <span th:text="${entry.value.passing?.passTD ?: '0'}"></span>
+                  <span
+                    th:text="${entry.value.passing?.interceptions ?: '0'}"
+                  ></span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
