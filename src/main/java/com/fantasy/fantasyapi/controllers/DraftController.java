@@ -265,8 +265,6 @@ public class DraftController {
 
             long qbCount = positionCounts.getOrDefault("QB", 0L);
             long teCount = positionCounts.getOrDefault("TE", 0L);
-            long wrCount = positionCounts.getOrDefault("WR", 0L);
-            long rbCount = positionCounts.getOrDefault("RB", 0L);
 
             selectedPlayer = null;
 
