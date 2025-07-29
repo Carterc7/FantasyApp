@@ -12,7 +12,7 @@
 	<groupId>com.fantasy</groupId>
 	<artifactId>fantasy-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>fantasy-api</name>
+	<name>Mock O' Clock - Fantasy Draft Simulator</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
@@ -53,14 +53,7 @@
 			<version>6.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
@@ -81,7 +74,7 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-resolver-dns-native-macos</artifactId>
-			<version>4.1.70.Final</version>			<!-- Use the appropriate version -->
+			<version>4.1.100.Final</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -122,23 +115,7 @@
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -158,14 +135,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<dependencies>
-					<!-- Add JUnit Jupiter Engine as a dependency for Surefire -->
-					<dependency>
-						<groupId>org.junit.jupiter</groupId>
-						<artifactId>junit-jupiter-engine</artifactId>
-						<version>5.8.1</version>
-					</dependency>
-				</dependencies>
+
 				<configuration>
 					<useSystemClassLoader>false</useSystemClassLoader>
 					<dependenciesToScan>
