@@ -2,7 +2,7 @@
 
 A professional Fantasy Football Mock Draft Simulator built with Spring Boot, featuring real-time NFL player data, intelligent CPU opponents, and a modern web interface.
 
-**Live Demo:** [View Application](https://your-heroku-app-url.herokuapp.com)  
+**Live Demo:** [View Application](https://www.mockoclockfantasy.com/)  
 **Repository:** https://github.com/Carterc7/FantasyApp
 
 ## 🏈 Features
@@ -186,9 +186,6 @@ heroku config:set API_URL=your_api_url
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
 
@@ -205,4 +202,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Ready to start drafting?** [Launch the application](https://your-heroku-app-url.herokuapp.com) and begin your fantasy football journey! 
+**Ready to start drafting?** [Launch the application](https://www.mockoclockfantasy.com/) and begin your fantasy football journey! 
