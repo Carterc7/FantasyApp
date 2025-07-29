@@ -46,16 +46,10 @@ A professional Fantasy Football Mock Draft Simulator built with Spring Boot, fea
    - **MongoDB Atlas**: [Create Free Cluster](https://www.mongodb.com/atlas)
 
 4. **Populate Database**
-   Run these endpoints to populate your MongoDB collections:
+   Run this endpoint to populate your MongoDB collection (may take 5-10 minutes for initial add):
    ```bash
    # Get all players
-   GET /api/players/all
-   
-   # Get player details
-   GET /api/players/details
-   
-   # Get ADP data
-   GET /api/adp/update
+   GET /espn/add-all
    ```
 
 5. **Run the application**
