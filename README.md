@@ -101,3 +101,4 @@ As previously stated, all NFL player information is retrieved from external APIs
 After we make a call to receive the JSON payload, the code snippet "mapJsonToPlayerObject" shows how we convert that data into a list of objects that can be used throughout the application. In this scenario, we are mapping to the EspnPlayer object which contains player information like age, DOB, jersey number, college, etc. This process is repeated for the AdpPlayer, StatsPlayer, and TeamSchedule objects.
 
 <img width="900" alt="image" src="https://github.com/user-attachments/assets/e815bd55-e6b5-4a3c-80ac-0d1ef2887fde"> 
+# Updated README
