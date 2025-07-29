@@ -147,9 +147,6 @@ mvn spring-boot:run
 
 - **users**: User accounts and authentication
 - **espnPlayers**: Player information and statistics
-- **adpPlayers**: Average Draft Position data
-- **teamSchedules**: Team schedules and game data
-- **fantasyTeams**: User draft history and teams
 
 ## 🚀 Deployment
 
