@@ -6,7 +6,7 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>ADP List</title>
+    <title>Fantasy Football Rankings - Mock O' Clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Fonts -->
@@ -25,39 +25,56 @@
         width: 100vw;
         height: 100%;
         box-sizing: border-box;
-        background-color: #1e1e1e;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
         font-family: "Doto", sans-serif;
         overflow-x: hidden;
         overflow-y: auto;
       }
 
       body {
-        color: #aab6b7;
+        color: #e0e0e0;
+      }
+
+      .page-header {
+        text-align: center;
+        margin: 2rem 0 3rem 0;
+        animation: fadeInDown 0.8s ease-out;
       }
 
       h1 {
-        font-size: 2.5rem;
-        font-weight: bolder;
-        text-align: center;
-        margin: 20px;
+        font-size: 3rem;
+        font-weight: 800;
+        color: #00ced1;
+        margin: 0 0 0.5rem 0;
+        text-shadow: 0 4px 8px rgba(0, 206, 209, 0.3);
+        letter-spacing: -1px;
+      }
+
+      .page-subtitle {
+        font-size: 1.2rem;
         color: #f0a500;
+        font-weight: 500;
+        margin: 0;
       }
 
       .filter-container {
-        background-color: #242828;
-        border: 2px solid #f0a500;
-        border-radius: 15px;
-        padding: 20px;
+        background: linear-gradient(135deg, #1a1a1a 0%, #242828 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 20px;
+        padding: 2rem;
         width: 90%;
-        max-width: 900px;
-        margin: 0 auto 30px auto;
+        max-width: 1000px;
+        margin: 0 auto 3rem auto;
         box-sizing: border-box;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        animation: fadeInUp 0.8s ease-out 0.2s both;
       }
 
       form {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 1.5rem;
         justify-content: center;
         align-items: center;
       }
@@ -65,72 +82,109 @@
       .filter-group {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.75rem;
         flex: 1 1 auto;
-        min-width: 120px;
+        min-width: 140px;
       }
 
       .filter-label {
         color: #00ced1;
         font-family: "VT323", monospace;
-        font-size: 1.4rem;
+        font-size: 1.3rem;
         font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
       }
 
       .filter-select {
-        padding: 8px;
-        font-size: 1.2rem;
-        border-radius: 5px;
-        background-color: #0c2c3a;
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
         font-family: "VT323", monospace;
         color: #f0a500;
-        border: 1px solid #f0a500;
+        border: 1px solid rgba(240, 165, 0, 0.3);
         cursor: pointer;
-        transition: transform 0.2s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
 
       .filter-select:hover {
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.2);
+        border-color: rgba(240, 165, 0, 0.6);
+      }
+
+      .filter-select:focus {
+        outline: none;
+        border-color: #00ced1;
+        box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.2);
       }
 
       .search-wrapper {
         display: flex;
         align-items: center;
-        border-radius: 5px;
+        border-radius: 12px;
         overflow: hidden;
-        border: 1px solid #f0a500;
-        background-color: #0c2c3a;
-        transition: transform 0.2s ease;
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
 
       .search-wrapper:hover {
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.2);
+        border-color: rgba(240, 165, 0, 0.6);
       }
 
       .search-input {
-        padding: 8px;
-        font-size: 1.2rem;
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
         border: none;
         background-color: transparent;
         font-family: "VT323", monospace;
         color: #f0a500;
         outline: none;
-        width: 160px;
+        width: 180px;
+      }
+
+      .search-input::placeholder {
+        color: rgba(240, 165, 0, 0.6);
       }
 
       .search-button {
-        padding: 8px 16px;
-        font-size: 1.2rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
         font-family: "VT323", monospace;
-        background-color: #f0a500;
-        color: #0c2c3a;
+        background: linear-gradient(135deg, #f0a500 0%, #ff8c00 100%);
+        color: #1a1a1a;
         border: none;
         cursor: pointer;
-        transition: background-color 0.2s ease;
+        transition: all 0.3s ease;
+        font-weight: bold;
       }
 
       .search-button:hover {
-        background-color: #ffbb33;
+        background: linear-gradient(135deg, #ff8c00 0%, #f0a500 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(240, 165, 0, 0.4);
+      }
+
+      .last-updated {
+        font-size: 1rem;
+        color: #00ced1;
+        font-family: "VT323", monospace;
+        text-align: right;
+        margin: 1rem 5% 2rem 0;
+        opacity: 0.8;
+        animation: fadeInUp 0.8s ease-out 0.4s both;
+      }
+
+      .last-updated span {
+        color: #f0a500;
+        font-size: 1.1rem;
+        opacity: 0.95;
+        font-weight: bold;
       }
 
       .table-scroll-container {
@@ -138,158 +192,265 @@
         overflow-x: auto;
         padding: 0 1rem;
         box-sizing: border-box;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
       }
 
       table {
         width: 90%;
-        margin: 0 auto 40px auto;
-        background-color: #0c2c3a;
-        border-radius: 25px;
-        border: 1px solid #242828;
+        margin: 0 auto 3rem auto;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 206, 209, 0.2);
         overflow: hidden;
-        color: #aab6b7;
-        animation: fadeIn 1s ease-out;
+        color: #e0e0e0;
         border-collapse: collapse;
-        min-width: 500px;
+        min-width: 600px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
       }
 
       th {
-        background-color: #0c2c3a;
+        background: #242828;
         text-align: center;
-        color: #f0a500;
-        font-size: 1.4rem;
-        font-weight: bolder;
-        padding: 12px;
+        color: #00ced1;
+        font-size: 1.3rem;
+        font-weight: 800;
+        padding: 1.25rem 1rem;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #00ced1;
+        position: relative;
+      }
+
+      th::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #f0a500, transparent);
       }
 
       td {
         text-align: center;
-        padding: 10px;
-        font-size: 1.6rem;
+        padding: 1rem;
+        font-size: 1.4rem;
         font-family: "VT323", monospace !important;
+        transition: all 0.3s ease;
+        border-bottom: 1px solid rgba(0, 206, 209, 0.1);
       }
 
       tr:nth-child(even) {
-        background-color: #242828;
+        background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(36, 40, 40, 0.8) 100%);
       }
 
       tr:nth-child(odd) {
-        background-color: #1a1a1a;
+        background: linear-gradient(135deg, rgba(12, 44, 58, 0.8) 0%, rgba(26, 26, 26, 0.8) 100%);
+      }
+
+      .player-row {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
       }
 
       .player-row:hover {
-        background-color: #333;
-        cursor: pointer;
-        transform: scale(1.02);
+        background: linear-gradient(135deg, rgba(0, 206, 209, 0.1) 0%, rgba(240, 165, 0, 0.1) 100%) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 206, 209, 0.2);
         color: #f0a500;
       }
 
-      p.last-updated {
-        font-size: 1rem;
-        color: #00ced1;
-        font-family: "VT323", monospace;
-        text-align: right;
-        margin: 10px 5% 20px 0;
-        opacity: 0.8;
+      .player-row:hover td {
+        color: #f0a500;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
-      p.last-updated span {
-        color: #f0a500;
-        font-size: 1.1rem;
-        opacity: 0.95;
+      .player-row::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #00ced1, #f0a500);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .player-row:hover::after {
+        width: 80%;
+      }
+
+      .rank-cell {
+        font-weight: bold;
+        color: #e0e0e0;
+      }
+
+      .position-cell {
+        font-weight: bold;
+        color: #e0e0e0;
       }
 
       @media (max-width: 768px) {
+        .page-header {
+          margin: 1.5rem 0 2rem 0;
+        }
+
         h1 {
-          font-size: 1.8rem;
-          margin: 15px;
+          font-size: 2.2rem;
+        }
+
+        .page-subtitle {
+          font-size: 1rem;
         }
 
         .filter-container {
-          padding: 10px;
+          padding: 1.5rem;
+          margin-bottom: 2rem;
         }
 
         .filter-label,
         .filter-select,
         .search-input,
         .search-button {
-          font-size: 0.9rem;
+          font-size: 1rem;
         }
 
         .search-input {
-          width: 100px;
-          padding: 5px;
+          width: 140px;
+          padding: 0.6rem 0.8rem;
         }
 
         .search-button {
-          padding: 5px 10px;
+          padding: 0.6rem 1.2rem;
         }
 
         .filter-group {
           justify-content: center;
           align-items: center;
-          flex: 1 1 30%;
-          min-width: 100px;
-          gap: 3px;
+          flex: 1 1 45%;
+          min-width: 120px;
+          gap: 0.5rem;
         }
 
         form {
           flex-wrap: wrap;
           justify-content: space-between;
-          gap: 8px;
+          gap: 1rem;
         }
 
         td {
           font-size: 1.2rem;
-          padding: 8px;
+          padding: 0.8rem 0.6rem;
         }
 
         th {
-          font-size: 1rem;
-          padding: 8px;
+          font-size: 1.1rem;
+          padding: 1rem 0.6rem;
         }
 
         .table-scroll-container {
-          padding: 0 10px;
+          padding: 0 0.5rem;
         }
 
         table {
           width: 100%;
-          min-width: 480px;
+          min-width: 500px;
         }
 
-        p.last-updated {
+        .last-updated {
           text-align: center;
-          margin: 10px 0 30px 0;
+          margin: 1rem 0 2rem 0;
         }
       }
 
-      @keyframes fadeIn {
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .filter-group {
+          flex: 1 1 100%;
+          justify-content: center;
+        }
+
+        .search-input {
+          width: 120px;
+        }
+
+        td {
+          font-size: 1rem;
+          padding: 0.6rem 0.4rem;
+        }
+
+        th {
+          font-size: 1rem;
+          padding: 0.8rem 0.4rem;
+        }
+
+        table {
+          min-width: 450px;
+        }
+      }
+
+      @keyframes fadeInDown {
         from {
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(-30px);
         }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Loading animation for table rows */
+      .player-row {
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      .player-row:nth-child(1) { animation-delay: 0.1s; }
+      .player-row:nth-child(2) { animation-delay: 0.2s; }
+      .player-row:nth-child(3) { animation-delay: 0.3s; }
+      .player-row:nth-child(4) { animation-delay: 0.4s; }
+      .player-row:nth-child(5) { animation-delay: 0.5s; }
+      .player-row:nth-child(6) { animation-delay: 0.6s; }
+      .player-row:nth-child(7) { animation-delay: 0.7s; }
+      .player-row:nth-child(8) { animation-delay: 0.8s; }
+      .player-row:nth-child(9) { animation-delay: 0.9s; }
+      .player-row:nth-child(10) { animation-delay: 1.0s; }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <h1>Fantasy Football Rankings (2025)</h1>
+      <div class="page-header">
+        <h1>Fantasy Football Rankings</h1>
+        <p class="page-subtitle">2025 Season • Average Draft Position (ADP)</p>
+      </div>
 
       <div class="filter-container">
         <form method="get" th:action="@{/adp/list}">
           <div class="filter-group">
             <label for="positionFilter" class="filter-label">Position:</label>
             <select id="positionFilter" name="position" class="filter-select">
-              <option value="all" th:selected="${selectedPosition == 'all'}">All</option>
-              <option value="QB" th:selected="${selectedPosition == 'QB'}">QB</option>
-              <option value="RB" th:selected="${selectedPosition == 'RB'}">RB</option>
-              <option value="WR" th:selected="${selectedPosition == 'WR'}">WR</option>
-              <option value="TE" th:selected="${selectedPosition == 'TE'}">TE</option>
+              <option value="all" th:selected="${selectedPosition == 'all'}">All Positions</option>
+              <option value="QB" th:selected="${selectedPosition == 'QB'}">Quarterback</option>
+              <option value="RB" th:selected="${selectedPosition == 'RB'}">Running Back</option>
+              <option value="WR" th:selected="${selectedPosition == 'WR'}">Wide Receiver</option>
+              <option value="TE" th:selected="${selectedPosition == 'TE'}">Tight End</option>
             </select>
           </div>
 
@@ -312,10 +473,10 @@
                 id="searchBar"
                 name="searchText"
                 class="search-input"
-                placeholder="Enter player name..."
+                placeholder="Player name..."
                 th:value="${searchText}"
               />
-              <button type="submit" class="search-button">Go</button>
+              <button type="submit" class="search-button">Search</button>
             </div>
           </div>
         </form>
@@ -327,10 +488,10 @@
         <table id="playerTable">
           <thead>
             <tr>
-              <th>Overall Rank</th>
+              <th>Rank</th>
               <th>Player Name</th>
               <th>Position</th>
-              <th>Positional Rank</th>
+              <th>Pos. Rank</th>
             </tr>
           </thead>
           <tbody>
@@ -340,9 +501,9 @@
               th:attr="data-name=${player.name}"
               onclick="submitPlayer(this.getAttribute('data-name'))"
             >
-              <td th:text="${T(java.lang.Math).round(player.overallRank)}"></td>
+              <td class="rank-cell" th:text="${T(java.lang.Math).round(player.overallRank)}"></td>
               <td th:text="${player.name}"></td>
-              <td th:text="${player.position}"></td>
+              <td class="position-cell" th:text="${player.position}"></td>
               <td th:text="${player.position + T(java.lang.Math).round(player.positionalRank)}"></td>
             </tr>
           </tbody>
@@ -366,9 +527,20 @@
           form.submit();
         }
 
+        // Auto-submit on filter changes
         document.querySelectorAll(".filter-select").forEach((select) => {
           select.addEventListener("change", () => {
             select.form.submit();
+          });
+        });
+
+        // Add smooth scrolling for better UX
+        document.addEventListener('DOMContentLoaded', function() {
+          // Smooth scroll to top when filters change
+          document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', () => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
           });
         });
       </script>

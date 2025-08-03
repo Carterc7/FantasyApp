@@ -6,7 +6,7 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>Draft Options</title>
+    <title>Draft Setup - Mock O' Clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Fonts -->
@@ -18,97 +18,183 @@
     />
 
     <style>
+      html,
       body {
-        background-color: #1e1e1e;
-        color: #aab6b7;
         margin: 0;
         padding: 0;
+        box-sizing: border-box;
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+        font-family: "Doto", sans-serif;
+      }
+
+      .center-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+        padding: 20px;
       }
 
       .draft-form {
-        font-family: "Doto", sans-serif;
+        width: 100%;
         max-width: 500px;
-        margin: 1rem auto;
-        padding: 2rem;
-        background-color: #121212;
-        border: 1px solid #f0a500;
+        padding: 2.5rem;
+        background: linear-gradient(145deg, #1a1a1a 0%, #242424 100%);
         border-radius: 20px;
         text-align: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-        animation: fadeIn 1s ease-out;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(240, 165, 0, 0.2);
+        animation: fadeInUp 0.8s ease-out;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .draft-form::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f0a500, #00ced1, #f0a500);
       }
 
       .draft-form h1 {
-        font-size: 2rem;
-        color: #f0a500;
-        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #f0a500 0%, #ff8c00 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 2rem;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
+        letter-spacing: 1px;
       }
 
       .form-group {
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
         text-align: left;
       }
 
       label {
         font-family: "VT323", monospace;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+        color: #00ced1;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 0.5rem;
       }
 
       .form-control {
         width: 100%;
-        padding: 10px;
+        padding: 1rem;
         font-size: 1rem;
-        color: white;
-        background-color: #0e3d4e;
-        border: 1px solid #00ced1;
-        border-radius: 8px;
+        color: #e0e0e0;
+        background: linear-gradient(145deg, #2a2a2a 0%, #1e1e1e 100%);
+        border: 2px solid rgba(0, 206, 209, 0.3);
+        border-radius: 12px;
+        font-family: "Doto", sans-serif;
+        transition: all 0.3s ease;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
       }
 
       .form-control:focus {
         outline: none;
-        border-color: lightblue;
-        background-color: #0b3645;
-        color: white;
+        border-color: #00ced1;
+        background: linear-gradient(145deg, #2e2e2e 0%, #222222 100%);
+        color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .form-control::placeholder {
+        color: #888;
+        opacity: 0.7;
+      }
+
+      select.form-control {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2300ced1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
       }
 
       button {
         width: 100%;
-        padding: 12px;
+        padding: 1rem;
         font-size: 1.2rem;
-        font-weight: bold;
+        font-weight: 700;
         font-family: "Doto", sans-serif;
-        background-color: #2d677d;
-        color: #00ced1;
+        background: linear-gradient(135deg, #00ced1 0%, #008b8b 100%);
+        color: #1a1a1a;
         border: none;
-        border-radius: 8px;
+        border-radius: 12px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 206, 209, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
       }
 
       button:hover {
-        color: #f0a500;
+        background: linear-gradient(135deg, #f0a500 0%, #ff8c00 100%);
+        color: #1a1a1a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.4);
       }
 
-      @keyframes fadeIn {
-        from {
+      button:hover::before {
+        left: 100%;
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 10px rgba(0, 206, 209, 0.3);
+      }
+
+      @keyframes fadeInUp {
+        0% {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(30px);
         }
-        to {
+        100% {
           opacity: 1;
           transform: translateY(0);
         }
       }
 
       /* Responsive Styles */
-      @media (max-width: 600px) {
+      @media (max-width: 768px) {
         .draft-form {
-          padding: 1.5rem;
+          padding: 2rem;
           margin: 1rem;
         }
 
         .draft-form h1 {
-          font-size: 1.5rem;
+          font-size: 2rem;
         }
 
         label {
@@ -120,16 +206,40 @@
           font-size: 1rem;
         }
       }
+
+      @media (max-width: 480px) {
+        .draft-form {
+          padding: 1.5rem;
+        }
+
+        .draft-form h1 {
+          font-size: 1.8rem;
+        }
+
+        .form-control {
+          padding: 0.8rem;
+        }
+
+        button {
+          padding: 0.8rem;
+          font-size: 1rem;
+        }
+
+        label {
+          font-size: 1rem;
+        }
+      }
     </style>
   </head>
 
   <body>
     <div layout:fragment="content">
-      <section class="draft-form">
-        <h1>Draft Options</h1>
+      <div class="center-wrapper">
+        <section class="draft-form">
+        <h1>Draft Setup</h1>
         <form id="draftForm" th:action="@{/draft}" method="post">
           <div class="form-group">
-            <label for="numOfTeams">Number of Teams:</label>
+            <label for="numOfTeams">Number of Teams</label>
             <input
               type="number"
               id="numOfTeams"
@@ -137,12 +247,13 @@
               min="2"
               max="20"
               class="form-control"
+              placeholder="Enter number of teams (2-20)"
               required
             />
           </div>
 
           <div class="form-group">
-            <label for="numOfRounds">Number of Rounds:</label>
+            <label for="numOfRounds">Number of Rounds</label>
             <input
               type="number"
               id="numOfRounds"
@@ -150,37 +261,41 @@
               min="1"
               max="25"
               class="form-control"
+              placeholder="Enter number of rounds (1-25)"
               required
             />
           </div>
 
           <div class="form-group">
-            <label for="draftPosition">Starting Draft Position:</label>
+            <label for="draftPosition">Starting Draft Position</label>
             <input
               type="number"
               id="draftPosition"
               name="draftPosition"
               min="1"
               class="form-control"
+              placeholder="Enter your draft position"
               required
             />
           </div>
 
           <div class="form-group">
-            <label for="mockTeamName">Team Name:</label>
+            <label for="mockTeamName">Team Name</label>
             <input
               type="text"
               id="mockTeamName"
               name="mockTeamName"
               class="form-control"
               maxlength="15"
+              placeholder="Enter your team name"
               required
             />
           </div>
 
           <div class="form-group">
-            <label for="format">Draft Format:</label>
+            <label for="format">Draft Format</label>
             <select id="format" name="format" class="form-control" required>
+              <option value="">Select draft format</option>
               <option value="ppr">PPR</option>
               <option value="standard">Standard</option>
               <option value="half-ppr">Half-PPR</option>
@@ -192,6 +307,7 @@
           <button type="submit">Start Draft</button>
         </form>
       </section>
+      </div>
 
       <script>
         document

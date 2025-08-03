@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Draft Board</title>
+    <title>Draft Board - Mock O' Clock</title>
     <link rel="icon" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@400;700&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -16,9 +18,12 @@
       body {
         margin: 0;
         padding: 0;
-        background-color: #1e1e1e;
+        width: 100vw;
+        height: 100%;
+        box-sizing: border-box;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
         font-family: "Doto", sans-serif;
-        color: #00ced1;
+        color: #e0e0e0;
         overflow-x: hidden;
         overflow-y: auto;
         overscroll-behavior: none;
@@ -32,81 +37,123 @@
         display: none;
       }
 
+      .page-header {
+        text-align: center;
+        margin: 1rem 0 2rem 0;
+        animation: fadeInDown 0.8s ease-out;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #00ced1;
+        margin: 0 0 0.5rem 0;
+        text-shadow: 0 4px 8px rgba(0, 206, 209, 0.3);
+        letter-spacing: -1px;
+      }
+
+      .page-subtitle {
+        font-size: 1.1rem;
+        color: #f0a500;
+        font-weight: 500;
+        margin: 0;
+      }
+
       .draft-container {
         width: 100%;
         max-width: 100%;
-        padding: 20px;
+        padding: 1rem;
+        padding-top: 5rem;
         box-sizing: border-box;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+        overflow: auto;
+        height: 100vh;
       }
 
       .round-pick-info {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
-        padding: 15px;
-        background-color: #0c2c3a;
-        box-shadow: 0 0 3px #90ee90, 0 0 6px #90ee90c8;
-        border-radius: 8px;
-        margin-bottom: 15px;
+        padding: 0.75rem 1rem;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 15px;
+        margin: 0 32% 1rem 1rem;
         color: #f0a500;
         font-weight: bold;
         font-size: 1.4rem;
-        gap: 10px;
-        text-align: center;
+        gap: 1rem;
+        text-align: left;
         flex-wrap: wrap;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
       }
 
       .round-pick-info > div {
         flex: 1;
-        min-width: 100px;
+        min-width: 120px;
+        font-family: "VT323", monospace;
+        font-size: 1.6rem;
       }
 
       .clock-message {
-        font-size: 1.2rem;
-        color: #77dd77;
+        font-size: 1.3rem;
+        color: #00ced1;
         font-weight: bold;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
       }
 
       .team-columns {
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
-        overflow-y: auto; /* show vertical scrollbar */
-        max-height: 80vh;
+        overflow-y: auto;
+        max-height: 75vh;
         scrollbar-width: thin;
-        scrollbar-color: #555 transparent;
+        scrollbar-color: #555 #333;
         -ms-overflow-style: auto;
         -webkit-overflow-scrolling: touch;
         touch-action: auto;
-        padding-right: 35%;
+        padding-right: 18%;
+        gap: 1rem;
+        margin-right: 18%;
       }
 
-      /* WebKit scrollbar styles for .team-columns */
       .team-columns::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 12px;
+        height: 12px;
       }
       .team-columns::-webkit-scrollbar-track {
-        background: transparent;
+        background: #333;
+        border-radius: 6px;
       }
       .team-columns::-webkit-scrollbar-thumb {
         background-color: #555;
-        border-radius: 4px;
-        border: 2px solid transparent;
-        background-clip: content-box;
+        border-radius: 6px;
+        border: 2px solid #333;
       }
       .team-columns::-webkit-scrollbar-thumb:hover {
         background-color: #777;
       }
+      .team-columns::-webkit-scrollbar-corner {
+        background: #333;
+      }
 
       .team-column {
         flex: 0 0 auto;
-        background-color: #1e1e1e;
-        margin-right: 20px;
-        min-width: 200px;
+        background: transparent;
+        border: none;
+        min-width: 220px;
+        overflow: visible;
       }
 
       .team-column table {
@@ -114,31 +161,58 @@
         border-collapse: collapse;
         table-layout: fixed;
         animation: fadeIn 0.5s ease-in;
+        background: transparent;
       }
 
       .team-column thead {
-        background-color: #1a1a1a;
+        background: transparent;
       }
 
       .team-column th {
-        background-color: #0c2c3a;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
         color: #f0a500;
-        font-size: 0.9rem;
-        padding: 2px;
-        height: 35px;
+        font-size: 1rem;
+        padding: 1rem 0.5rem;
+        height: 50px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
+        border-bottom: 2px solid rgba(240, 165, 0, 0.3);
+        border-radius: 12px 12px 0 0;
       }
 
       .team-column td {
         font-family: "VT323", monospace;
         text-align: center;
-        font-size: 1.7rem;
-        color: black;
-        font-weight: 400;
-        height: 100px;
-        width: 150px;
+        font-size: 1.2rem;
+        color: #000000;
+        font-weight: 500;
+        height: 80px;
+        width: 180px;
+        padding: 0.5rem;
+        border-bottom: 1px solid rgba(0, 206, 209, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .draft-position {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        background: linear-gradient(135deg, #f0a500 0%, #ff8c00 100%);
+        color: #000;
+        font-size: 0.7rem;
+        font-weight: bold;
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-family: "VT323", monospace;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .team-column tr:hover td {
+        background: rgba(0, 206, 209, 0.1);
       }
 
       .adp-list-container {
@@ -147,11 +221,45 @@
         right: 0;
         width: 30%;
         height: 100%;
-        background-color: #0c2c3a;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
         border-left: 2px solid #f0a500;
         overflow-y: auto;
         z-index: 999;
         transition: transform 0.3s ease-in-out;
+        box-shadow: -4px 0 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .adp-list-container.collapsed {
+        transform: translateX(100%);
+      }
+
+      .sidebar-toggle {
+        position: fixed;
+        top: 50%;
+        right: 30%;
+        transform: translateY(-50%);
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 2px solid #f0a500;
+        border-right: none;
+        color: #f0a500;
+        padding: 1rem 0.5rem;
+        border-radius: 8px 0 0 8px;
+        cursor: pointer;
+        font-family: "VT323", monospace;
+        font-size: 1rem;
+        font-weight: bold;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar-toggle:hover {
+        background: linear-gradient(135deg, rgba(240, 165, 0, 0.2) 0%, rgba(0, 206, 209, 0.2) 100%);
+        transform: translateY(-50%) translateX(-2px);
+      }
+
+      .sidebar-toggle.collapsed {
+        right: 0;
       }
 
       .adp-list-container table {
@@ -162,175 +270,230 @@
       }
 
       .adp-list-container th {
-        background-color: #1e1e1e;
+        background: linear-gradient(135deg, #1a1a1a 0%, #242828 100%);
         color: #f0a500;
         position: sticky;
         top: 0;
         z-index: 10;
-        font-size: 1.2rem;
-        height: 35px;
-        padding: 2px;
+        font-size: 1.1rem;
+        height: 50px;
+        padding: 0.5rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
+        border-bottom: 2px solid rgba(240, 165, 0, 0.3);
       }
 
       .adp-list-container td {
         font-family: "VT323", monospace;
         text-align: center;
-        height: 80px;
-        padding: 8px;
-        color: #00ced1;
-        border-bottom: 3px solid #1e1e1e;
+        height: 70px;
+        padding: 0.5rem;
+        color: #e0e0e0;
+        border-bottom: 1px solid rgba(0, 206, 209, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .adp-list-container tr:hover td {
+        background: rgba(0, 206, 209, 0.1);
       }
 
       .adp-list-container button.select-btn {
-        font-family: "Doto", monospace;
-        background-color: #1e1e1e;
+        font-family: "VT323", monospace;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(0, 206, 209, 0.3);
         color: #00ced1;
-        font-size: 0.8rem;
-        width: 60px;
-        font-weight: bolder;
-        padding: 10px;
-        border: none;
+        font-size: 0.9rem;
+        width: 70px;
+        font-weight: bold;
+        padding: 0.5rem;
         border-radius: 8px;
         cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
 
-      .adp-list-container button.select-btn:hover {
-        background-color: #2d677d;
+      .adp-list-container button.select-btn:hover:not(:disabled) {
+        background: linear-gradient(135deg, rgba(0, 206, 209, 0.2) 0%, rgba(240, 165, 0, 0.2) 100%);
         color: #f0a500;
-        transform: scale(1.05);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
+      }
+
+      .adp-list-container button.select-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        background: #333;
+        color: #666;
       }
 
       .leave-draft-button {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1000;
         color: #f0a500;
-        font-family: "Doto", sans-serif;
-        font-size: 0.8rem;
-        margin: 15px;
+        font-family: "VT323", monospace;
+        font-size: 1rem;
         font-weight: bold;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 12px;
         cursor: pointer;
-        background-color: #0c2c3a;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
 
       .leave-draft-button:hover {
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
+        color: #f0a500;
       }
 
       .position-filter {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
+        padding: 1rem;
+        background: linear-gradient(135deg, rgba(12, 44, 58, 0.5) 0%, rgba(26, 26, 26, 0.5) 100%);
+        border-radius: 12px;
+        border: 1px solid rgba(240, 165, 0, 0.2);
       }
 
       .position-filter-label {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: bold;
         color: #f0a500;
-        margin-bottom: 25px;
+        margin-bottom: 1rem;
         text-align: center;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
       .position-filter-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 0.5rem;
         justify-content: center;
         flex-wrap: wrap;
       }
 
       .position-filter-buttons button {
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-weight: bold;
-        padding: 10px 16px;
-        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
         cursor: pointer;
-        color: #1e1e1e;
-        transition: transform 0.2s ease, background-color 0.3s ease;
+        color: #1a1a1a;
+        transition: all 0.3s ease;
+        font-family: "VT323", monospace;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
 
       .position-filter-buttons button[data-pos="QB"] {
-        background-color: #ff6961;
+        background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+        color: #bee3f8;
       }
 
       .position-filter-buttons button[data-pos="WR"] {
-        background-color: orange;
+        background: linear-gradient(135deg, #d69e2e 0%, #b7791f 100%);
+        color: #fefcbf;
       }
 
       .position-filter-buttons button[data-pos="RB"] {
-        background-color: #77dd77;
+        background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+        color: #c6f6d5;
       }
 
       .position-filter-buttons button[data-pos="TE"] {
-        background-color: yellow;
+        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        color: #fed7d7;
       }
 
       .position-filter-buttons button[data-pos="ALL"] {
-        background-color: #dddddd;
+        background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+        color: #e2e8f0;
       }
 
       .position-filter-buttons button:hover {
-        transform: scale(1.05);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         opacity: 0.9;
       }
 
       .adp-toggle-button {
         position: fixed;
-        top: 15px;
-        right: 10px;
+        top: 1rem;
+        right: 1rem;
         z-index: 1000;
         color: #f0a500;
-        font-family: "Doto", sans-serif;
-        font-size: 0.8rem;
+        font-family: "VT323", monospace;
+        font-size: 1rem;
         font-weight: bold;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 12px;
         cursor: pointer;
-        background-color: #0c2c3a;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
 
       .adp-toggle-button:hover {
-        transform: scale(1.05);
-        background-color: #2d677d;
-        border: none;
-        border-radius: 8px;
-        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
+        color: #f0a500;
       }
+
+
 
       /* Responsive Styles */
       @media (max-width: 768px) {
+        .page-header {
+          margin: 0.5rem 0 1rem 0;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .page-subtitle {
+          font-size: 1rem;
+        }
+
         .round-pick-info {
           flex-direction: column;
-          font-size: 1rem;
-          padding: 10px;
+          font-size: 1.1rem;
+          padding: 1rem;
+          margin: 0 0 1rem 1rem;
         }
 
-        .team-columns {
-          flex-direction: row;
-          overflow-x: auto;
-        }
+                  .team-columns {
+            flex-direction: row;
+            overflow-x: auto;
+            padding-right: 0;
+            margin-right: 0;
+            max-height: 70vh;
+          }
 
         .team-column {
-          min-width: 140px;
-          margin-right: 10px;
+          min-width: 160px;
         }
 
         .team-column td {
-          font-size: 1.1rem;
+          font-size: 1rem;
           height: 60px;
           width: auto;
         }
 
         .team-column th {
-          font-size: 0.8rem;
+          font-size: 0.9rem;
         }
 
         .adp-list-container {
@@ -341,8 +504,17 @@
           transition: transform 0.3s ease-in-out;
         }
 
-        .adp-list-container.open {
-          transform: translateX(0);
+        .adp-list-container.collapsed {
+          transform: translateX(100%);
+        }
+
+        .sidebar-toggle {
+          right: 0;
+          border-radius: 8px 0 0 8px;
+        }
+
+        .sidebar-toggle.collapsed {
+          right: 0;
         }
 
         .position-filter-label {
@@ -351,17 +523,23 @@
 
         .position-filter-buttons button {
           font-size: 0.8rem;
-          padding: 8px 10px;
+          padding: 0.4rem 0.8rem;
         }
 
         .adp-list-container th,
         .adp-list-container td {
-          font-size: 1rem;
+          font-size: 0.9rem;
         }
 
         .adp-list-container button.select-btn {
-          width: 50px;
-          font-size: 0.7rem;
+          width: 60px;
+          font-size: 0.8rem;
+        }
+
+        .leave-draft-button,
+        .adp-toggle-button {
+          font-size: 0.9rem;
+          padding: 0.5rem 1rem;
         }
       }
 
@@ -381,18 +559,40 @@
           transform: translateY(0);
         }
       }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
   </head>
   <body>
-    <div>
-      <form
-        th:action="@{/leave-draft}"
-        method="get"
-        onsubmit="return confirmLeaveDraft();"
-      >
-        <button type="submit" class="leave-draft-button">Leave Draft</button>
-      </form>
-    </div>
+
+    <form
+      th:action="@{/leave-draft}"
+      method="get"
+      onsubmit="return confirmLeaveDraft();"
+    >
+      <button type="submit" class="leave-draft-button">Leave Draft</button>
+    </form>
+
     <div class="draft-container">
       <div class="round-pick-info">
         <div>
@@ -419,6 +619,7 @@
             <tbody>
               <tr th:each="player : ${team.roster}">
                 <td>
+                  <div class="draft-position" th:attr="data-player-name=${player.adpPlayer.name}"></div>
                   <img
                     th:src="${player.espnHeadshot}"
                     alt="headshot"
@@ -435,7 +636,24 @@
       </div>
     </div>
 
+    <button class="sidebar-toggle" onclick="toggleSidebar()">ADP</button>
+    
     <div class="adp-list-container">
+      <!-- Position Filter at the top -->
+      <div class="position-filter">
+        <div class="position-filter-label">
+          <span th:text="${format.toUpperCase()} + ' ADP'"></span>
+        </div>
+        <div class="position-filter-buttons">
+          <button type="button" data-pos="ALL">ALL</button>
+          <button type="button" data-pos="QB">QB</button>
+          <button type="button" data-pos="WR">WR</button>
+          <button type="button" data-pos="RB">RB</button>
+          <button type="button" data-pos="TE">TE</button>
+        </div>
+      </div>
+
+      <!-- Table with headers below filter -->
       <table>
         <thead>
           <tr>
@@ -445,21 +663,6 @@
             <th>PRank</th>
             <th></th>
           </tr>
-          <tr>
-            <!-- 🔍 POSITION FILTER CONTROLS -->
-            <div class="position-filter">
-              <div class="position-filter-label">
-                <span th:text="${format.toUpperCase()} + ' ADP'"></span>
-              </div>
-              <div class="position-filter-buttons">
-                <button type="button" data-pos="ALL">ALL</button>
-                <button type="button" data-pos="QB">QB</button>
-                <button type="button" data-pos="WR">WR</button>
-                <button type="button" data-pos="RB">RB</button>
-                <button type="button" data-pos="TE">TE</button>
-              </div>
-            </div>
-          </tr>
         </thead>
         <tbody id="adpTableBody">
           <tr
@@ -468,19 +671,19 @@
             th:attrappend="data-espn-headshot=${player.espnHeadshot}, data-team=${player.team}"
           >
             <td
-              style="font-size: 1.6rem"
+              style="font-size: 1.4rem"
               th:text="${#numbers.formatDecimal(player.adpPlayer.overallRank, 0, 0)}"
             ></td>
             <td
-              style="font-size: 1.1rem"
+              style="font-size: 1rem"
               th:text="${player.adpPlayer.name}"
             ></td>
             <td
-              style="font-size: 1.6rem"
+              style="font-size: 1.4rem"
               th:text="${player.adpPlayer.position}"
             ></td>
             <td
-              style="font-size: 1.6rem"
+              style="font-size: 1.4rem"
               th:text="${#numbers.formatDecimal(player.adpPlayer.positionalRank, 0, 0)}"
             ></td>
             <td>
@@ -513,9 +716,14 @@
     <input type="hidden" id="numOfRounds" th:value="${numOfRounds}" />
 
     <script>
-      function toggleAdpList() {
-        document.querySelector(".adp-list-container").classList.toggle("open");
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".adp-list-container");
+        const toggle = document.querySelector(".sidebar-toggle");
+        sidebar.classList.toggle("collapsed");
+        toggle.classList.toggle("collapsed");
       }
+
+
 
       window.addEventListener("unload", function () {
         navigator.sendBeacon("/leave-draft");
@@ -560,10 +768,38 @@
       }
 
       function adjustTableWidths() {
-        const fixedWidth = 200;
+        const fixedWidth = 220;
         document.querySelectorAll(".team-column table").forEach((table) => {
           table.style.width = fixedWidth + "px";
         });
+      }
+
+      function calculateDraftPosition(roundNumber, currentPick, numOfTeams) {
+        // Calculate the actual draft position
+        // For a 12-team draft: pick 1 = 1.01, pick 12 = 1.12, pick 13 = 2.01, etc.
+        // The backend seems to be using pick 2 as the first pick, so we need to adjust
+        const adjustedPick = currentPick - 1; // Convert from backend numbering to standard
+        const actualRound = Math.ceil(adjustedPick / numOfTeams);
+        const actualPick = adjustedPick % numOfTeams || numOfTeams;
+        return `${actualRound}.${actualPick.toString().padStart(2, '0')}`;
+      }
+
+      function updateDraftPosition(playerName, roundNumber, currentPick) {
+        const draftPositionLabel = document.querySelector(`[data-player-name="${playerName}"]`);
+        if (draftPositionLabel) {
+          const numOfTeams = parseInt(document.getElementById("numOfTeams").value);
+          const draftPos = calculateDraftPosition(roundNumber, currentPick, numOfTeams);
+          draftPositionLabel.textContent = draftPos;
+        }
+      }
+
+      function addDraftPositionToNewPlayer(cell, playerName, roundNumber, currentPick) {
+        const draftPositionDiv = document.createElement("div");
+        draftPositionDiv.className = "draft-position";
+        const numOfTeams = parseInt(document.getElementById("numOfTeams").value);
+        const draftPos = calculateDraftPosition(roundNumber, currentPick, numOfTeams);
+        draftPositionDiv.textContent = draftPos;
+        cell.appendChild(draftPositionDiv);
       }
 
       function checkTurn() {
@@ -649,6 +885,9 @@
                   cell.style.backgroundColor = getBackgroundColor(
                     player.adpPlayer.position
                   );
+                  
+                  // Add draft position label
+                  addDraftPositionToNewPlayer(cell, player.adpPlayer.name, data.roundNumber, data.currentPick);
                   cell.style.borderRadius = "8px";
                   cell.style.display = "flex";
                   cell.style.alignItems = "center";
@@ -724,7 +963,7 @@
                 checkTurn();
               })
               .catch((err) => console.error("CPU pick error:", err.message));
-          }, 1000);
+          }, 500);
         }
       }
 
@@ -788,6 +1027,9 @@
                 const cell = document.createElement("td");
                 cell.style.position = "relative";
                 cell.style.backgroundColor = getBackgroundColor(playerPosition);
+                
+                // Add draft position label
+                addDraftPositionToNewPlayer(cell, playerName, data.roundNumber, data.currentPick);
                 cell.style.borderRadius = "8px";
                 cell.style.display = "flex";
                 cell.style.alignItems = "center";

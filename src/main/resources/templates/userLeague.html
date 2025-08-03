@@ -6,82 +6,164 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>User League</title>
+    <title>League Results - Mock O' Clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
     <style>
+      html,
       body {
-        background-color: #1e1e1e;
-        color: #00ced1;
-        font-family: "Doto", sans-serif;
-        padding-bottom: 60px;
         margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100%;
+        box-sizing: border-box;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        font-family: "Doto", sans-serif;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      body {
+        color: #e0e0e0;
+      }
+
+      .page-header {
+        text-align: center;
+        margin: 2rem 0 3rem 0;
+        animation: fadeInDown 0.8s ease-out;
       }
 
       h1 {
-        font-size: 2rem;
-        font-weight: bolder;
-        text-align: center;
-        margin-top: 20px;
-        color: #f0a500 !important;
+        font-size: 3rem;
+        font-weight: 800;
+        color: #00ced1;
+        margin: 0 0 0.5rem 0;
+        text-shadow: 0 4px 8px rgba(0, 206, 209, 0.3);
+        letter-spacing: -1px;
+      }
+
+      .page-subtitle {
+        font-size: 1.2rem;
+        color: #f0a500;
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .back-button-container {
+        text-align: left;
+        margin: 0 5% 2rem 7.8%;
+        animation: fadeInUp 0.8s ease-out 0.1s both;
+      }
+
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-family: "VT323", monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        color: #f0a500;
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 12px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .back-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
+        color: #f0a500;
+        text-decoration: none;
+      }
+
+      .back-button:active {
+        transform: translateY(0);
+      }
+
+      .league-container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto 3rem auto;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
       }
 
       .team-header {
-        background-color: #0c2c3a;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
         border-radius: 15px;
-        padding: 15px 25px;
-        margin: 20px 20px 0px 20px;
-        border: 2px solid #121212;
-        font-size: 1.5rem;
+        padding: 1rem 1.5rem;
+        margin: 0 0 1.5rem 0;
+        font-size: 1.3rem;
         font-weight: bold;
         display: flex;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        transition: all 0.2s ease-in-out;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
 
-      .team-name:hover {
-        transform: scale(1.05);
-        color: #00ced1;
+      .team-header:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.2);
+        border-color: rgba(240, 165, 0, 0.6);
       }
 
       .team-name {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 0.75rem;
         color: #f0a500;
-        transition: color 0.2s ease-in-out;
+        transition: all 0.3s ease;
+        font-family: "Doto", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
       .team-header:hover .team-name {
         color: #00ced1;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
       }
 
       .triangle {
-        transition: transform 0.3s ease-in-out;
-        font-size: 1.3rem;
+        transition: transform 0.3s ease;
+        font-size: 1.5rem;
+        color: #f0a500;
+        font-weight: bold;
+      }
+
+      .team-header:hover .triangle {
+        color: #00ced1;
       }
 
       .team-roster {
-        background-color: #0c2c3a;
-        margin: 0 20px 10px 20px;
-        padding: 20px;
+        background: linear-gradient(135deg, #1a1a1a 0%, #242828 100%);
+        border: 1px solid rgba(0, 206, 209, 0.2);
         border-radius: 15px;
-        border: 2px solid #121212;
+        padding: 1.5rem;
+        margin: 0 0 2rem 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        animation: fadeInUp 0.6s ease-out;
       }
 
       h3 {
-        font-size: 1.6rem;
-        font-weight: bold;
-        color: #f0a500;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #00ced1;
+        margin: 1.5rem 0 1rem 0;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
+        font-family: "Doto", sans-serif;
       }
 
       .team-roster ul {
@@ -91,52 +173,117 @@
       }
 
       .player-row {
-        background-color: #1e1e1e;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(0, 206, 209, 0.1);
+        border-radius: 12px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         text-align: center;
-        gap: 4px;
+        gap: 0.75rem;
         cursor: pointer;
-        color: #aab6b7;
-        transition: all 0.2s ease-in-out;
-        border-radius: 8px;
-        padding: 10px;
-        margin-bottom: 10px;
+        color: #e0e0e0;
+        transition: all 0.3s ease;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       }
 
       .player-row:hover {
-        background-color: #1f5d7a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 206, 209, 0.2);
+        border-color: rgba(0, 206, 209, 0.4);
+        background: linear-gradient(135deg, rgba(0, 206, 209, 0.1) 0%, rgba(240, 165, 0, 0.1) 100%);
         color: #f0a500;
       }
 
       .player-name-text {
-        margin-left: 20px;
+        margin-left: 0.5rem;
         font-family: "VT323", monospace;
-        font-size: 2rem;
-        font-weight: 500;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: inherit;
+        transition: all 0.3s ease;
       }
 
       .player-team-text,
       .player-rank-text {
         font-family: "VT323", monospace;
-        font-size: 1.5rem;
-        font-weight: 200;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: inherit;
+        transition: all 0.3s ease;
       }
 
       .headshot {
-        width: 70px;
-        height: 70px;
+        width: 50px;
+        height: 50px;
         object-fit: cover;
-        border-radius: 20px;
+        border-radius: 50%;
+        border: 2px solid #f0a500;
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.3);
         user-select: none;
         flex-shrink: 0;
+        transition: all 0.3s ease;
+      }
+
+      .player-row:hover .headshot {
+        border-color: #00ced1;
+        box-shadow: 0 6px 20px rgba(0, 206, 209, 0.4);
+        transform: scale(1.05);
       }
 
       .bullet-sep {
         color: #f0a500;
         font-weight: bold;
         user-select: none;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+      }
+
+      .player-row:hover .bullet-sep {
+        color: #00ced1;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        font-family: "VT323", monospace;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .team-tag {
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        color: #e2e8f0;
+        border: 1px solid rgba(226, 232, 240, 0.3);
+      }
+
+      .position-tag {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .position-tag.qb {
+        background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+        color: #bee3f8;
+      }
+
+      .position-tag.rb {
+        background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+        color: #c6f6d5;
+      }
+
+      .position-tag.wr {
+        background: linear-gradient(135deg, #d69e2e 0%, #b7791f 100%);
+        color: #fefcbf;
+      }
+
+      .position-tag.te {
+        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        color: #fed7d7;
       }
 
       .submit-btn {
@@ -150,69 +297,97 @@
       }
 
       .team-logo {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
         object-fit: contain;
         margin-left: auto;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.15rem;
+        transition: all 0.3s ease;
       }
 
-      .back-button {
-        font-family: "Doto", monospace;
-        display: block;
-        width: fit-content;
-        margin: 0 auto;
-        padding: 15px;
-        font-size: 1rem;
-        font-weight: bold;
-        background-color: #242828;
-        color: #f0a500;
-        border-radius: 20px;
-        text-decoration: none;
-        text-align: center;
-        cursor: pointer;
-        border: 2px solid #121212 !important;
-      }
-
-      .back-button:hover {
-        color: #f0a500;
+      .player-row:hover .team-logo {
         transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.2);
       }
 
       hr {
         border: none;
-        height: 5px;
+        height: 3px;
         width: 100%;
         background: linear-gradient(
           to right,
           transparent,
-          #f0a500,
+          #00ced1,
           #f0a500,
           transparent
         );
-        box-shadow: 0 0 10px #f0a500;
-        border-radius: 3px;
+        box-shadow: 0 0 10px rgba(0, 206, 209, 0.3);
+        border-radius: 2px;
+        margin: 1.5rem 0;
+      }
+
+      .no-teams-message {
+        text-align: center;
+        color: #e0e0e0;
+        font-size: 1.5rem;
+        margin: 3rem auto;
+        padding: 2rem;
+        border: 2px dashed rgba(240, 165, 0, 0.5);
+        background: linear-gradient(135deg, rgba(12, 44, 58, 0.5) 0%, rgba(26, 26, 26, 0.5) 100%);
+        border-radius: 15px;
+        max-width: 500px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        font-family: "VT323", monospace;
       }
 
       @media (max-width: 768px) {
+        .page-header {
+          margin: 1.5rem 0 2rem 0;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+        }
+
+        .page-subtitle {
+          font-size: 1rem;
+        }
+
+        .back-button-container {
+          margin: 0 2rem 1.5rem 2rem;
+        }
+
+        .back-button {
+          font-size: 1rem;
+          padding: 0.6rem 1.2rem;
+        }
+
+        .league-container {
+          width: 95%;
+          padding: 0 1rem;
+        }
+
         .team-header {
           flex-direction: column;
           align-items: flex-start;
-          font-size: 1.2rem;
+          font-size: 1.1rem;
+          padding: 0.75rem 1rem;
         }
 
         .team-name {
           flex-direction: row;
+          font-size: 1.2rem;
         }
 
         .player-row {
           width: 100%;
           flex-direction: row;
-          align-items: flex-start;
+          align-items: center;
           text-align: center;
-          padding: 6px;
-          gap: 2px;
-          padding: auto;
-          margin: auto;
+          padding: 0.5rem;
+          gap: 0.4rem;
         }
 
         .headshot {
@@ -221,31 +396,108 @@
         }
 
         .team-logo {
-          margin-top: 5px;
-          width: 20px;
-          height: 20px;
-          position: relative;
-          right: 0;
+          margin-top: 0;
+          width: 25px;
+          height: 25px;
         }
 
         .player-name-text {
-          margin-top: 4px;
-          margin-left: 2px;
+          margin-top: 0;
+          margin-left: 0.3rem;
+          font-size: 1rem;
+        }
+
+        .player-team-text,
+        .player-rank-text {
+          margin-top: 0;
+          font-size: 0.8rem;
+        }
+
+        .tag {
+          font-size: 0.7rem;
+          padding: 0.2rem 0.4rem;
+        }
+
+        h3 {
+          font-size: 1.4rem;
+        }
+
+        .bullet-sep {
+          margin-top: 0;
+        }
+
+        .team-roster {
+          padding: 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .back-button-container {
+          margin: 0 1rem 1rem 1rem;
+        }
+
+        .league-container {
+          width: 100%;
+          padding: 0 0.5rem;
+        }
+
+        .team-header {
+          padding: 0.5rem 0.75rem;
+        }
+
+        .player-row {
+          padding: 0.4rem;
+          gap: 0.2rem;
+        }
+
+        .headshot {
+          width: 35px;
+          height: 35px;
+        }
+
+        .player-name-text {
           font-size: 0.9rem;
         }
 
         .player-team-text,
         .player-rank-text {
-          margin-top: 6px;
           font-size: 0.8rem;
         }
 
-        .position-label {
-          font-size: 1.2rem;
+        .team-logo {
+          width: 20px;
+          height: 20px;
         }
 
-        .bullet-sep {
-          margin-top: 3px;
+        .tag {
+          font-size: 0.6rem;
+          padding: 0.15rem 0.3rem;
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
     </style>
@@ -289,95 +541,106 @@
   </head>
   <body>
     <div layout:fragment="content">
-      <a th:href="@{/user/teams}" class="back-button">&larr; Back to Teams</a>
-      <h1>League Results</h1>
+      <div class="page-header">
+        <h1>League Results</h1>
+      </div>
 
-      <div th:if="${completedMocks != null}">
-        <div th:each="team, teamStat : ${completedMocks}">
-          <div
-            class="team-header"
-            th:onclick="'toggleRoster(\'roster-' + ${teamStat.index} + '\')'"
-          >
-            <div class="team-name">
-              <span th:text="${team.teamName}">Team Name</span>
-              <span th:id="'triangle-' + ${teamStat.index}" class="triangle"
-                >▶</span
-              >
-            </div>
-          </div>
+      <div class="back-button-container">
+        <a th:href="@{/user/teams}" class="back-button">
+          <span>&larr;</span>
+          <span>Back to Teams</span>
+        </a>
+      </div>
 
-          <div
-            class="team-roster"
-            th:id="'roster-' + ${teamStat.index}"
-            th:style="${teamStat.index == 0} ? 'display: block;' : 'display: none;'"
-          >
-            <div th:each="pos : ${positions}">
-              <hr />
-              <h3
-                class="position-label"
-                th:text="${pos == 'QB' ? 'Quarterbacks (QB)' 
-                            : pos == 'RB' ? 'Running Backs (RB)' 
-                            : pos == 'WR' ? 'Wide Receivers (WR)' 
-                            : pos == 'TE' ? 'Tight Ends (TE)' 
-                            : pos}"
-              >
-                Position Label
-              </h3>
-              <ul>
-                <form
-                  th:each="player : ${team.roster}"
-                  th:if="${player.adpPlayer.position.equalsIgnoreCase(pos)}"
-                  th:action="@{/team/player-details}"
-                  method="post"
-                  class="player-form"
+      <div class="league-container">
+        <div th:if="${completedMocks != null}">
+          <div th:each="team, teamStat : ${completedMocks}">
+            <div
+              class="team-header"
+              th:onclick="'toggleRoster(\'roster-' + ${teamStat.index} + '\')'"
+            >
+              <div class="team-name">
+                <span th:text="${team.teamName}">Team Name</span>
+                <span th:id="'triangle-' + ${teamStat.index}" class="triangle"
+                  >▶</span
                 >
-                  <input
-                    class="player-name"
-                    type="hidden"
-                    name="espnName"
-                    th:value="${player.adpPlayer.name}"
-                  />
-                  <li class="player-row">
-                    <img
-                      class="headshot"
-                      th:src="${player.espnHeadshot}"
-                      alt="Headshot"
-                      draggable="false"
+              </div>
+            </div>
+
+            <div
+              class="team-roster"
+              th:id="'roster-' + ${teamStat.index}"
+              th:style="${teamStat.index == 0} ? 'display: block;' : 'display: none;'"
+            >
+              <div th:each="pos : ${positions}">
+                <hr />
+                <h3
+                  class="position-label"
+                  th:text="${pos == 'QB' ? 'Quarterbacks (QB)' 
+                              : pos == 'RB' ? 'Running Backs (RB)' 
+                              : pos == 'WR' ? 'Wide Receivers (WR)' 
+                              : pos == 'TE' ? 'Tight Ends (TE)' 
+                              : pos}"
+                >
+                  Position Label
+                </h3>
+                <ul>
+                  <form
+                    th:each="player : ${team.roster}"
+                    th:if="${player.adpPlayer.position.equalsIgnoreCase(pos)}"
+                    th:action="@{/team/player-details}"
+                    method="post"
+                    class="player-form"
+                  >
+                    <input
+                      class="player-name"
+                      type="hidden"
+                      name="espnName"
+                      th:value="${player.adpPlayer.name}"
                     />
-                    <span
-                      class="player-name-text"
-                      th:text="${player.adpPlayer.name}"
-                      >Player Name</span
-                    >
-                    <span class="bullet-sep">&bull;</span>
-                    <span
-                      class="player-team-text"
-                      th:text="'(' + ${player.team} + ')'"
-                      >Player Team</span
-                    >
-                    <span class="bullet-sep">&bull;</span>
-                    <span
-                      class="player-rank-text"
-                      th:text="${player.adpPlayer.position} + ' ' + ${player.adpPlayer.positionalRank.intValue()}"
-                    >
-                      Positional Rank
-                    </span>
-                    <img
-                      class="team-logo"
-                      th:src="@{'/images/' + ${player.team} + '.png'}"
-                      alt="Team Logo"
-                    />
-                    <button type="submit" class="submit-btn">Submit</button>
-                  </li>
-                </form>
-              </ul>
+                    <li class="player-row">
+                      <img
+                        class="headshot"
+                        th:src="${player.espnHeadshot}"
+                        alt="Headshot"
+                        draggable="false"
+                      />
+                      <span
+                        class="player-name-text"
+                        th:text="${player.adpPlayer.name}"
+                        >Player Name</span
+                      >
+                      <span class="bullet-sep">&bull;</span>
+                      <span
+                        class="player-team-text tag team-tag"
+                        th:text="${player.team}"
+                        >Player Team</span
+                      >
+                      <span class="bullet-sep">&bull;</span>
+                      <span
+                        class="player-rank-text tag position-tag"
+                        th:classappend="${player.adpPlayer.position.toLowerCase()}"
+                        th:text="${player.adpPlayer.position} + ' ' + ${player.adpPlayer.positionalRank.intValue()}"
+                      >
+                        Positional Rank
+                      </span>
+                      <img
+                        class="team-logo"
+                        th:src="@{'/images/' + ${player.team} + '.png'}"
+                        alt="Team Logo"
+                      />
+                      <button type="submit" class="submit-btn">Submit</button>
+                    </li>
+                  </form>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div th:if="${completedMocks == null || #lists.isEmpty(completedMocks)}">
-        <p>No teams found for the given team name.</p>
+        <div th:if="${completedMocks == null || #lists.isEmpty(completedMocks)}" class="no-teams-message">
+          <p>No teams found for the given team name.</p>
+        </div>
       </div>
     </div>
   </body>

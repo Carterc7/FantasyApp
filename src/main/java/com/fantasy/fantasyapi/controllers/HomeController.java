@@ -20,12 +20,11 @@ public class HomeController {
     public String showHomePage(HttpSession session, Model model) {
         // Retrieve the authenticated user from the session
         User authenticatedUser = (User) session.getAttribute("authenticatedUser");
-        if (authenticatedUser == null) {
-            System.out.println("User not found in session");
-            return "index.html";
+        if (authenticatedUser != null) {
+            // Add the user to the model if authenticated
+            model.addAttribute("authenticatedUser", authenticatedUser);
         }
-        // Add the user to the model
-        model.addAttribute("authenticatedUser", authenticatedUser);
-        return "home.html";
+        // Always return index.html - the template handles conditional display
+        return "index.html";
     }
 }

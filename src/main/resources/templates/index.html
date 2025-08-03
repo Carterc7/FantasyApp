@@ -6,7 +6,7 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>Mock Draft Simulator</title>
+    <title>Mock O' Clock - Fantasy Draft Simulator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Fonts -->
@@ -26,79 +26,416 @@
         color: #aab6b7;
       }
 
-      .page-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
+      /* Welcome Banner */
+      .welcome-banner {
+        background: linear-gradient(135deg, #0a2530 0%, #09222c 100%);
+        color: #f0a500;
+        padding: 1.5rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
       }
 
-      .simulator-card {
+      .welcome-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23121212" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .welcome-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .welcome-banner h2 {
+        font-size: 2rem;
+        font-weight: 900;
+        margin: 0 0 0.5rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+      }
+
+      .welcome-banner span {
+        font-weight: 900;
+        text-shadow: 0 0 10px rgba(18, 18, 18, 0.5);
+      }
+
+      .welcome-banner p {
+        font-size: 1.1rem;
+        margin: 0;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+
+      /* Hero Section */
+      .hero-section {
+        background: linear-gradient(135deg, #121212 0%, #1e1e1e 50%, #0c2c3a 100%);
+        padding: 4rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23f0a500" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #f0a500;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        text-shadow: 0 0 20px rgba(240, 165, 0, 0.5);
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        color: #00ced1;
+        margin-bottom: 2rem;
+        font-weight: 300;
+      }
+
+      .hero-description {
+        font-size: 1.1rem;
+        color: #aab6b7;
+        max-width: 600px;
+        margin: 0 auto 3rem;
+        line-height: 1.6;
+      }
+
+      /* Features Section */
+      .features-section {
+        padding: 4rem 2rem;
         background-color: #121212;
-        border: 1px solid #f0a500;
-        border-radius: 1.5rem;
-        box-shadow: 0 0 20px rgba(240, 165, 0, 0.2);
-        padding: 3rem 2.5rem;
-        max-width: 800px;
-        width: 100%;
-        animation: fadeInUp 0.8s ease-out;
       }
 
-      .simulator-title {
-        font-size: 2.75rem;
+      .section-title {
+        font-size: 2.5rem;
         font-weight: bold;
         color: #f0a500;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
+        text-transform: uppercase;
         letter-spacing: 0.05rem;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .feature-card {
+        background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+        border: 1px solid #f0a500;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(240, 165, 0, 0.1), transparent);
+        transition: left 0.5s ease;
+      }
+
+      .feature-card:hover::before {
+        left: 100%;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(240, 165, 0, 0.3);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: #00ced1;
+        margin-bottom: 0.75rem;
+      }
+
+      .feature-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #f0a500;
+        margin-bottom: 0.75rem;
         text-transform: uppercase;
       }
 
-      .simulator-list {
-        text-align: center;
-        list-style: none;
-        padding-left: 0;
+      .feature-description {
+        color: #aab6b7;
+        line-height: 1.6;
+      }
+
+      /* How It Works Section */
+      .how-it-works {
+        padding: 4rem 2rem;
+        background-color: #1e1e1e;
+      }
+
+      .steps-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .step-item {
+        display: flex;
+        align-items: center;
         margin-bottom: 2rem;
-        font-family: "VT323", monospace;
+        padding: 1.5rem;
+        background: linear-gradient(145deg, #121212, #0f0f0f);
+        border: 1px solid #00ced1;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
       }
 
-      .simulator-list li {
-        position: relative;
-        padding-left: 2rem;
+      .step-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 5px 20px rgba(0, 206, 209, 0.3);
+      }
+
+      .step-number {
+        background: linear-gradient(135deg, #f0a500, #ff8c00);
+        color: #121212;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-right: 1.5rem;
+        flex-shrink: 0;
+      }
+
+      .step-content h3 {
+        color: #f0a500;
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+      }
+
+      .step-content p {
+        color: #aab6b7;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      /* CTA Section */
+      .cta-section {
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, #0c2c3a 0%, #121212 100%);
+        text-align: center;
+      }
+
+      .cta-card {
+        background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+        border: 2px solid #f0a500;
+        border-radius: 1.5rem;
+        padding: 3rem 2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 0 30px rgba(240, 165, 0, 0.2);
+      }
+
+      .cta-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #f0a500;
         margin-bottom: 1rem;
-        font-size: 1.7rem;
+        text-transform: uppercase;
       }
 
-      .simulator-list li::before {
-        content: "✦";
-        position: absolute;
-        left: 0;
-        color: #f0a500;
-        font-size: 1rem;
-      }
-
-      .simulator-button {
-        display: inline-block;
-        background-color: #121212;
-        color: #f0a500;
-        border: 1px solid #f0a500;
-        border-radius: 2rem;
-        padding: 0.75rem 2rem;
+      .cta-description {
+        color: #aab6b7;
+        margin-bottom: 2rem;
         font-size: 1.1rem;
+        line-height: 1.6;
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #f0a500, #ff8c00);
+        color: #121212;
+        border: none;
+        border-radius: 2rem;
+        padding: 1rem 2.5rem;
+        font-size: 1.2rem;
         font-weight: bold;
         text-decoration: none;
-        transition: transform 0.2s ease, color 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(240, 165, 0, 0.3);
       }
 
-      .simulator-button:hover {
-        transform: scale(1.05);
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(240, 165, 0, 0.4);
+        color: #121212;
+        text-decoration: none;
+      }
+
+      /* Stats Section */
+      .stats-section {
+        padding: 3rem 2rem;
+        background-color: #121212;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 1.25rem;
+        background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+        border: 1px solid #00ced1;
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 206, 209, 0.2);
+      }
+
+      .stat-number {
+        font-size: 2.2rem;
+        font-weight: bold;
         color: #f0a500;
+        display: block;
+        margin-bottom: 0.5rem;
       }
 
+      .stat-label {
+        color: #aab6b7;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .welcome-banner h2 {
+          font-size: 1.6rem;
+        }
+
+        .welcome-banner p {
+          font-size: 1rem;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+
+        .section-title {
+          font-size: 2rem;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .step-item {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .step-number {
+          margin-right: 0;
+          margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .welcome-banner {
+          padding: 1rem 1.5rem;
+        }
+
+        .welcome-banner h2 {
+          font-size: 1.4rem;
+        }
+
+        .welcome-banner p {
+          font-size: 0.9rem;
+        }
+
+        .hero-section,
+        .features-section,
+        .how-it-works,
+        .cta-section,
+        .stats-section {
+          padding: 2rem 1rem;
+        }
+
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1rem;
+        }
+
+        .section-title {
+          font-size: 1.5rem;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .cta-card {
+          padding: 2rem 1rem;
+        }
+      }
+
+      /* Animations */
       @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(30px);
         }
         to {
           opacity: 1;
@@ -106,37 +443,138 @@
         }
       }
 
-      @media (max-width: 600px) {
-        .simulator-card {
-          padding: 2rem 1.5rem;
-        }
-
-        .simulator-title {
-          font-size: 2rem;
-        }
-
-        .simulator-list li {
-          font-size: 1.5rem;
-        }
+      .fade-in-up {
+        animation: fadeInUp 0.8s ease-out;
       }
+
+      .delay-1 { animation-delay: 0.1s; }
+      .delay-2 { animation-delay: 0.2s; }
+      .delay-3 { animation-delay: 0.3s; }
+      .delay-4 { animation-delay: 0.4s; }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <div class="page-wrapper">
-        <div class="simulator-card">
-          <h1 class="simulator-title">Mock Draft Simulator</h1>
-          <ul class="simulator-list">
-            <li>Choose your league settings and number of teams.</li>
-            <li>Select your draft position before the simulation starts.</li>
-            <li>Take turns selecting players.</li>
-            <li>Fill your roster by drafting players for each position.</li>
-          </ul>
-          <div class="text-center">
-            <a class="simulator-button" href="/login">LOGIN</a>
-          </div>
+      <!-- Welcome Banner (Conditional) -->
+      <div th:if="${authenticatedUser != null}" class="welcome-banner fade-in-up">
+        <div class="welcome-content">
+          <h2>Welcome back, <span th:text="${authenticatedUser.username}"></span>!</h2>
+          <p>Ready to dominate your next mock draft?</p>
         </div>
       </div>
+
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="hero-content">
+          <h1 class="hero-title fade-in-up">Mock O' Clock</h1>
+          <p class="hero-subtitle fade-in-up delay-1">Professional Fantasy Football Draft Simulator</p>
+          <p class="hero-description fade-in-up delay-2">
+            Experience the thrill of fantasy football drafting with our advanced simulator. 
+            Compete against intelligent CPU opponents, analyze player statistics, and build 
+            championship-winning teams in multiple formats.
+          </p>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features-section">
+        <h2 class="section-title fade-in-up">Why Choose Mock O' Clock?</h2>
+        <div class="features-grid">
+          <div class="feature-card fade-in-up delay-1">
+            <div class="feature-icon">🏈</div>
+            <h3 class="feature-title">Multiple Formats</h3>
+            <p class="feature-description">
+              Support for PPR, Standard, Half-PPR, Dynasty, and 2QB Dynasty leagues. 
+              Choose the format that matches your league settings.
+            </p>
+          </div>
+          <div class="feature-card fade-in-up delay-2">
+            <div class="feature-icon">🤖</div>
+            <h3 class="feature-title">Smart CPU Opponents</h3>
+            <p class="feature-description">
+              Advanced AI that makes realistic draft decisions based on ADP, 
+              position needs, and strategic thinking.
+            </p>
+          </div>
+          <div class="feature-card fade-in-up delay-3">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">Real Player Data</h3>
+            <p class="feature-description">
+              Access to real NFL player statistics, fantasy points, and 
+              detailed performance analytics.
+            </p>
+          </div>
+          <div class="feature-card fade-in-up delay-4">
+            <div class="feature-icon">🎯</div>
+            <h3 class="feature-title">Customizable Settings</h3>
+            <p class="feature-description">
+              Choose your draft position, number of teams, rounds, and 
+              league size to match your preferences.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="how-it-works">
+        <h2 class="section-title fade-in-up">How It Works</h2>
+        <div class="steps-container">
+          <div class="step-item fade-in-up delay-1">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Choose Your Settings</h3>
+              <p>Select your league format, number of teams, draft position, and number of rounds to customize your experience.</p>
+            </div>
+          </div>
+          <div class="step-item fade-in-up delay-2">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Draft Your Team</h3>
+              <p>Take turns selecting players with intelligent CPU opponents. Analyze stats and make strategic decisions.</p>
+            </div>
+          </div>
+          <div class="step-item fade-in-up delay-3">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Review & Save</h3>
+              <p>View your completed roster, analyze your draft strategy, and save your mock drafts for future reference.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <h2 class="section-title fade-in-up">Platform Highlights</h2>
+        <div class="stats-grid">
+          <div class="stat-item fade-in-up delay-1">
+            <span class="stat-number">5</span>
+            <span class="stat-label">League Formats</span>
+          </div>
+          <div class="stat-item fade-in-up delay-3">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Mock Drafts</span>
+          </div>
+          <div class="stat-item fade-in-up delay-4">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Free</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action Section -->
+      <section class="cta-section">
+        <div class="cta-card fade-in-up">
+          <h2 class="cta-title">Ready to Start Drafting?</h2>
+          <p class="cta-description">
+            Join thousands of fantasy football enthusiasts who use Mock O' Clock 
+            to perfect their draft strategies and dominate their leagues.
+          </p>
+          <a th:href="${authenticatedUser != null ? '/setup' : '/login'}" class="cta-button">
+            <span th:text="${authenticatedUser != null ? 'Start Your Mock Draft' : 'Login to Start Drafting'}"></span>
+          </a>
+        </div>
+      </section>
     </div>
   </body>
 </html>

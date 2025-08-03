@@ -6,7 +6,7 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>Player Details</title>
+    <title>Player Details - Mock O' Clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Fonts -->
@@ -16,54 +16,125 @@
       href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
-    <style>
-      html {
-        font-size: 16px;
-      }
 
+    <style>
+      html,
       body {
         margin: 0;
         padding: 0;
-        background-color: #1e1e1e;
-        color: #aab6b7;
+        width: 100vw;
+        height: 100%;
+        box-sizing: border-box;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        font-family: "Doto", sans-serif;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      body {
+        color: #e0e0e0;
+      }
+
+      .page-header {
+        text-align: center;
+        margin: 2rem 0 3rem 0;
+        animation: fadeInDown 0.8s ease-out;
+      }
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #00ced1;
+        margin: 0 0 0.5rem 0;
+        text-shadow: 0 4px 8px rgba(0, 206, 209, 0.3);
+        letter-spacing: -1px;
+      }
+
+      .page-subtitle {
+        font-size: 1.2rem;
+        color: #f0a500;
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .back-button-container {
+        text-align: left;
+        margin: 0 5% 2rem 7.8%;
+        margin-top: 2%;
+        animation: fadeInUp 0.8s ease-out 0.1s both;
+      }
+
+      .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-family: "VT323", monospace;
+        font-size: 1.2rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        color: #f0a500;
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 12px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .back-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
+        color: #f0a500;
+        text-decoration: none;
+      }
+
+      .back-button:active {
+        transform: translateY(0);
       }
 
       .player-container {
-        font-family: "VT323", monospace;
         width: 90%;
-        margin: 1.25rem auto;
-        font-size: 1.5rem;
-        font-weight: 600;
-        padding: 1.25rem;
-        background-color: #242828;
-        border-radius: 1.5625rem;
-        border: 1px solid #f0a500;
-        overflow: hidden;
-        animation: fadeIn 1s ease-out;
+        max-width: 1200px;
+        margin: 0 auto 3rem auto;
+        background: linear-gradient(135deg, #1a1a1a 0%, #242828 100%);
+        border: 1px solid rgba(0, 206, 209, 0.3);
+        border-radius: 20px;
+        padding: 2rem;
+        box-sizing: border-box;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        animation: fadeInUp 0.8s ease-out 0.2s both;
       }
 
       .player-header {
-        background-color: #1a1a1a;
-        width: 100%;
-        padding: 1.25rem;
-        border-radius: 0.5rem;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 15px;
+        padding: 2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 1.875rem;
+        margin-bottom: 2rem;
         flex-wrap: wrap;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
       }
 
       .player-image {
-        width: 8.75rem;
-        height: 7.5rem;
-        margin-bottom: 0 !important;
-        margin-right: 1.5625rem;
+        width: 120px;
+        height: 120px;
         object-fit: cover;
         border-radius: 50%;
-        background-color: rgba(200, 200, 200, 0.2);
-        padding: 0.1875rem;
-        box-sizing: border-box;
+        border: 3px solid #f0a500;
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.3);
+        margin-right: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .player-image:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.4);
       }
 
       .player-name-and-info {
@@ -76,7 +147,7 @@
       .name-info-container {
         display: flex;
         align-items: center;
-        gap: 1.25rem;
+        gap: 2rem;
         flex-wrap: wrap;
       }
 
@@ -92,79 +163,123 @@
       }
 
       .top-row-details {
-        font-size: 1.8rem;
-        font-weight: 700;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #e0e0e0;
+        margin-bottom: 0.5rem;
       }
 
       .separator {
-        font-size: 5rem;
+        font-size: 3rem;
         color: #f0a500;
         font-weight: 100;
+        margin: 0 1rem;
       }
 
       .first-name {
         font-family: "Doto", sans-serif;
-        font-size: 2.2rem;
-        font-weight: 600 !important;
-        color: #f0a500;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #00ced1;
         margin: 0;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
       }
 
       .last-name {
         font-family: "Doto", sans-serif;
-        font-size: 2.4rem;
+        font-size: 2.8rem;
         font-weight: 900;
         color: #f0a500;
         margin: 0;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
       .player-details-inline {
-        margin-top: 0.625rem;
+        margin-top: 0.5rem;
       }
 
       .player-details-inline p {
-        margin: 0.125rem 0;
+        margin: 0.25rem 0;
+        font-family: "VT323", monospace;
+        font-size: 1.2rem;
+        color: #e0e0e0;
+      }
+
+      .team-logo {
+        height: 80px;
+        width: 80px;
+        object-fit: contain;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .team-logo:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.2);
       }
 
       .stats-section {
-        margin-top: 1.875rem;
+        margin-top: 2rem;
         width: 100%;
       }
 
       h2 {
         font-family: "Doto", sans-serif;
-        color: #f0a500;
+        color: #00ced1;
         text-align: center;
         font-weight: 700;
-        margin: 0.625rem 0;
-        font-size: 2rem;
-        padding: 0.3125rem;
+        margin: 1rem 0;
+        font-size: 2.2rem;
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
+      }
+
+      h3 {
+        font-family: "Doto", sans-serif;
+        color: #f0a500;
+        text-align: center;
+        font-weight: 600;
+        margin: 1rem 0 0.5rem 0;
+        font-size: 1.5rem;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
       .game-log-scroll-wrapper {
         overflow-x: auto;
         width: 100%;
+        margin-top: 1rem;
       }
 
       .game-log-row {
         display: flex;
         flex-direction: row;
-        gap: 0.5rem;
+        gap: 1rem;
         min-width: max-content;
-        padding: 0.75rem 0;
+        padding: 1rem 0;
       }
 
       .game-log-section {
-        background-color: #242828;
-        border-radius: 0.75rem;
-        padding: 0.5rem;
-        min-width: 300px;
-        box-shadow: 0 0 5px #f0a50033;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 15px;
+        padding: 1rem;
+        min-width: 280px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .game-log-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.2);
+        border-color: rgba(240, 165, 0, 0.6);
       }
 
       .game-log-section h3 {
         color: #f0a500;
         text-align: center;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
       }
 
       .game-log-content {
@@ -176,28 +291,34 @@
       .game-row {
         display: flex;
         flex-wrap: nowrap;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid rgba(0, 206, 209, 0.2);
         box-sizing: border-box;
+        transition: all 0.3s ease;
+      }
+
+      .game-row:hover {
+        background: rgba(0, 206, 209, 0.1);
       }
 
       .game-row span {
         flex: 1;
-        min-width: 70px;
+        min-width: 60px;
         text-align: center;
         font-size: 1rem;
-        font-weight: bolder;
-        padding: 0.25rem;
+        font-weight: 600;
+        padding: 0.5rem 0.25rem;
         box-sizing: border-box;
-        border-left: none !important;
-        border-right: none !important;
+        font-family: "VT323", monospace;
+        color: #e0e0e0;
       }
 
       .game-row.header {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: bold;
-        background-color: #222;
+        background: linear-gradient(135deg, #242828 0%, #1a1a1a 100%);
         border-bottom: 2px solid #f0a500;
         color: #f0a500;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
       .game-row span.separator {
@@ -206,27 +327,33 @@
       }
 
       .stat-row {
-        background-color: #1a1a1a;
-        font-size: 0.7rem;
-        margin: 0.3125rem 0;
-        border-radius: 0.5rem;
-        padding-bottom: 0.3125rem;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-        box-sizing: border-box;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(0, 206, 209, 0.2);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .stat-row:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 206, 209, 0.2);
+        border-color: rgba(0, 206, 209, 0.4);
       }
 
       .no-stats-message {
         text-align: center;
-        color: #cccccc;
-        font-size: 1.8rem;
-        margin: 1rem auto;
-        padding: 1rem;
-        border: 1px dashed #666;
-        background-color: rgba(255, 255, 255, 0.05);
-        border-radius: 0.75rem;
-        max-width: 37.5rem;
-        box-shadow: 0 0 5px #555;
+        color: #e0e0e0;
+        font-size: 1.5rem;
+        margin: 2rem auto;
+        padding: 2rem;
+        border: 2px dashed rgba(240, 165, 0, 0.5);
+        background: linear-gradient(135deg, rgba(12, 44, 58, 0.5) 0%, rgba(26, 26, 26, 0.5) 100%);
+        border-radius: 15px;
+        max-width: 500px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        font-family: "VT323", monospace;
       }
 
       .section-header-row {
@@ -252,25 +379,20 @@
         flex: 4;
       }
 
-      .team-logo {
-        height: 5.5rem;
-        width: 5.5rem;
-        object-fit: contain;
-      }
-
       hr {
         border: none;
-        height: 5px;
+        height: 3px;
         width: 100%;
         background: linear-gradient(
           to right,
           transparent,
-          #f0a500,
+          #00ced1,
           #f0a500,
           transparent
         );
-        box-shadow: 0 0 10px #f0a500;
-        border-radius: 3px;
+        box-shadow: 0 0 10px rgba(0, 206, 209, 0.3);
+        border-radius: 2px;
+        margin: 1.5rem 0;
       }
 
       .total-points-container {
@@ -278,61 +400,77 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        background-color: #2f2f2f;
-        width: 50%;
-        border-radius: 0.625rem;
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 15px;
         text-align: center;
-        margin: 1rem auto;
-        box-shadow: 0 0 5px rgba(240, 165, 0, 0.4);
+        margin: 2rem auto;
+        box-shadow: 0 4px 16px rgba(240, 165, 0, 0.2);
+        transition: all 0.3s ease;
+        max-width: 400px;
+      }
+
+      .total-points-container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
       }
 
       .total-points-container h3 {
         margin: 0;
         width: 100%;
-        padding: 0.5rem;
+        padding: 1rem;
         font-family: "Doto", sans-serif;
-        font-size: 1.8rem;
+        font-size: 1.4rem;
         font-weight: 700;
         color: #f0a500;
-        background-color: #222;
-        border-top-left-radius: 0.625rem;
-        border-top-right-radius: 0.625rem;
-        height: 3rem;
+        background: linear-gradient(135deg, #242828 0%, #1a1a1a 100%);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
       .total-points-value {
         display: block;
-        font-size: 3rem;
-        color: #aab6b7;
-        margin: 0.4rem;
-      }
-
-      .back-button {
-        font-family: "Doto", monospace;
-        display: block;
-        width: fit-content;
-        margin: 5px 65px;
-        padding: 15px;
-        font-size: 1rem;
+        font-size: 3.5rem;
+        color: #00ced1;
+        margin: 1rem;
+        font-family: "VT323", monospace;
         font-weight: bold;
-        background-color: #242828;
-        color: #f0a500;
-        border-radius: 20px;
-        text-decoration: none;
-        text-align: center;
-        cursor: pointer;
-        border: 2px solid #121212 !important;
-      }
-
-      .back-button:hover {
-        color: #f0a500;
-        transform: scale(1.1);
+        text-shadow: 0 2px 4px rgba(0, 206, 209, 0.3);
       }
 
       @media (max-width: 768px) {
+        .page-header {
+          margin: 1.5rem 0 2rem 0;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+        }
+
+        .page-subtitle {
+          font-size: 1rem;
+        }
+
+        .back-button-container {
+          margin: 0 2rem 1.5rem 2rem;
+        }
+
+        .back-button {
+          font-size: 1rem;
+          padding: 0.6rem 1.2rem;
+        }
+
+        .player-container {
+          padding: 1.5rem;
+          margin-bottom: 2rem;
+        }
+
         .player-header {
           flex-direction: column;
           align-items: center;
+          padding: 1.5rem;
         }
 
         .separator {
@@ -341,21 +479,29 @@
 
         .player-details-inline {
           text-align: center;
-          font-size: 1.5rem;
+          font-size: 1.2rem;
         }
 
         .player-image {
           margin-right: 0;
-          margin-bottom: 1rem !important;
+          margin-bottom: 1rem;
+          width: 100px;
+          height: 100px;
         }
 
         .name-info-container {
           flex-direction: column;
           align-items: center;
+          gap: 1rem;
+        }
+
+        .team-logo {
+          height: 60px;
+          width: 60px;
         }
 
         .total-points-container {
-          width: 90%;
+          max-width: 90%;
         }
 
         .game-row {
@@ -363,24 +509,26 @@
         }
 
         .game-row span {
-          font-size: 1rem;
-          min-width: 70px;
+          font-size: 0.9rem;
+          min-width: 50px;
           flex: 1;
         }
 
         h2 {
-          font-size: 1.6rem;
+          font-size: 1.8rem;
+        }
+
+        h3 {
+          font-size: 1.3rem;
         }
 
         .first-name {
-          font-size: 2.4rem;
-          font-weight: 700;
+          font-size: 2rem;
           text-align: center;
         }
 
         .last-name {
-          font-size: 2.6rem;
-          font-weight: 900;
+          font-size: 2.2rem;
           text-align: center;
         }
 
@@ -389,22 +537,83 @@
         }
 
         .total-points-value {
-          font-size: 2.2rem;
+          font-size: 2.5rem;
         }
 
         .stats-section {
           overflow-x: auto;
         }
 
-        .back-button {
-          margin: auto;
+        .game-log-section {
+          min-width: 250px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .back-button-container {
+          margin: 0 1rem 1rem 1rem;
+        }
+
+        .player-container {
+          width: 95%;
+          padding: 1rem;
+        }
+
+        .player-header {
+          padding: 1rem;
+        }
+
+        .game-log-section {
+          min-width: 220px;
+        }
+
+        .game-row span {
+          font-size: 0.8rem;
+          min-width: 40px;
+        }
+
+        .total-points-value {
+          font-size: 2rem;
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
-      <a th:href="@{/user/teams}" class="back-button">&larr; Back to Teams</a>
+
+      <div class="back-button-container">
+        <a th:href="@{/user/teams}" class="back-button">
+          <span>&larr;</span>
+          <span>Back to Teams</span>
+        </a>
+      </div>
+
       <div class="player-container">
         <div class="player-header">
           <img
@@ -454,10 +663,8 @@
 
         <!-- No Stats Message for Rookie (Season Stats) -->
         <div th:if="${playerDetails.exp == 'R'}" class="no-stats-message">
-          <p>No stats for this player.</p>
+          <p>No stats available for this rookie player.</p>
         </div>
-
-        <br />
 
         <!-- 2024 SEASON STATS -->
         <div
@@ -549,7 +756,6 @@
             ></span>
           </div>
         </div>
-        <br />
 
         <!-- COMBINED GAME-BY-GAME STATS -->
         <div

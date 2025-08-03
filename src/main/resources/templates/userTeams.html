@@ -6,73 +6,52 @@
   layout:decorate="~{layouts/defaultTemplate}"
 >
   <head>
-    <title>User Teams</title>
+    <title>My Teams - Mock O' Clock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=Turret+Road:wght@200;300;400;500;700;800&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&family=VT323&display=swap"
       rel="stylesheet"
     />
     <style>
+      html,
       body {
-        background-color: #1e1e1e;
-        color: #00ced1;
-        font-family: "Doto", sans-serif;
-        padding-bottom: 60px;
         margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100%;
+        box-sizing: border-box;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        font-family: "Doto", sans-serif;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      body {
+        color: #e0e0e0;
+      }
+
+      .page-header {
+        text-align: center;
+        margin: 2rem 0 3rem 0;
+        animation: fadeInDown 0.8s ease-out;
       }
 
       h1 {
-        font-size: 2rem;
-        font-weight: bolder;
-        text-align: center;
-        margin-top: 20px;
-        color: #f0a500 !important;
+        font-size: 3rem;
+        font-weight: 800;
+        color: #00ced1;
+        margin: 0 0 0.5rem 0;
+        text-shadow: 0 4px 8px rgba(0, 206, 209, 0.3);
+        letter-spacing: -1px;
       }
 
-      .team-header {
-        background-color: #0c2c3a;
-        border-radius: 15px;
-        padding: 15px 20px;
-        margin: 20px;
-        border: 2px solid #121212;
+      .page-subtitle {
         font-size: 1.2rem;
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .team-header a {
         color: #f0a500;
-        text-decoration: none;
-        font-size: 1.5rem;
-        transition: transform 0.2s ease, color 0.2s ease;
-      }
-
-      .team-header a:hover {
-        transform: scale(1.05);
-        color: #00ced1;
-      }
-
-      .delete-team {
-        background: none;
-        border: none;
-        color: #00ced1;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-family: "Doto", sans-serif;
-        padding: 5px 10px;
-        transition: transform 0.2s ease, color 0.2s ease;
-      }
-
-      .delete-team:hover {
-        color: #f0a500 !important;
-        font-weight: bolder;
-        transform: scale(1.05);
+        font-weight: 500;
+        margin: 0;
       }
 
       .welcome-container {
@@ -80,81 +59,284 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin-top: 10px;
-        padding: 0 10px;
+        margin: 2rem 0 3rem 0;
+        animation: fadeInUp 0.8s ease-out 0.1s both;
       }
 
       .welcome-message {
         width: 100%;
         max-width: 600px;
-        padding: 15px;
+        padding: 2rem;
         border-radius: 20px;
         text-align: center;
-        color: #00ced1;
+        color: #e0e0e0;
+        background: linear-gradient(135deg, #1a1a1a 0%, #242828 100%);
+        border: 1px solid rgba(0, 206, 209, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
       }
 
       .welcome-message h1 {
-        font-size: 2rem;
-        font-weight: bolder;
-        margin-top: 5px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
         color: #f0a500 !important;
+        text-shadow: 0 2px 4px rgba(240, 165, 0, 0.3);
       }
 
-      @media screen and (max-width: 600px) {
-        .team-header {
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 15px;
+      .welcome-message p {
+        font-size: 1.2rem;
+        color: #e0e0e0;
+        margin: 0;
+        font-family: "VT323", monospace;
+      }
+
+      .teams-container {
+        width: 90%;
+        max-width: 800px;
+        margin: 0 auto 3rem auto;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+      }
+
+      .team-header {
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem 2rem;
+        margin: 0 0 1.5rem 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .team-name {
+        color: #e0e0e0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        font-family: "Doto", sans-serif;
+        text-shadow: 0 2px 4px rgba(224, 224, 224, 0.3);
+      }
+
+      .team-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .view-team {
+        background: linear-gradient(135deg, #0c2c3a 0%, #1a1a1a 100%);
+        border: 1px solid rgba(0, 206, 209, 0.3);
+        border-radius: 8px;
+        color: #00ced1;
+        cursor: pointer;
+        font-size: 1rem;
+        font-family: "VT323", monospace;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .view-team:hover {
+        color: #f0a500;
+        font-weight: bold;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(240, 165, 0, 0.3);
+        border-color: rgba(240, 165, 0, 0.6);
+        text-decoration: none;
+      }
+
+      .delete-team {
+        background: linear-gradient(135deg, #1a1a1a 0%, #242828 100%);
+        border: 1px solid rgba(240, 165, 0, 0.3);
+        border-radius: 8px;
+        color: #f0a500;
+        cursor: pointer;
+        font-size: 1rem;
+        font-family: "VT323", monospace;
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .delete-team:hover {
+        color: #00ced1 !important;
+        font-weight: bold;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 206, 209, 0.3);
+        border-color: rgba(0, 206, 209, 0.6);
+      }
+
+      .delete-team:active {
+        transform: translateY(0);
+      }
+
+      .no-teams-message {
+        text-align: center;
+        color: #e0e0e0;
+        font-size: 1.5rem;
+        margin: 3rem auto;
+        padding: 2rem;
+        border: 2px dashed rgba(240, 165, 0, 0.5);
+        background: linear-gradient(135deg, rgba(12, 44, 58, 0.5) 0%, rgba(26, 26, 26, 0.5) 100%);
+        border-radius: 15px;
+        max-width: 500px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        font-family: "VT323", monospace;
+      }
+
+      @media (max-width: 768px) {
+
+        .welcome-container {
+          margin: 1.5rem 0 2rem 0;
         }
 
-        .team-header a {
-          font-size: 0.95rem;
-        }
-
-        .delete-team {
-          align-self: flex-end;
-          font-size: 0.85rem;
+        .welcome-message {
+          padding: 1.5rem;
+          margin: 0 1rem;
         }
 
         .welcome-message h1 {
-          font-size: 1.5rem;
+          font-size: 2rem;
+        }
+
+        .welcome-message p {
+          font-size: 1rem;
+        }
+
+        .teams-container {
+          width: 95%;
+          padding: 0 1rem;
+        }
+
+        .team-header {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 1rem 1.5rem;
+        }
+
+        .team-name {
+          font-size: 1.4rem;
+        }
+
+        .team-buttons {
+          gap: 0.5rem;
+        }
+
+        .view-team,
+        .delete-team {
+          font-size: 0.9rem;
+          padding: 0.4rem 0.8rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+
+        .welcome-message {
+          padding: 1rem;
+          margin: 0 0.5rem;
+        }
+
+        .welcome-message h1 {
+          font-size: 1.6rem;
+        }
+
+        .teams-container {
+          width: 100%;
+          padding: 0 0.5rem;
+        }
+
+        .team-header {
+          padding: 1rem;
+        }
+
+        .team-name {
+          font-size: 1.2rem;
+        }
+
+        .view-team,
+        .delete-team {
+          font-size: 0.8rem;
+          padding: 0.3rem 0.6rem;
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
     </style>
   </head>
   <body>
     <div layout:fragment="content">
+
+
       <div th:if="${authenticatedUser != null}" class="welcome-container">
         <div class="welcome-message">
           <h1><span th:text="${authenticatedUser.username}"></span>'s Teams</h1>
+          <p>View and manage your completed mock draft teams</p>
         </div>
       </div>
 
-      <div th:each="teamList : ${completedMocks}">
-        <div th:each="team : ${teamList}">
-          <div class="team-header">
-            <a th:href="@{/league/teams(teamName=${team.teamName})}">
-              <span th:text="${team.teamName}"></span>
-            </a>
-            <form
-              th:action="@{/user/delete-team}"
-              method="post"
-              th:onsubmit="return confirm('Are you sure you want to delete [[${team.teamName}]]?')"
-              style="margin: 0"
-            >
-              <input
-                type="hidden"
-                th:value="${authenticatedUser.userID}"
-                name="userID"
-              />
-              <input
-                type="hidden"
-                th:value="${team.teamName}"
-                name="teamName"
-              />
-              <button class="delete-team" type="submit">Delete</button>
-            </form>
+              <div class="teams-container">
+          <div th:each="teamList : ${completedMocks}">
+            <div th:each="team : ${teamList}">
+              <div class="team-header">
+                <span class="team-name" th:text="${team.teamName}"></span>
+                <div class="team-buttons">
+                  <a th:href="@{/league/teams(teamName=${team.teamName})}" class="view-team">
+                    View
+                  </a>
+                  <form
+                    th:action="@{/user/delete-team}"
+                    method="post"
+                    th:onsubmit="return confirm('Are you sure you want to delete [[${team.teamName}]]?')"
+                    style="margin: 0"
+                  >
+                    <input
+                      type="hidden"
+                      th:value="${authenticatedUser.userID}"
+                      name="userID"
+                    />
+                    <input
+                      type="hidden"
+                      th:value="${team.teamName}"
+                      name="teamName"
+                    />
+                    <button class="delete-team" type="submit">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
+
+        <div th:if="${completedMocks == null || #lists.isEmpty(completedMocks)}" class="no-teams-message">
+          <p>No teams found. Complete a mock draft to see your teams here.</p>
         </div>
       </div>
     </div>
