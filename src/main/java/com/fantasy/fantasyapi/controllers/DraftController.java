@@ -383,8 +383,8 @@ public class DraftController {
             for (List<FantasyTeam> teamList : userTeams) {
                 // iterate through each team
                 for (FantasyTeam team : teamList) {
-                    // Check if the team name does not start with "Mock Team" (User's Team)
-                    if (!team.getTeamName().startsWith("Mock Team")) {
+                    // Check if the team name does not start with "CPU Team" or "Mock Team" (User's Team)
+                    if (!team.getTeamName().startsWith("CPU Team") && !team.getTeamName().startsWith("Mock Team")) {
                         // Add the team to the list of matching teams
                         matchingTeams.add(team);
                     }
